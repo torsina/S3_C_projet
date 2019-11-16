@@ -5,7 +5,7 @@
 - Noms de fichiers en minuscules, séparés par des tirets "-"
 - Extensions .c .h .inc
 
--Noms de type en CamelCase sans tirets. Pour les struct/enum/union, utiliser un underscore devant "_"
+- Noms de type en CamelCase sans tirets. Pour les struct/enum/union, utiliser un underscore devant "_"
   Ex : typedef struct _Polygon Polygon;
 
 - Macros/constantes en majuscules avec un underscore "" entre chaque mot
