@@ -53,6 +53,7 @@ foreach(FILENAME ${FILES})
 	endif()
 endforeach()
 
+#Generate
 set(CPACK_SOURCE_GENERATOR "ZIP")
 set(CPACK_SOURCE_IGNORE_FILES "~$;${CPACK_SOURCE_IGNORE_FILES}")
 include(CPack)
