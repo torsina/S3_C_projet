@@ -11,7 +11,7 @@ foreach(FILENAME ${FILES})
     target_link_libraries(${TEST} ga)
     if(VALGRIND)
         #Rajouter --quiet si besoin
-        add_test("${TEST}[valgrind]" ${VALGRIND} --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TEST})
+        add_test("${TEST}[valgrind]" ${VALGRIND} --leak-check=full --verbose --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TEST})
         #add_test("${TEST}[normal]" ./${TEST} WORKING_DIRECTORY ${})
         add_test("${TEST}[normal]" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TEST})
         #add_test("${TEST}[normal]" ./${CMAKE_CURRENT_BINARY_DIR}/${filename} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
