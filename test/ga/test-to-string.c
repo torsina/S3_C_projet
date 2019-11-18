@@ -1,5 +1,5 @@
 /**
- * @file test-create-destroy.c
+ * @file test-to-string.c
  *
  * @author     Christophe Demko <christophe.demko@univ-lr.fr>
  * @date       2019
@@ -7,22 +7,21 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
 #include <assert.h>
 
-#include "./ga.h"
+#include "../../src/ga/ga.h"
 
 int main(void) {
   ga_init();
   {
     GeneticGenerator* generator = genetic_generator_create(10);
-    assert(genetic_generator_get_size(generator) == 10);
-    for (unsigned int index = 0; index < genetic_generator_get_size(generator); index++) {
-      assert(genetic_generator_get_cardinality(generator, index) == 0);
-    }
+    genetic_generator_set_cardinality(generator, 0, 5);
+    assert(strcmp(genetic_generator_to_string(generator), "[5,0,0,0,0,0,0,0,0,0]") == 0);
     genetic_generator_destroy(generator);
   }
   ga_finish();

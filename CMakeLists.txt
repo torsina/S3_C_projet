@@ -7,7 +7,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 set (CMAKE_C_STANDARD 11)
 
 #"ga" is the genetic algorithms library
-add_library(ga SHARED ga.c ga.h ga.inc)
+add_library(ga SHARED src/ga/ga.c src/ga/ga.h ga.inc)
 
 
 install(
@@ -18,7 +18,7 @@ install(
 )
 
 install(
-	FILES ga.h
+	FILES src/ga/ga.h
 	DESTINATION include
 )
 
@@ -37,12 +37,12 @@ enable_testing()
 
 find_program(VALGRIND "valgrind")
 
-file(GLOB FILES "${CMAKE_CURRENT_SOURCE_DIR}/test-*.c")
+file(GLOB FILES "${CMAKE_CURRENT_SOURCE_DIR}/test/ga/test-*.c")
 
 foreach(FILENAME ${FILES})
 	get_filename_component(SRC ${FILENAME} NAME)
 	get_filename_component(TEST ${FILENAME} NAME_WE)
-	add_executable(${TEST} ${SRC} ga.c ga.h ga.inc)
+	add_executable(${TEST} "${CMAKE_CURRENT_SOURCE_DIR}/test/ga/${SRC}" src/ga/ga.c src/ga/ga.h ga.inc)
 	add_dependencies(${TEST} ga)
 	target_link_libraries(${TEST} ga)
 	if(VALGRIND)
@@ -57,4 +57,3 @@ endforeach()
 set(CPACK_SOURCE_GENERATOR "ZIP")
 set(CPACK_SOURCE_IGNORE_FILES "~$;${CPACK_SOURCE_IGNORE_FILES}")
 include(CPack)
-
