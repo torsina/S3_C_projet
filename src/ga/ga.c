@@ -16,7 +16,6 @@ void (*ga_free)(void *ptr) = free;
 static int counter = 0;
 
 bool ga_init(void) {
-    malloc(sizeof(int));
     if (!counter++) {
         assert(printf("GA initialised\n"));
     }
