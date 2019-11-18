@@ -25,12 +25,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 enable_testing()
 find_program(VALGRIND "valgrind")
 
-
+#Mettre les enable_testing et find_program avant.
 add_subdirectory(src/)
 add_subdirectory(test/)
-
-
-
 
 #Generate
 set(CPACK_SOURCE_GENERATOR "ZIP")
