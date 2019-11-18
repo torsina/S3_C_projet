@@ -1,0 +1,9 @@
+# see https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
+
+@PACKAGE_INIT@
+
+set_and_check(GA_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
+set_and_check(GA_LIB_DIRS "${PACKAGE_PREFIX_DIR}/lib")
+set(GA_LIBRARIES ga)
+
+check_required_components(GA)
