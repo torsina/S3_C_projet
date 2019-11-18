@@ -11,8 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: clone repo
-        run: git clone https://${{secrets.GitHub_PAT}}@github.com/torsina/S3_C_projet.git
+      - uses: actions/checkout@v1
 
 
       - name: Create Build Environment
