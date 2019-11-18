@@ -14,7 +14,7 @@
 #endif
 #include <assert.h>
 
-#include "../../src/ga/ga.h"
+#include "../../src/ga/includes/ga.h"
 
 int main(void) {
   ga_init();
