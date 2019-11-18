@@ -23,12 +23,14 @@ set(VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 #--------------------------------------
 
 enable_testing()
+find_program(VALGRIND "valgrind")
+
 
 add_subdirectory(src/)
 add_subdirectory(test/)
 
 
-find_program(VALGRIND "valgrind")
+
 
 #Generate
 set(CPACK_SOURCE_GENERATOR "ZIP")
