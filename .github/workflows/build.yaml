@@ -19,6 +19,12 @@ jobs:
         # We'll use this as our working directory for all subsequent commands
         run: cmake -E make_directory ${{runner.workspace}}/build
 
+      - name: Update stuff
+        run: sudo apt-get -y update
+
+      - name: Install Valgrind
+        run: sudo apt-get -y install valgrind
+
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment variable
         # access regardless of the host operating system

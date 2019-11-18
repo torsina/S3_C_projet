@@ -13,7 +13,7 @@
 #endif
 #include <assert.h>
 
-#include "./ga.h"
+#include "../../src/ga/ga.h"
 
 int main(void) {
   ga_init();
