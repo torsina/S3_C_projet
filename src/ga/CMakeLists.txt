@@ -3,14 +3,15 @@ add_library(ga SHARED ga.c includes/ga.h ga.inc)
 
 install(
         TARGETS ga
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib COMPONENT "Library"
+        ARCHIVE DESTINATION lib COMPONENT "Library"
+        RUNTIME DESTINATION bin COMPONENT "Runtime"
 )
 
 install(
         FILES includes/ga.h
         DESTINATION include
+        COMPONENT "Header"
 )
 
 include(CMakePackageConfigHelpers)
