@@ -26,6 +26,6 @@
 - Tests unitaires + valgrind. Créer un dossier "test"
 
 OUTILS IMPOSÉS :
-- CLion avec mingw32 (gcc, g++, make)
+- CLion avec mingw32 (gcc, g++, make) avec les plugins **ClangFormatIJ** (Settings > Plugins)
 - CMake
 - Github ?
