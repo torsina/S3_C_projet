@@ -13,7 +13,7 @@
 - Variables en minuscules avec un underscore "_" entre chaque mot
 
 - Dans chaque header, utiliser un include guard au format :
-           `<nom du projet>_<chemin>_<nom header>_H`
+           `<nom du projet>_<chemin>_<nom header>_H_`
 
 - Dans les .c : inclure le .h (même nom que .c), saut de ligne, inclure librairie standard, saut de ligne, inclure librairie externes, saut de ligne, inclure headers du projet, saut de ligne, inclure .inc
 
