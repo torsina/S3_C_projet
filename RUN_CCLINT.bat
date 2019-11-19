@@ -1,3 +1,3 @@
 @ECHO OFF
-cpplint --recursive %cd%
+cpplint --recursive --extensions=c,h,inc %cd%
 @ECHO ON
