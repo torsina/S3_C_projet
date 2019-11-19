@@ -62,6 +62,8 @@ Aller dans Settings > Editor > Code Style.
 - Utiliser la norme [Doxygen](http://www.doxygen.nl/manual/docblocks.html).
 - [Voici la description de la norme](https://franckh.developpez.com/tutoriels/outils/doxygen/)
 - Faire un CMakeLists.txt avec `make docs`
+- - Appeler [sphinx-build](https://www.sphinx-doc.org/en/master/man/sphinx-build.html)
+    `sphinx-build.exe -b html src docs`
 ### Exemple :
 ```c
 
