@@ -1,3 +1,3 @@
 @ECHO OFF
-cpplint --recursive --extensions=c,h,inc --exclude=make-build-debug %cd%
+cclint --recursive --extensions=c,h,inc %cd%
 @ECHO ON
