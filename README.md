@@ -61,3 +61,22 @@ Aller dans Settings > Editor > Code Style.
 - Utiliser la commande `pip install -U sphinx`.
 - Utiliser la norme [Doxygen](http://www.doxygen.nl/manual/docblocks.html).
 - [Voici la description de la norme](https://franckh.developpez.com/tutoriels/outils/doxygen/)
+### Exemple :
+```c
+
+/**
+ *  \file [<name>] OU \file main.c
+ *  \brief Cette fonction calcule
+ *         la racine carrée.
+ *  \author Francis
+ *  \version 1.2.0
+ *  \date 12 octobre 2019
+ *  \fn double sqrt(double val)
+ *  \param val Valeur dont on souhaite
+ *             trouver la racine carrée.
+ *  \return La racine carrée de val.
+ */
+double sqrt(double val) {
+    ...
+}
+```
