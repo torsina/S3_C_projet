@@ -181,13 +181,13 @@ const char *genetic_generator_to_string(const GeneticGenerator *generator) {
   return string;
 }
 
-void individual_destroy(struct _Individual *individuals) {
+void ga_individual_destroy(Individual *individuals) {
   ga_free(individuals->gene);
   ga_free(individuals);
 }
 Population* ga_population_destroy(Population* population){
   genetic_generator_destroy(population->generator);
-  individual_destroy(population->individuals);
+  ga_individual_destroy(population->individuals);
   ga_free(population);
   return NULL;
 }
