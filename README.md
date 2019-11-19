@@ -28,3 +28,12 @@
 OUTILS IMPOSÉS :
 - CLion avec mingw32 (gcc, g++, make) avec les plugins **ClangFormatIJ** (Settings > Plugins)
 - CMake
+
+CONFIGUER CLANG-FORMAT EN LOCAL :
+Aller dans Settings > Editor > Code Style.
+- Changer Scheme de "Default" à "Project"
+- Cliquer sur "Enable ClangFormat with clangd server"
+
+- Avoir le .clang-format bien dans la racine
+- Ne pas le modifier. Si besoin, taper un caractère et l'enlever puis sauvegarder pour forcer CLion à le recharger.
+- TOUT EN BAS DE L'ECRAN (à côté de UTF-8) il doit y avoir : ClangFormat
