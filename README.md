@@ -25,11 +25,11 @@
 
 - Tests unitaires + valgrind + cclint. Créer un dossier "**test**"
 
-OUTILS IMPOSÉS :
+## OUTILS IMPOSÉS :
 - CLion avec mingw32 (gcc, g++, make)
 - CMake
 
-CONFIGURER CLANG-FORMAT EN LOCAL :
+## CONFIGURER CLANG-FORMAT EN LOCAL :
 Aller dans Settings > Editor > Code Style.
 - Changer Scheme de "Default" à "Project"
 - Cliquer sur "Enable ClangFormat with clangd server"
@@ -39,13 +39,19 @@ Aller dans Settings > Editor > Code Style.
 - Ne pas le modifier. Si besoin, taper un caractère et l'enlever puis sauvegarder pour forcer CLion à le recharger.
 - TOUT EN BAS DE L'ECRAN (à côté de UTF-8) il doit y avoir : ClangFormat
 
-CONFIGURER CCLINT :
+## CONFIGURER CCLINT :
 - Avoir python 3 installé
 - `pip install cclint` ou `pip3 install cclint`
 
-MINGW :
-- Version 32 bits
-- Modules mingw32-gcc-bin mingw32-gcc-g++-bin mingw32-gdb-bin mingw32-make-bin
+## MINGW :
+- Version **32 bits**
+- Modules :
+Nom |
+--- |
+mingw32-gcc-bin |
+mingw32-gcc-g++-bin |
+mingw32-gdb-bin |
+mingw32-make-bin |
+
 - Ajouter C:\MinGW\bin au path (chercher "variables d'environnement" sur Windows, cliquer sur "variables d'environnement" puis modifier "path" et ajouter la ligne)
 - Pour faire un make : aller (avec `cd`) dans cmake-build-debug puis mingw32-make
-
