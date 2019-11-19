@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 typedef struct _GeneticGenerator GeneticGenerator;
-typedef struct _Individial Individual;
+typedef struct _Individual Individual;
 typedef struct _Population Population;
 
 extern void *(*ga_malloc)(size_t size);
@@ -39,4 +39,5 @@ extern GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator,
 extern const char *genetic_generator_to_string(
     const GeneticGenerator *generator);
 
+extern Population* ga_population_destroy(Population* population);
 #endif  // SRC_GA_INCLUDES_GA_H_

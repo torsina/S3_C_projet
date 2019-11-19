@@ -13,7 +13,7 @@ struct _Individual {
 struct _Population {
   unsigned int size;
   const struct _GeneticGenerator* generator;
-  struct _Individual individuals;
+  struct _Individual* individuals;
 };
 
 #endif  // GENETIC_GENERATOR_STRUCT_
