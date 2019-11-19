@@ -33,6 +33,7 @@ CONFIGURER CLANG-FORMAT EN LOCAL :
 Aller dans Settings > Editor > Code Style.
 - Changer Scheme de "Default" à "Project"
 - Cliquer sur "Enable ClangFormat with clangd server"
+- On peut faire CTRL+ALT+L ou Code > Reformat pour reformatter
 
 - Avoir le .clang-format bien dans la racine
 - Ne pas le modifier. Si besoin, taper un caractère et l'enlever puis sauvegarder pour forcer CLion à le recharger.
