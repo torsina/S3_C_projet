@@ -5,6 +5,8 @@
 #include <stdio.h>
 
 typedef struct _GeneticGenerator GeneticGenerator;
+typedef struct _Individial Individual;
+typedef struct _Population Population;
 
 extern void *(*ga_malloc)(size_t size);
 extern void *(*ga_realloc)(void *ptr, size_t size);

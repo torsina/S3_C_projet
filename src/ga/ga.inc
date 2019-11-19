@@ -3,7 +3,17 @@
 
 struct _GeneticGenerator {
   unsigned int size;
-  unsigned int *cardinalities;
+  unsigned int* cardinalities;
+};
+
+struct _Individual {
+  unsigned int *gene;
+};
+
+struct _Population {
+  unsigned int size;
+  const struct _GeneticGenerator* generator;
+  struct _Individual individuals;
 };
 
 #endif  // GENETIC_GENERATOR_STRUCT_
