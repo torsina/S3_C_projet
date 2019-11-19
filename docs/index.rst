@@ -11,6 +11,7 @@ Welcome to S3 Projet C's documentation!
 
    test
 
+.. automodule:: src
 
 
 Indices and tables
