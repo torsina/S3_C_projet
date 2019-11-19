@@ -61,6 +61,7 @@ Aller dans Settings > Editor > Code Style.
 - Utiliser la commande `pip install -U sphinx`.
 - Utiliser la norme [Doxygen](http://www.doxygen.nl/manual/docblocks.html).
 - [Voici la description de la norme](https://franckh.developpez.com/tutoriels/outils/doxygen/)
+- Faire un CMakeLists.txt avec `make docs`
 ### Exemple :
 ```c
 
