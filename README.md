@@ -8,12 +8,12 @@
 - Noms de type en CamelCase sans tirets. Pour les struct/enum/union, utiliser un underscore devant "_"
   Ex : typedef struct _Polygon Polygon;
 
-- Macros/constantes en majuscules avec un underscore "" entre chaque mot
+- Macros/constantes en majuscules avec un underscore "_" entre chaque mot
 
-- Variables en minuscules avec un underscore "" entre chaque mot
+- Variables en minuscules avec un underscore "_" entre chaque mot
 
 - Dans chaque header, utiliser un include guard au format :
-           <nom du projet><chemin><nom header>_H
+           `<nom du projet><chemin><nom header>_H`
 
 - Dans les .c : inclure le .h (même nom que .c), saut de ligne, inclure librairie standard, saut de ligne, inclure librairie externes, saut de ligne, inclure headers du projet, saut de ligne, inclure .inc
 
@@ -23,9 +23,8 @@
 
 - Générer la documentation avec sphinx en respectant la norme doxygen
 
-- Tests unitaires + valgrind. Créer un dossier "test"
+- Tests unitaires + valgrind + cclint. Créer un dossier "**test**"
 
 OUTILS IMPOSÉS :
 - CLion avec mingw32 (gcc, g++, make) avec les plugins **ClangFormatIJ** (Settings > Plugins)
 - CMake
-- Github ?
