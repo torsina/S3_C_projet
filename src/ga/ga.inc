@@ -6,4 +6,4 @@ struct _GeneticGenerator {
   unsigned int *cardinalities;
 };
 
-#endif // GENETIC_GENERATOR_STRUCT_
+#endif  // GENETIC_GENERATOR_STRUCT_

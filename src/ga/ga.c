@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ga.inc"
+#include "ga.inc" // NOLINT
 #include "includes/ga.h"
 
 void *(*ga_malloc)(size_t size) = malloc;
@@ -57,14 +57,16 @@ void genetic_generator_destroy(GeneticGenerator *generator) {
   ga_free(generator);
 }
 
-GeneticGenerator *genetic_generator_set_cardinality(GeneticGenerator *generator, const unsigned int index,
-                                                    const unsigned int cardinality) {
+GeneticGenerator *genetic_generator_set_cardinality(
+    GeneticGenerator *generator, const unsigned int index,
+    const unsigned int cardinality) {
   assert(index < generator->size);
   generator->cardinalities[index] = cardinality;
   return generator;
 }
 
-unsigned int genetic_generator_get_cardinality(const GeneticGenerator *generator, const unsigned int index) {
+unsigned int genetic_generator_get_cardinality(
+    const GeneticGenerator *generator, const unsigned int index) {
   assert(index < generator->size);
   return generator->cardinalities[index];
 }
@@ -76,35 +78,42 @@ unsigned int genetic_generator_get_size(const GeneticGenerator *generator) {
 GeneticGenerator *genetic_generator_clone(const GeneticGenerator *generator) {
   GeneticGenerator *clone = genetic_generator_create(generator->size);
   if (clone) {
-    memcpy(clone->cardinalities, generator->cardinalities, generator->size * sizeof(unsigned int));
+    memcpy(clone->cardinalities, generator->cardinalities,
+           generator->size * sizeof(unsigned int));
     return clone;
   } else {
     return NULL;
   }
 }
 
-GeneticGenerator *genetic_generator_copy(GeneticGenerator *dest, const GeneticGenerator *src) {
-  unsigned int *cardinalities = ga_realloc(dest->cardinalities, src->size * sizeof(unsigned int));
+GeneticGenerator *genetic_generator_copy(GeneticGenerator *dest,
+                                         const GeneticGenerator *src) {
+  unsigned int *cardinalities =
+      ga_realloc(dest->cardinalities, src->size * sizeof(unsigned int));
   if (cardinalities) {
     dest->size = src->size;
     dest->cardinalities = cardinalities;
-    memcpy(dest->cardinalities, src->cardinalities, src->size * sizeof(unsigned int));
+    memcpy(dest->cardinalities, src->cardinalities,
+           src->size * sizeof(unsigned int));
     return dest;
   } else {
     return NULL;
   }
 }
 
-GeneticGenerator *genetic_generator_fwrite(const GeneticGenerator *generator, FILE *stream) {
+GeneticGenerator *genetic_generator_fwrite(const GeneticGenerator *generator,
+                                           FILE *stream) {
   if (fwrite(&generator->size, sizeof(generator->size), 1, stream) == 1 &&
-      fwrite(generator->cardinalities, sizeof(unsigned int), generator->size, stream) == generator->size) {
+      fwrite(generator->cardinalities, sizeof(unsigned int), generator->size,
+             stream) == generator->size) {
     return (GeneticGenerator *)generator;
   } else {
     return NULL;
   }
 }
 
-GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator, FILE *stream) {
+GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator,
+                                          FILE *stream) {
   unsigned int size;
   unsigned int *cardinalities;
   if (fread(&size, sizeof(size), 1, stream) == 1) {
@@ -127,7 +136,8 @@ GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator, FILE *str
   }
 }
 
-static bool _add_string(char **pstring, unsigned int *plength, const char *add) {
+static bool _add_string(char **pstring, unsigned int *plength,
+                        const char *add) {
   if (add) {
     unsigned int inc_length = strlen(add);
     char *string = ga_realloc(*pstring, *plength + inc_length + 1);
@@ -160,7 +170,7 @@ const char *genetic_generator_to_string(const GeneticGenerator *generator) {
       }
     }
     char element[100];
-    snprintf(element, 100, "%u", generator->cardinalities[index]);
+    snprintf(element, sizeof(element), "%u", generator->cardinalities[index]);
     if (!_add_string(&string, &length, element)) {
       return NULL;
     }

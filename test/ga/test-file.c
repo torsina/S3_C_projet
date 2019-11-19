@@ -27,9 +27,12 @@ int main(void) {
     rewind(stream);
 
     assert(genetic_generator_fread(read, stream) == read);
-    assert(genetic_generator_get_size(generator) == genetic_generator_get_size(read));
-    for (unsigned int index = 0; index < genetic_generator_get_size(generator); index++) {
-      assert(genetic_generator_get_cardinality(generator, index) == genetic_generator_get_cardinality(read, index));
+    assert(genetic_generator_get_size(generator) ==
+           genetic_generator_get_size(read));
+    for (unsigned int index = 0; index < genetic_generator_get_size(generator);
+         index++) {
+      assert(genetic_generator_get_cardinality(generator, index) ==
+             genetic_generator_get_cardinality(read, index));
     }
     fclose(stream);
 

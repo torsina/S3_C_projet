@@ -21,12 +21,14 @@ int main(void) {
     GeneticGenerator* generator = genetic_generator_create(10);
 
     GeneticGenerator* clone = genetic_generator_clone(generator);
-    assert(genetic_generator_get_size(generator) == genetic_generator_get_size(clone));
+    assert(genetic_generator_get_size(generator) ==
+           genetic_generator_get_size(clone));
     genetic_generator_destroy(clone);
 
     GeneticGenerator* dest = genetic_generator_create(2);
     assert(genetic_generator_copy(dest, generator) == dest);
-    assert(genetic_generator_get_size(generator) == genetic_generator_get_size(dest));
+    assert(genetic_generator_get_size(generator) ==
+           genetic_generator_get_size(dest));
     genetic_generator_destroy(dest);
 
     genetic_generator_destroy(generator);

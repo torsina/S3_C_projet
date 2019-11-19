@@ -20,7 +20,8 @@ int main(void) {
   {
     GeneticGenerator* generator = genetic_generator_create(10);
     assert(genetic_generator_get_size(generator) == 10);
-    for (unsigned int index = 0; index < genetic_generator_get_size(generator); index++) {
+    for (unsigned int index = 0; index < genetic_generator_get_size(generator);
+         index++) {
       assert(genetic_generator_get_cardinality(generator, index) == 0);
     }
     genetic_generator_destroy(generator);
