@@ -25,7 +25,7 @@ jobs:
         run: sudo pip install cclint
 
       - name: run cclint
-        run: cclint --recursive ./src
+        run: cclint --recursive ./src ./test
 
       - name: Install Valgrind
         run: sudo apt-get -y install valgrind
