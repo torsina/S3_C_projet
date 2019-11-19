@@ -13,7 +13,7 @@
 - Variables en minuscules avec un underscore "_" entre chaque mot
 
 - Dans chaque header, utiliser un include guard au format :
-           `<nom du projet><chemin><nom header>_H`
+           `<nom du projet>_<chemin>_<nom header>_H`
 
 - Dans les .c : inclure le .h (même nom que .c), saut de ligne, inclure librairie standard, saut de ligne, inclure librairie externes, saut de ligne, inclure headers du projet, saut de ligne, inclure .inc
 
@@ -26,10 +26,10 @@
 - Tests unitaires + valgrind + cclint. Créer un dossier "**test**"
 
 OUTILS IMPOSÉS :
-- CLion avec mingw32 (gcc, g++, make) avec les plugins **ClangFormatIJ** (Settings > Plugins)
+- CLion avec mingw32 (gcc, g++, make)
 - CMake
 
-CONFIGUER CLANG-FORMAT EN LOCAL :
+CONFIGURER CLANG-FORMAT EN LOCAL :
 Aller dans Settings > Editor > Code Style.
 - Changer Scheme de "Default" à "Project"
 - Cliquer sur "Enable ClangFormat with clangd server"
@@ -37,3 +37,7 @@ Aller dans Settings > Editor > Code Style.
 - Avoir le .clang-format bien dans la racine
 - Ne pas le modifier. Si besoin, taper un caractère et l'enlever puis sauvegarder pour forcer CLion à le recharger.
 - TOUT EN BAS DE L'ECRAN (à côté de UTF-8) il doit y avoir : ClangFormat
+
+CONFIGURER CCLINT :
+- Avoir python 3 installé
+- `pip install cclint` ou `pip3 install cclint`
