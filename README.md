@@ -54,5 +54,5 @@ Aller dans Settings > Editor > Code Style.
 | mingw32-gdb-bin     |
 | mingw32-make-bin    |
 
-- Ajouter C:\MinGW\bin au path (chercher "variables d'environnement" sur Windows, cliquer sur "variables d'environnement" puis modifier "path" et ajouter la ligne)
-- Pour faire un make : aller (avec `cd`) dans cmake-build-debug puis mingw32-make
+- Ajouter `C:\MinGW\bin` au PATH (chercher "variables d'environnement" sur Windows, cliquer sur "variables d'environnement" puis modifier "path" et ajouter la ligne).
+- Pour faire un make : aller (avec `cd`) dans `/cmake-build-debug` puis `mingw32-make`.
