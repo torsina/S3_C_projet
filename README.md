@@ -59,3 +59,4 @@ Aller dans Settings > Editor > Code Style.
 
 ## SPHINX
 - Utiliser la commande `pip install -U sphinx`.
+- Utiliser la norme [Doxygen](http://www.doxygen.nl/manual/docblocks.html).
