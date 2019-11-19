@@ -21,7 +21,8 @@ int main(void) {
   {
     GeneticGenerator* generator = genetic_generator_create(10);
     genetic_generator_set_cardinality(generator, 0, 5);
-    assert(strcmp(genetic_generator_to_string(generator), "[5,0,0,0,0,0,0,0,0,0]") == 0);
+    assert(strcmp(genetic_generator_to_string(generator),
+                  "[5,0,0,0,0,0,0,0,0,0]") == 0);
     genetic_generator_destroy(generator);
   }
   ga_finish();
