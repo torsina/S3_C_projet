@@ -15,6 +15,18 @@ void (*ga_free)(void *ptr) = free;
 
 static int counter = 0;
 
+/**
+ *  \file [<name>] OU \file main.c
+ *  \brief Cette fonction calcule
+ *         la racine carrée.
+ *  \author Francis
+ *  \version 1.2.0
+ *  \date 12 octobre 2019
+ *  \fn double sqrt(double val)
+ *  \param val Valeur dont on souhaite
+ *             trouver la racine carrée.
+ *  \return La racine carrée de val.
+ */
 bool ga_init(void) {
   if (!counter++) {
     assert(printf("GA initialised\n"));

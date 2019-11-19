@@ -8,7 +8,8 @@ Welcome to S3 Projet C's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   test
 
 
 

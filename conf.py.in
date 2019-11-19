@@ -1,0 +1,7 @@
+html_theme = '@SPHINX_THEME@'
+
+html_theme_path = ['@SPHINX_THEME_DIR@']
+
+htmlhelp_basename = 'YOUR_PROJECT_NAMEdoc'
+
+master_doc = 'docs/index'
