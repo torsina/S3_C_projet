@@ -46,12 +46,12 @@ Aller dans Settings > Editor > Code Style.
 ## MINGW :
 - Version **32 bits**
 - Modules :
-Nom |
---- |
-mingw32-gcc-bin |
-mingw32-gcc-g++-bin |
-mingw32-gdb-bin |
-mingw32-make-bin |
+| Nom |
+| --- |
+| mingw32-gcc-bin |
+| mingw32-gcc-g++-bin |
+| mingw32-gdb-bin |
+| mingw32-make-bin |
 
 - Ajouter C:\MinGW\bin au path (chercher "variables d'environnement" sur Windows, cliquer sur "variables d'environnement" puis modifier "path" et ajouter la ligne)
 - Pour faire un make : aller (avec `cd`) dans cmake-build-debug puis mingw32-make
