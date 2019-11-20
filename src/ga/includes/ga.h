@@ -52,6 +52,8 @@ extern GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator,
 extern const char *genetic_generator_to_string(
     const GeneticGenerator *generator);
 
+// Individuals functions
+
 extern Individual *genetic_generator_individual(
     const GeneticGenerator *generator);
 
@@ -60,7 +62,11 @@ extern void ga_individual_destroy(Individual *individual);
 extern unsigned int ga_individual_get_gene(Individual *individual,
                                            unsigned int index);
 
+// Population functions
+
 extern Population *ga_population_create(const GeneticGenerator *generator,
                                         unsigned int size);
+
+extern Population *ga_population_destroy(Population *population);
 
 #endif  // SRC_GA_INCLUDES_GA_H_
