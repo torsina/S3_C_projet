@@ -187,7 +187,8 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
     individual->gene = ga_malloc(generator->size);
     if (individual->gene) {
       for (unsigned int i = 0; i < generator->size; i++) {
-        individual->gene[i] = (rand() % (generator->cardinalities[i])); // // NOLINT
+        individual->gene[i] =
+            (rand() % (generator->cardinalities[i]));  // // NOLINT
       }
       return individual;
     }
@@ -196,7 +197,12 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
   return NULL;
 }
 
-void ga_individual_destroy(Individual* individual) {
+unsigned int ga_individual_get_gene(Individual *individual,
+                                    unsigned int index) {
+  return individual->gene[index];
+}
+
+void ga_individual_destroy(Individual *individual) {
   free(individual->gene);
   free(individual);
 }
