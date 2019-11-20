@@ -23,6 +23,5 @@ int main(void) {
   ga_individual_destroy(foo);
   genetic_generator_destroy(generator);
   ga_finish();
-  // TODO: abc
   return EXIT_SUCCESS;
 }
