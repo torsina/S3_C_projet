@@ -17,15 +17,19 @@ extern void *(*ga_realloc)(void *ptr, size_t size);
 extern void (*ga_free)(void *ptr);
 
 /**
- *  \brief Cette fonction calcule
- *         la racine carrée.
- *  \author Francis
- *  \version 1.2.0
- *  \date 12 octobre 2019
+ *  \brief This function initializes the Genetic Algorithms library.
+ *  \author Christophe Demko
+ *  \version 0.0.1
+ *  \date 2019
  *  \fn bool ga_init(void)
- *  \return La racine carrée de val.
+ *  \return true everytime.
+ *
+ *  This function must be used before any other function of the library.<br>
+ *  In debug, it will write "GA initialised" to the standard output.<br>
+ *  Always returns true.
  */
 extern bool ga_init(void);
+
 extern bool ga_finish(void);
 
 extern GeneticGenerator *genetic_generator_create(const unsigned int size);
