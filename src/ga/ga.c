@@ -140,9 +140,9 @@ static bool _add_string(char **pstring, unsigned int *plength,
                         const char *add) {
   if (add) {
     unsigned int inc_length = strlen(add);
-    char *string = ga_realloc(*pstring, *plength + inc_length + 1);
-    if (string) {
-      *pstring = string;
+    char *str = ga_realloc(*pstring, *plength + inc_length + 1);
+    if (str) {
+      *pstring = str;
       strncpy(*pstring + *plength, add, inc_length + 1);
       *plength += inc_length;
       return true;
@@ -155,30 +155,30 @@ static bool _add_string(char **pstring, unsigned int *plength,
 }
 
 const char *genetic_generator_to_string(const GeneticGenerator *generator) {
-  static char *string = NULL;
+  static char *str = NULL;
   unsigned int length;
 
   length = 0;
 
-  if (!_add_string(&string, &length, "[")) {
+  if (!_add_string(&str, &length, "[")) {
     return NULL;
   }
   for (unsigned int index = 0; index < generator->size; index++) {
     if (index) {
-      if (!_add_string(&string, &length, ",")) {
+      if (!_add_string(&str, &length, ",")) {
         return NULL;
       }
     }
     char element[100];
     snprintf(element, sizeof(element), "%u", generator->cardinalities[index]);
-    if (!_add_string(&string, &length, element)) {
+    if (!_add_string(&str, &length, element)) {
       return NULL;
     }
   }
-  if (!_add_string(&string, &length, "]")) {
+  if (!_add_string(&str, &length, "]")) {
     return NULL;
   }
-  return string;
+  return str;
 }
 // our code
 Individual *genetic_generator_individual(const GeneticGenerator *generator) {
@@ -232,7 +232,7 @@ Population *ga_population_create(const GeneticGenerator *generator,
 
 Population *ga_population_destroy(Population *population) {
   printf("started population destroy \n");
-  for(unsigned int i = 0; i < population->size; i++) {
+  for (unsigned int i = 0; i < population->size; i++) {
     printf("started individual destroy %u\n", i);
     ga_individual_destroy(population->individuals[i]);
     printf("finished individual destroy %u\n", i);

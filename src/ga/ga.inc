@@ -1,5 +1,5 @@
-#ifndef GENETIC_GENERATOR_STRUCT_
-#define GENETIC_GENERATOR_STRUCT_
+#ifndef SRC_GA_GA_INC_
+#define SRC_GA_GA_INC_
 
 struct _GeneticGenerator {
   unsigned int size;
@@ -16,4 +16,4 @@ struct _Population {
   struct _Individual** individuals;
 };
 
-#endif  // GENETIC_GENERATOR_STRUCT_
+#endif  // SRC_GA_GA_INC_
