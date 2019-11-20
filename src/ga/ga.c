@@ -1,3 +1,5 @@
+#include "includes/ga.h"
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -5,7 +7,6 @@
 #include <string.h>
 
 #include "ga.inc"
-#include "includes/ga.h"
 
 void *(*ga_malloc)(size_t size) = malloc;
 
