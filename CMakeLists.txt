@@ -26,7 +26,7 @@ enable_testing()
 find_program(VALGRIND "valgrind")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-find_package(Sphinx REQUIRED)
+find_package(Sphinx)
 
 #Mettre les enable_testing et find_program avant.
 add_subdirectory(src/)
