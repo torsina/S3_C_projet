@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ga.inc" // NOLINT
+#include "ga.inc"  // NOLINT
 #include "includes/ga.h"
 
 void *(*ga_malloc)(size_t size) = malloc;
@@ -179,4 +179,24 @@ const char *genetic_generator_to_string(const GeneticGenerator *generator) {
     return NULL;
   }
   return string;
+}
+
+Individual *genetic_generator_individual(const GeneticGenerator *generator) {
+  Individual *individual = ga_malloc(sizeof(individual));
+  if (individual) {
+    individual->gene = ga_malloc(generator->size);
+    if (individual->gene) {
+      for (unsigned int i = 0; i < generator->size; i++) {
+        individual->gene[i] = (rand() % (generator->cardinalities[i])); // // NOLINT
+      }
+      return individual;
+    }
+    return NULL;
+  }
+  return NULL;
+}
+
+void ga_individual_destroy(Individual* individual) {
+  free(individual->gene);
+  free(individual);
 }
