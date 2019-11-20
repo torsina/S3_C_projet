@@ -180,3 +180,31 @@ const char *genetic_generator_to_string(const GeneticGenerator *generator) {
   }
   return string;
 }
+
+Individual *genetic_generator_individual(const GeneticGenerator *generator) {
+  Individual *individual = ga_malloc(sizeof(Individual));
+  if (individual) {
+    individual->gene = ga_malloc(generator->size * sizeof(unsigned int));
+    if (individual->gene) {
+      for (unsigned int i = 0; i < generator->size; i++) {
+        individual->gene[i] =
+            (rand() % (generator->cardinalities[i]));  // // NOLINT
+      }
+      return individual;
+    } else {
+      ga_individual_destroy(individual);
+    }
+    return NULL;
+  }
+  return NULL;
+}
+
+unsigned int ga_individual_get_gene(Individual *individual,
+                                    unsigned int index) {
+  return individual->gene[index];
+}
+
+void ga_individual_destroy(Individual *individual) {
+  free(individual->gene);
+  free(individual);
+}
