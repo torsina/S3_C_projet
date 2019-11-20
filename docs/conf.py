@@ -13,9 +13,11 @@ output_dir = os.getenv('DOXYGEN_OUTPUT_DIR')
 
 if not output_dir:
     #os.getenv('PWD') +
-    os.environ['DOXYGEN_OUTPUT_DIR'] = './doxygen'
 
-os.system('cd ../src; doxygen')
+    os.environ['DOXYGEN_OUTPUT_DIR'] = '../docs/doxygen'
+
+os.system('cd ../ && cd src && doxygen')
+print("------------------------")
 
 extensions = ['breathe', 'sphinx.ext.autodoc', 'sphinx.ext.doctest',
               'sphinx.ext.intersphinx', 'sphinx.ext.todo',
@@ -44,8 +46,8 @@ extensions = ['breathe', 'sphinx.ext.autodoc', 'sphinx.ext.doctest',
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 # import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import sys
+sys.path.insert(0, os.path.abspath('../'))
 
 
 # -- General configuration ------------------------------------------------

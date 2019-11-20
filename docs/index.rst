@@ -12,6 +12,7 @@ Welcome to S3 Projet C's documentation!
    test
 
 .. automodule:: src
+.. doxygenfile:: ga.h
 
 
 Indices and tables
