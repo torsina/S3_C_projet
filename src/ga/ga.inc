@@ -7,7 +7,7 @@ struct _GeneticGenerator {
 };
 
 struct _Individual {
-  unsigned int *gene;
+  unsigned int *genes;
 };
 
 struct _Population {
