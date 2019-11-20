@@ -196,14 +196,16 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
       return individual;
     } else {
       ga_individual_destroy(individual);
+      return NULL;
     }
+  } else {
     return NULL;
   }
-  return NULL;
 }
 
 unsigned int ga_individual_get_gene(Individual *individual,
                                     unsigned int index) {
+  //TODO: assert(index < individual->size);
   return individual->genes[index];
 }
 
