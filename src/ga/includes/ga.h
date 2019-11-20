@@ -1,3 +1,7 @@
+/**
+    \file ga.h
+    LIB GA - VOIR ga.h
+*/
 #ifndef SRC_GA_INCLUDES_GA_H_
 #define SRC_GA_INCLUDES_GA_H_
 
@@ -12,6 +16,15 @@ extern void *(*ga_malloc)(size_t size);
 extern void *(*ga_realloc)(void *ptr, size_t size);
 extern void (*ga_free)(void *ptr);
 
+/**
+ *  \brief Cette fonction calcule
+ *         la racine carrée.
+ *  \author Francis
+ *  \version 1.2.0
+ *  \date 12 octobre 2019
+ *  \fn bool ga_init(void)
+ *  \return La racine carrée de val.
+ */
 extern bool ga_init(void);
 extern bool ga_finish(void);
 
@@ -39,5 +52,21 @@ extern GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator,
 extern const char *genetic_generator_to_string(
     const GeneticGenerator *generator);
 
-extern Population* ga_population_destroy(Population* population);
+// Individuals functions
+
+extern Individual *genetic_generator_individual(
+    const GeneticGenerator *generator);
+
+extern void ga_individual_destroy(Individual *individual);
+
+extern unsigned int ga_individual_get_gene(Individual *individual,
+                                           unsigned int index);
+
+// Population functions
+
+extern Population *ga_population_create(const GeneticGenerator *generator,
+                                        unsigned int size);
+
+extern Population *ga_population_destroy(Population *population);
+
 #endif  // SRC_GA_INCLUDES_GA_H_

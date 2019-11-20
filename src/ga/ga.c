@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ga.inc" // NOLINT
+#include "ga.inc"
 #include "includes/ga.h"
 
 void *(*ga_malloc)(size_t size) = malloc;
@@ -180,12 +180,56 @@ const char *genetic_generator_to_string(const GeneticGenerator *generator) {
   }
   return string;
 }
-
-void ga_individual_destroy(Individual *individuals) {
-  ga_free(individuals->gene);
-  ga_free(individuals);
+// our code
+Individual *genetic_generator_individual(const GeneticGenerator *generator) {
+  Individual *individual = ga_malloc(sizeof(Individual));
+  if (individual) {
+    individual->genes = ga_malloc(generator->size * sizeof(unsigned int));
+    if (individual->genes) {
+      for (unsigned int i = 0; i < generator->size; i++) {
+        unsigned int value =
+            generator->cardinalities[i] == 0
+                ? 0
+                : rand() % generator->cardinalities[i];  // NOLINT
+        individual->genes[i] = value;
+      }
+      return individual;
+    } else {
+      ga_individual_destroy(individual);
+    }
+    return NULL;
+  }
+  return NULL;
 }
-Population* ga_population_destroy(Population* population){
+
+unsigned int ga_individual_get_gene(Individual *individual,
+                                    unsigned int index) {
+  return individual->genes[index];
+}
+
+void ga_individual_destroy(Individual *individual) {
+  ga_free(individual->genes);
+  ga_free(individual);
+}
+
+Population *ga_population_create(const GeneticGenerator *generator,
+                                 unsigned int size) {
+  if (generator) {
+    Population *population = ga_malloc(sizeof(population));
+    if (population) {
+      population->size = size;
+      population->generator = generator;
+      population->individuals = ga_malloc(sizeof(Individual) * size);
+      for (unsigned int i = 0; i < generator->size; i++) {
+        population->individuals[i] = genetic_generator_individual(generator);
+      }
+    }
+    return NULL;
+  }
+  return NULL;
+}
+
+Population *ga_population_destroy(Population *population) {
   genetic_generator_destroy(population->generator);
   ga_individual_destroy(population->individuals);
   ga_free(population);
