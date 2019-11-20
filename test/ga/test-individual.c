@@ -8,16 +8,14 @@
 #include "../../src/ga/includes/ga.h"
 
 int main(void) {
-  GeneticGenerator* generator = genetic_generator_create(2);
-  genetic_generator_set_cardinality(generator, 0, 50);
-  genetic_generator_set_cardinality(generator, 1, 12);
+  GeneticGenerator* generator = genetic_generator_create(20);
   Individual* foo = genetic_generator_individual(generator);
-  unsigned int first = ga_individual_get_gene(foo, 0);
-  unsigned int second = ga_individual_get_gene(foo, 1);
-  assert(first >= 0 &&
-         first <= genetic_generator_get_cardinality(generator, 0));
-  assert(second >= 0 &&
-         second <= genetic_generator_get_cardinality(generator, 1));
+  for(unsigned int i = 0; i < 20; i++) {
+    genetic_generator_set_cardinality(generator, i, i*20);
+    unsigned int value = ga_individual_get_gene(foo, i);
+    assert(value >= 0 &&
+               value <= genetic_generator_get_cardinality(generator, i));
+  }
   ga_individual_destroy(foo);
   genetic_generator_destroy(generator);
   return EXIT_SUCCESS;
