@@ -182,7 +182,7 @@ const char *genetic_generator_to_string(const GeneticGenerator *generator) {
 }
 
 Individual *genetic_generator_individual(const GeneticGenerator *generator) {
-  Individual *individual = ga_malloc(sizeof(individual));
+  Individual *individual = ga_malloc(sizeof(Individual));
   if (individual) {
     individual->gene = ga_malloc(generator->size);
     if (individual->gene) {
