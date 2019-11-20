@@ -12,8 +12,8 @@ struct _Individual {
 
 struct _Population {
   unsigned int size;
-  struct _GeneticGenerator* generator;
-  struct _Individual* individuals;
+  const struct _GeneticGenerator* generator;
+  struct _Individual** individuals;
 };
 
 #endif  // GENETIC_GENERATOR_STRUCT_
