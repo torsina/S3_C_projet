@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ga.inc" // NOLINT
+#include "ga.inc"  // NOLINT
 #include "includes/ga.h"
 
 void *(*ga_malloc)(size_t size) = malloc;
