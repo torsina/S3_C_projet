@@ -76,7 +76,6 @@ Aller dans Settings > Editor > Code Style.
 ```c
 
 /**
- *  \file [<name>] OU \file main.c
  *  \brief Cette fonction calcule
  *         la racine carrée.
  *  \author Francis
