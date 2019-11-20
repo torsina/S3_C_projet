@@ -71,3 +71,4 @@ SECTIONS
    `GNU tar manual, Basic Tar Format <http://link>`_
       Documentation for tar archive files, including GNU tar extensions.
    `Voir <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#rst-doctest-blocks>`_
+      Lien
