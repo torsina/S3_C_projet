@@ -205,7 +205,7 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
 
 unsigned int ga_individual_get_gene(Individual *individual,
                                     unsigned int index) {
-  //TODO: assert(index < individual->size);
+  // TODO(T-MMLR): assert(index < individual->size);
   return individual->genes[index];
 }
 
