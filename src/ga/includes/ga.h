@@ -8,12 +8,61 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+
+/**
+ * \brief The Genetic Generator is used to create genes.
+ *
+ * Type Genetic Generator.
+ * Used to create an individual's genes.
+ * Contains an array of unsigned integers representing the maximum value of
+ * every gene.
+ */
 typedef struct _GeneticGenerator GeneticGenerator;
 typedef struct _Individial Individual;
 typedef struct _Population Population;
 
+
+/**
+ * \brief Pointer to memory allocation function.
+ *
+ * By default, it points to stdlib's malloc.
+ * By changing it you can force the library to use a different memory allocation
+ * function than malloc.
+ * \author Christophe Demko
+ * \version 0.0.1
+ * \date 2019
+ * \var void *(*ga_malloc)(size_t size)
+ * \param size size of the memory area to allocate.
+ * \return a void pointer to the allocated memory location or NULL if failed.
+ */
 extern void *(*ga_malloc)(size_t size);
+/**
+ * \brief Pointer to memory reallocation function.
+ *
+ * By default, it points to stdlib's realloc.
+ * By changing it you can force the library to use a different memory
+ * reallocation function than realloc.
+ * \author Christophe Demko
+ * \version 0.0.1
+ * \date 2019
+ * \var void *(*ga_realloc)(void *ptr, size_t size)
+ * \param ptr void pointer to memory location to reallocate.
+ * \param size new size of the memory area to reallocate.
+ * \return a void pointer to the reallocated memory location or NULL if failed.
+ */
 extern void *(*ga_realloc)(void *ptr, size_t size);
+/**
+ * \brief Pointer to memory freeing function.
+ *
+ * By default, it points to stdlib's free.
+ * By changing it you can force the library to use a different memory
+ * freeing function than free.
+ * \author Christophe Demko
+ * \version 0.0.1
+ * \date 2019
+ * \var void (*ga_free)(void *ptr)
+ * \param ptr void pointer to memory location to free.
+ */
 extern void (*ga_free)(void *ptr);
 
 /**
