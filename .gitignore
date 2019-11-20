@@ -52,3 +52,5 @@ Mkfile.old
 dkms.conf
 
 cmake-build-debug/
+#Docs temporaires
+/docs/doxygen/
