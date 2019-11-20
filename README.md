@@ -57,6 +57,9 @@ Aller dans Settings > Editor > Code Style.
 - Ajouter `C:\MinGW\bin` au PATH (chercher "variables d'environnement" sur Windows, cliquer sur "variables d'environnement" puis modifier "path" et ajouter la ligne).
 - Pour faire un make : aller (avec `cd`) dans `/cmake-build-debug` puis `mingw32-make`.
 
+## PYTHON
+- Settings > Build, Execution, Deployment > Python Interpreter et configurer l'interpréteur Python.
+
 ## SPHINX
 - Utiliser la commande `pip install -U sphinx`.
 - Utiliser la norme [Doxygen](http://www.doxygen.nl/manual/docblocks.html).
