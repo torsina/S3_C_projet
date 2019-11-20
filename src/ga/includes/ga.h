@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-
 /**
  * \brief The Genetic Generator is used to create genes.
  *
@@ -20,7 +19,6 @@
 typedef struct _GeneticGenerator GeneticGenerator;
 typedef struct _Individual Individual;
 typedef struct _Population Population;
-
 
 /**
  * \brief Pointer to memory allocation function.
@@ -316,9 +314,6 @@ extern Individual *genetic_generator_individual(
     const GeneticGenerator *generator);
 
 extern void ga_individual_destroy(Individual *individual);
-
-extern unsigned int ga_individual_get_gene(Individual *individual,
-                                           unsigned int index);
 
 // Population functions
 
