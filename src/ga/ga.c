@@ -215,7 +215,7 @@ void ga_individual_destroy(Individual *individual) {
 Population *ga_population_create(const GeneticGenerator *generator,
                                  unsigned int size) {
   if (generator) {
-    Population *population = ga_malloc(sizeof(population));
+    Population *population = ga_malloc(sizeof(Population));
     if (population) {
       population->size = size;
       population->generator = generator;
