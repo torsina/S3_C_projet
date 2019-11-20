@@ -14,8 +14,6 @@ int main(void) {
     Population* population = ga_population_create(generator, 10);
     Population* res = ga_population_destroy(population);
     genetic_generator_destroy(generator);
-    printf("I am here\n");
-    // ga_free(res);
   }
   ga_finish();
   return EXIT_SUCCESS;

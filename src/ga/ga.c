@@ -231,14 +231,10 @@ Population *ga_population_create(const GeneticGenerator *generator,
 }
 
 Population *ga_population_destroy(Population *population) {
-  printf("started population destroy \n");
   for (unsigned int i = 0; i < population->size; i++) {
-    printf("started individual destroy %u\n", i);
     ga_individual_destroy(population->individuals[i]);
-    printf("finished individual destroy %u\n", i);
   }
   ga_free(population->individuals);
   ga_free(population);
-  printf("finished population destroy \n");
   return NULL;
 }
