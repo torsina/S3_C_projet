@@ -19,5 +19,6 @@ int main(void) {
   assert(second >= 0 &&
          second <= genetic_generator_get_cardinality(generator, 1));
   ga_individual_destroy(foo);
+  genetic_generator_destroy(generator);
   return EXIT_SUCCESS;
 }
