@@ -191,6 +191,8 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
             (rand() % (generator->cardinalities[i]));  // // NOLINT
       }
       return individual;
+    } else {
+      ga_individual_destroy(individual);
     }
     return NULL;
   }
