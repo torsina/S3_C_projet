@@ -220,9 +220,10 @@ Population *ga_population_create(const GeneticGenerator *generator,
       population->size = size;
       population->generator = generator;
       population->individuals = ga_malloc(sizeof(Individual) * size);
-      for (unsigned int i = 0; i < generator->size; i++) {
+      for (unsigned int i = 0; i < size; i++) {
         population->individuals[i] = genetic_generator_individual(generator);
       }
+      return population;
     }
     return NULL;
   }
@@ -230,8 +231,13 @@ Population *ga_population_create(const GeneticGenerator *generator,
 }
 
 Population *ga_population_destroy(Population *population) {
-  genetic_generator_destroy(population->generator);
-  ga_individual_destroy(population->individuals);
+  printf("started population destroy \n");
+  for(unsigned int i = 0; i < population->size; i++) {
+    printf("started individual destroy %u\n", i);
+    ga_individual_destroy(population->individuals[i]);
+    printf("finished individual destroy %u\n", i);
+  }
   ga_free(population);
+  printf("finished population destroy \n");
   return NULL;
 }
