@@ -237,6 +237,7 @@ Population *ga_population_destroy(Population *population) {
     ga_individual_destroy(population->individuals[i]);
     printf("finished individual destroy %u\n", i);
   }
+  ga_free(population->individuals);
   ga_free(population);
   printf("finished population destroy \n");
   return NULL;
