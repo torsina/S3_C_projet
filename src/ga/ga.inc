@@ -12,7 +12,8 @@ struct _Individual {
 
 struct _Population {
   unsigned int size;
-  const struct _GeneticGenerator* generator;
+  // TODO(T-MMLR, torsina) : Check if the const qualifier is needed
+  const GeneticGenerator* generator;
   struct _Individual** individuals;
 };
 
