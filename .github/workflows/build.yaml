@@ -57,7 +57,8 @@ jobs:
         run: ctest -C $BUILD_TYPE --output-on-failure
 
       - name: where the fuck am I
-        run: ls
+        working-directory: ${{runner.workspace}}
+        run: tree
 
       - name: Build docs
         run: python3 ./test_docs.py
