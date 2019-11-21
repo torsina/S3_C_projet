@@ -31,7 +31,7 @@ jobs:
         run: cclint --recursive --extensions=c,h,inc ./
 
       - name: Install Valgrind, Doxygen
-        run: sudo apt-get -y install valgrind doxygen
+        run: sudo apt-get -y install valgrind doxygen tree
 
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment variable
