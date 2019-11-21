@@ -4,7 +4,7 @@ import sys
 
 _dir = ""
 if platform.system() == "Linux":
-    _dir = "./build"
+    _dir = "../build"
 else:
     _dir = "./cmake-build-debug"
 
