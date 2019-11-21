@@ -262,8 +262,7 @@ static Individual *_ga_population_get_individual(const Population *population,
       // TODO(T-MMLR) :  what to return if invalid
       return NULL;
     }
-  }
-  else {
+  } else {
     // NULL check, TODO(T-MMLR) : what to do if null
     return NULL;
   }
@@ -276,15 +275,13 @@ static Population *_ga_population_set_individual(const Population *population,
   if (population) {
     unsigned int nb_individuals = ga_population_get_size(population);
     if (index < nb_individuals) {
-      population->individuals[index] = (Individual*) individual;
-      return (Population*) population;
-    }
-    else {
+      population->individuals[index] = (Individual *)individual;
+      return (Population *)population;
+    } else {
       // TODO(T-MMLR) :  what to return if invalid
       return NULL;
     }
-  }
-  else {
+  } else {
     // NULL check, TODO(T-MMLR) : what to do if null
     return NULL;
   }
@@ -313,9 +310,9 @@ unsigned int ga_population_get_individual_gene(const Population *population,
 }
 
 Population *ga_population_set_individual_gene(Population *population,
-                                               unsigned int individual_index,
-                                               unsigned int gene_index,
-                                               unsigned int gene_value) {
+                                              unsigned int individual_index,
+                                              unsigned int gene_index,
+                                              unsigned int gene_value) {
   // NULL check, TODO(T-MMLR) : what to do if null
   if (population) {
     GeneticGenerator *generator = ga_population_get_generator(population);
@@ -327,16 +324,13 @@ Population *ga_population_set_individual_gene(Population *population,
       if (individual && gene_index < nb_genes) {
         individual->genes[gene_index] = gene_value;
         return population;
-      }
-      else {
+      } else {
         return NULL;
       }
-    }
-    else {
+    } else {
       return NULL;
     }
-  }
-  else {
+  } else {
     // NULL check, TODO(T-MMLR) : what to do if null
     return NULL;
   }

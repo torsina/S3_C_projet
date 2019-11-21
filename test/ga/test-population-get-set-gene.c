@@ -21,13 +21,11 @@ int main(void) {
                                                cardinality_index + 1));
     }
 
-
-    Population *population = ga_population_create(generator, NB_INDIVIDUALS);
+    Population* population = ga_population_create(generator, NB_INDIVIDUALS);
     assert(population);
 
-    for(int x = 0; x < NB_INDIVIDUALS; x++) {
-      for (unsigned int y = 0; y < NB_CHROMOSOMES;
-           y++) {
+    for (int x = 0; x < NB_INDIVIDUALS; x++) {
+      for (unsigned int y = 0; y < NB_CHROMOSOMES; y++) {
         unsigned int gene = ga_population_get_individual_gene(population, x, y);
         assert(gene >= 0);
         assert(gene < NB_CHROMOSOMES);
