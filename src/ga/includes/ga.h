@@ -329,9 +329,12 @@ extern unsigned int ga_population_get_size(const Population *population);
 extern GeneticGenerator *ga_population_get_generator(
     const Population *population);
 
-
 extern unsigned int ga_population_get_individual_gene(
-    Population *population, unsigned int individual_index,
+    const Population *population, unsigned int individual_index,
     unsigned int gene_index);
+
+extern Population *ga_population_set_individual_gene(
+    Population *population, unsigned int individual_index,
+    unsigned int gene_index, unsigned int gene_value);
 
 #endif  // SRC_GA_INCLUDES_GA_H_
