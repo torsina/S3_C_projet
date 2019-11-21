@@ -13,7 +13,7 @@ std_out, std_err = pipes.communicate()
 
 print(std_out)
 print("")
-if len(std_err) != 0:
+if len(std_err) != 0 and " WARNING: " in str(std_err):
     print(std_err)
     sys.exit(-1)
 sys.exit(0)
