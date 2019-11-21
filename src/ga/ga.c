@@ -204,12 +204,6 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
   }
 }
 
-static unsigned int _ga_individual_get_gene(Individual *individual,
-                                            unsigned int index) {
-  // TODO(T-MMLR): assert(index < individual->size);
-  return individual->genes[index];
-}
-
 void ga_individual_destroy(Individual *individual) {
   ga_free(individual->genes);
   ga_free(individual);
@@ -256,7 +250,7 @@ GeneticGenerator *ga_population_get_generator(const Population *population) {
   // NULL check, TODO(T-MMLR) : what to do if null
 }
 
-Individual *ga_population_get_individual(const Population *population,
+Individual *_ga_population_get_individual(const Population *population,
                                          unsigned int index) {
   // NULL check, TODO(T-MMLR) : what to do if null
   if (population) {
@@ -280,7 +274,7 @@ unsigned int ga_population_get_individual_gene(Population *population,
       unsigned int nb_genes = genetic_generator_get_size(generator);
 
       Individual *individual =
-          ga_population_get_individual(population, individual_index);
+          _ga_population_get_individual(population, individual_index);
       if (individual && gene_index < nb_genes) {
         return individual->genes[gene_index];
       } else {
