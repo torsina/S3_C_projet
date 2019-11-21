@@ -318,7 +318,8 @@ extern const char *genetic_generator_to_string(
  * if it's the case, a 0 will be written in the genes slot,
  * if not, a random number between 0 and the number in the cardinalities slot
  * will be written in the genes slot.
- * The parameter generator is be used to initialize the length of the genes table
+ * The parameter generator is be used to initialize the length of the genes
+table
  * (this length is obtained with the size attribute of the generator).
  *
  * \author Evan Cutaia
@@ -327,7 +328,8 @@ extern const char *genetic_generator_to_string(
  * \fn Individual *genetic_generator_individual(
 const GeneticGenerator *generator)
  * \param generator a pointer to the GeneticGenerator to deal with.
- * \return a Individual with the specified size with the genes table fully filled,
+ * \return a Individual with the specified size with the genes table fully
+filled,
  * or NULL if something goes wrong..
  * \sa ga_individual_destroy
  */
@@ -380,7 +382,8 @@ extern Population *ga_population_create(const GeneticGenerator *generator,
  *
  * This function frees the memory used by a Population struct
  * (pointed by the parameter population) and its associated elements
- * (table of pointers to Individuals) ,it return pointer on the freed Population (NULL)
+ * (table of pointers to Individuals) ,it return pointer on the freed Population
+ * (NULL)
  *
  * \author Evan Cutaia
  * \version 0.0.1
@@ -392,7 +395,20 @@ extern Population *ga_population_create(const GeneticGenerator *generator,
 extern Population *ga_population_destroy(Population *population);
 
 // New functions (getters and setters) for population
-
+/**
+ * \brief getter for the size of a Population.
+ *
+ * This function returns the size attribute of a Population
+ *
+ * \author Evan Cutaia
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int ga_population_get_size(const Population *population)
+ * \param population a pointer to the Population to get the size
+ *  from.
+ * \return the size of the Population.
+ * \sa ga_population_get_generator, _ga_population_get_individual
+ */
 extern unsigned int ga_population_get_size(const Population *population);
 
 extern GeneticGenerator *ga_population_get_generator(
