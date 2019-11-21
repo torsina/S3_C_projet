@@ -62,6 +62,7 @@ GeneticGenerator *genetic_generator_set_cardinality(
     GeneticGenerator *generator, const unsigned int index,
     const unsigned int cardinality) {
   assert(index < generator->size);
+  // TODO(T-MMLR) : change to if and return NULL
   generator->cardinalities[index] = cardinality;
   return generator;
 }
@@ -204,12 +205,6 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
   }
 }
 
-static unsigned int _ga_individual_get_gene(Individual *individual,
-                                    unsigned int index) {
-  // TODO(T-MMLR): assert(index < individual->size);
-  return individual->genes[index];
-}
-
 void ga_individual_destroy(Individual *individual) {
   ga_free(individual->genes);
   ga_free(individual);
@@ -240,4 +235,103 @@ Population *ga_population_destroy(Population *population) {
   ga_free(population->individuals);
   ga_free(population);
   return NULL;
+}
+
+unsigned int ga_population_get_size(const Population *population) {
+  if (population) {
+    return population->size;
+  }
+  // NULL check, TODO(T-MMLR) : what to do if null
+}
+
+GeneticGenerator *ga_population_get_generator(const Population *population) {
+  if (population) {
+    return (GeneticGenerator *)population->generator;
+  }
+  // NULL check, TODO(T-MMLR) : what to do if null
+}
+
+static Individual *_ga_population_get_individual(const Population *population,
+                                                 unsigned int index) {
+  // NULL check, TODO(T-MMLR) : what to do if null
+  if (population) {
+    unsigned int nb_individuals = ga_population_get_size(population);
+    if (index < nb_individuals) {
+      return population->individuals[index];
+    } else {
+      // TODO(T-MMLR) :  what to return if invalid
+      return NULL;
+    }
+  } else {
+    // NULL check, TODO(T-MMLR) : what to do if null
+    return NULL;
+  }
+}
+
+static Population *_ga_population_set_individual(const Population *population,
+                                                 unsigned int index,
+                                                 const Individual *individual) {
+  // NULL check, TODO(T-MMLR) : what to do if null
+  if (population) {
+    unsigned int nb_individuals = ga_population_get_size(population);
+    if (index < nb_individuals) {
+      population->individuals[index] = (Individual *)individual;
+      return (Population *)population;
+    } else {
+      // TODO(T-MMLR) :  what to return if invalid
+      return NULL;
+    }
+  } else {
+    // NULL check, TODO(T-MMLR) : what to do if null
+    return NULL;
+  }
+}
+
+unsigned int ga_population_get_individual_gene(const Population *population,
+                                               unsigned int individual_index,
+                                               unsigned int gene_index) {
+  // NULL check, TODO(T-MMLR) : what to do if null
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+
+      Individual *individual =
+          _ga_population_get_individual(population, individual_index);
+      if (individual && gene_index < nb_genes) {
+        return individual->genes[gene_index];
+      } else {
+        // NULL check, TODO(T-MMLR) : what to do if null
+      }
+    } else {
+      // NULL check, TODO(T-MMLR) : what to do if null
+    }
+  }
+}
+
+Population *ga_population_set_individual_gene(Population *population,
+                                              unsigned int individual_index,
+                                              unsigned int gene_index,
+                                              unsigned int gene_value) {
+  // NULL check, TODO(T-MMLR) : what to do if null
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+
+      Individual *individual =
+          _ga_population_get_individual(population, individual_index);
+      if (individual && gene_index < nb_genes) {
+        individual->genes[gene_index] = gene_value;
+        return population;
+      } else {
+        return NULL;
+      }
+    } else {
+      return NULL;
+    }
+  } else {
+    // NULL check, TODO(T-MMLR) : what to do if null
+    return NULL;
+  }
 }
