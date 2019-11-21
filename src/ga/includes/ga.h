@@ -337,7 +337,22 @@ extern void ga_individual_destroy(Individual *individual);
  */
 extern Population *ga_population_create(const GeneticGenerator *generator,
                                         unsigned int size);
-
+/**
+ * \brief frees the memory used by a Population struct.
+ *
+ * This function frees the memory used by a Population struct
+ * (pointed by the parameter population) and its associated elements
+ * (table of pointers to Individuals) and for now ,it just return NULL
+ * (this value is supposed to be the whole Population just emptied of the Individuals).
+ * We need to make a meeting to decided of the real goal of this function
+ *
+ * \author Evan Cutaia
+ * \version 0.0.1
+ * \date 2019
+ * \fn Population *ga_population_destroy(Population *population)
+ * \param population a pointer to the Population to destroy.
+ * \sa ga_population_create
+ */
 extern Population *ga_population_destroy(Population *population);
 
 #endif  // SRC_GA_INCLUDES_GA_H_
