@@ -313,7 +313,7 @@ Population *ga_population_set_individual_gene(Population *population,
                                               unsigned int individual_index,
                                               unsigned int gene_index,
                                               unsigned int gene_value) {
-  // NULL check, TODO(T-MMLR) : what to do if  null
+  // NULL check, TODO(T-MMLR) : what to do if null
   if (population) {
     GeneticGenerator *generator = ga_population_get_generator(population);
     if (generator) {
