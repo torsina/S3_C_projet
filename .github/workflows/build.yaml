@@ -31,7 +31,7 @@ jobs:
         run: cclint --recursive --extensions=c,h,inc ./
 
       - name: Install Valgrind, Doxygen
-        run: sudo apt-get -y install valgrind doxygen tree
+        run: sudo apt-get -y install valgrind doxygen
 
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment variable
@@ -55,10 +55,6 @@ jobs:
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C $BUILD_TYPE --output-on-failure
-
-      - name: where the fuck am I
-        working-directory: ${{runner.workspace}}
-        run: tree
 
       - name: Build docs
         run: python3 ./test_docs.py
