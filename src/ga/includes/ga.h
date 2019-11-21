@@ -26,6 +26,7 @@ typedef struct _Population Population;
  * By default, it points to stdlib's malloc.
  * By changing it you can force the library to use a different memory allocation
  * function than malloc.
+ *
  * \author Christophe Demko
  * \version 0.0.1
  * \date 2019
@@ -40,6 +41,7 @@ extern void *(*ga_malloc)(size_t size);
  * By default, it points to stdlib's realloc.
  * By changing it you can force the library to use a different memory
  * reallocation function than realloc.
+ *
  * \author Christophe Demko
  * \version 0.0.1
  * \date 2019
@@ -55,6 +57,7 @@ extern void *(*ga_realloc)(void *ptr, size_t size);
  * By default, it points to stdlib's free.
  * By changing it you can force the library to use a different memory
  * freeing function than free.
+ *
  * \author Christophe Demko
  * \version 0.0.1
  * \date 2019
@@ -110,7 +113,7 @@ extern bool ga_finish(void);
  * \fn GeneticGenerator *genetic_generator_create(const unsigned int size)
  * \param size the number of cardinalities (number of chromosomes).
  * \return a GeneticGenerator of the specified size with all the cardinalities
- *      set to 0, or NULL if something goes wrong.
+ * set to 0, or NULL if something goes wrong.
  * \sa genetic_generator_set_cardinality, genetic_generator_destroy
  */
 extern GeneticGenerator *genetic_generator_create(const unsigned int size);
@@ -140,8 +143,8 @@ extern void genetic_generator_destroy(GeneticGenerator *generator);
  * \version 0.0.1
  * \date 2019
  * \fn GeneticGenerator *genetic_generator_set_cardinality(
-    GeneticGenerator *generator, const unsigned int index,
-    const unsigned int cardinality)
+ * GeneticGenerator *generator, const unsigned int index,
+ * const unsigned int cardinality)
  * \param generator a pointer to the GeneticGenerator to modify.
  * \param index index of the chromosome cardinality to set.
  * \param cardinality value to set the chromosome cardinality to.
@@ -162,9 +165,9 @@ extern GeneticGenerator *genetic_generator_set_cardinality(
  * \version 0.0.1
  * \date 2019
  * \fn unsigned int genetic_generator_get_cardinality(
-    const GeneticGenerator *generator, const unsigned int index)
+ * const GeneticGenerator *generator, const unsigned int index)
  * \param generator a pointer to the GeneticGenerator to get the cardinality
- *  from.
+ * from.
  * \param index index of the chromosome cardinality to get.
  * \return the cardinality of the GeneticGenerator at the specified index.
  * \sa genetic_generator_set_cardinality
@@ -182,9 +185,8 @@ extern unsigned int genetic_generator_get_cardinality(
  * \version 0.0.1
  * \date 2019
  * \fn unsigned int genetic_generator_get_size(
-    const GeneticGenerator *generator)
- * \param generator a pointer to the GeneticGenerator to get the size
- *  from.
+ * const GeneticGenerator *generator)
+ * \param generator a pointer to the GeneticGenerator to get the size from.
  * \return the size of the GeneticGenerator.
  * \sa genetic_generator_create
  */
@@ -204,10 +206,10 @@ extern unsigned int genetic_generator_get_size(
  * \version 0.0.1
  * \date 2019
  * \fn GeneticGenerator *genetic_generator_clone(
-    const GeneticGenerator *genetic_generator)
+ * const GeneticGenerator *genetic_generator)
  * \param genetic_generator a pointer to the GeneticGenerator to clone.
- * \return a pointer to a new GeneticGenerator with the same values
- * as `genetic_generator` or a NULL pointer if something goes wrong.
+ * \return a pointer to a new GeneticGenerator with the same values as
+ * `genetic_generator` or a NULL pointer if something goes wrong.
  * \sa genetic_generator_copy
  */
 extern GeneticGenerator *genetic_generator_clone(
@@ -225,11 +227,11 @@ extern GeneticGenerator *genetic_generator_clone(
  * \version 0.0.1
  * \date 2019
  * \fn GeneticGenerator *genetic_generator_copy(GeneticGenerator *dest,
-                                                const GeneticGenerator *src)
+ * const GeneticGenerator *src)
  * \param src a pointer to the GeneticGenerator to copy from.
  * \param dest a pointer to the GeneticGenerator to fill the values into.
- * \return a pointer to a GeneticGenerator with the same values as `src` or
- *  a NULL pointer if something goes wrong.
+ * \return a pointer to a GeneticGenerator with the same values as `src` or a
+ * NULL pointer if something goes wrong.
  * \sa genetic_generator_clone
  */
 extern GeneticGenerator *genetic_generator_copy(GeneticGenerator *dest,
@@ -247,11 +249,11 @@ extern GeneticGenerator *genetic_generator_copy(GeneticGenerator *dest,
  * \version 0.0.1
  * \date 2019
  * \fn GeneticGenerator *genetic_generator_fwrite(
-    const GeneticGenerator *generator, FILE *stream)
+ * const GeneticGenerator *generator, FILE *stream)
  * \param generator a pointer to a GeneticGenerator to write to the stream.
  * \param stream a stdio `FILE` pointer representing the opened stream to write
  * the generator into.
- * \return a pointer to a GeneticGenerator with the same values as `generator`
+ * \return a pointer to aGeneticGenerator with the same values as `generator`
  * or a NULL pointer if something goes wrong.
  * \sa genetic_generator_fread
  */
@@ -271,7 +273,7 @@ extern GeneticGenerator *genetic_generator_fwrite(
  * \version 0.0.1
  * \date 2019
  * \fn GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator,
-                                                 FILE *stream)
+ * FILE *stream)
  * \param generator a pointer to a GeneticGenerator to put the read values into.
  * \param stream a stdio `FILE` pointer representing the opened stream to read
  * the generator from.
@@ -298,7 +300,7 @@ extern GeneticGenerator *genetic_generator_fread(GeneticGenerator *generator,
  * \version 0.0.1
  * \date 2019
  * \fn const char *genetic_generator_to_string(
-    const GeneticGenerator *generator)
+ * const GeneticGenerator *generator)
  * \param generator a pointer to a GeneticGenerator to create a text
  * representation from.
  * \return a const char array containing the textual representation of the
@@ -316,19 +318,19 @@ extern const char *genetic_generator_to_string(
  * For each slot in the genes table, it will check at the same index
  * in the cardinalities table of generator if the number in the slot is 0,
  * if it's the case, a 0 will be written in the genes slot,
- * if not, a random number between 0 and the number in the cardinalities slot
- * will be written in the genes slot.
- * The parameter generator is be used to initialize the length of the genes table
- * (this length is obtained with the size attribute of the generator).
+ * if not, a random number between 0 and the number in the
+ * cardinalities slot will be written in the genes slot.
+ * The parameter generator is be used to initialize the length of the genes
+ * table.(this length is obtained with the size attribute of the generator).
  *
- * \author Evan Cutaia
+ * \author Group 14
  * \version 0.0.1
  * \date 2019
  * \fn Individual *genetic_generator_individual(
-const GeneticGenerator *generator)
+ * const GeneticGenerator *generator)
  * \param generator a pointer to the GeneticGenerator to deal with.
- * \return a Individual with the specified size with the genes table fully filled,
- * or NULL if something goes wrong..
+ * \return an Individual with the specified size with the genes table fully
+ * filled, or NULL if something goes wrong..
  * \sa ga_individual_destroy
  */
 
@@ -341,7 +343,7 @@ extern Individual *genetic_generator_individual(
  * This function frees the memory used by a Individual struct
  * (pointed by the parameter individual) and its associated genes.
  *
- * \author Evan Cutaia
+ * \author Group 14
  * \version 0.0.1
  * \date 2019
  * \fn void ga_individual_destroy(Individual *individual)
@@ -355,22 +357,22 @@ extern void ga_individual_destroy(Individual *individual);
  * \brief Allocates and initialize a new Population struct.
  *
  * This function allocates memory space for a new Population
- * and initialize it. If the allocation fails, a NULL pointer will be returned.
+ * and initialize it.
+ * If the allocation fails, a NULL pointer will be returned.
  * The parameter size is be used to initialize the size of the Individual table.
  * The parameter generator is be used to add a own GeneticGenerator to the
- *Population struct.
+ * Population struct.
  *
- * \author Evan Cutaia
+ * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Population *ga_population_create(const GeneticGenerator
- * generator,unsigned int size)
- * \param generator the pointer to a
- *GeneticGenerator used to create Individuals.
- * \param size the the size of the
- *Individual table.
- * \return a Population with the specified size, generator and
- *with all the Individuals created, or NULL if something goes wrong.
+ * \fn Population *ga_population_create(
+ * const GeneticGenerator *generator,unsigned int size)
+ * \param generator the pointer to a GeneticGenerator used to create
+ * Individuals.
+ * \param size the the size of the Individual table.
+ * \return a Population with the specified size, generator and  with all the
+ * Individuals created, or NULL if something goes wrong.
  * \sa genetic_generator_individual, ga_population_destroy
  */
 extern Population *ga_population_create(const GeneticGenerator *generator,
@@ -380,28 +382,103 @@ extern Population *ga_population_create(const GeneticGenerator *generator,
  *
  * This function frees the memory used by a Population struct
  * (pointed by the parameter population) and its associated elements
- * (table of pointers to Individuals) ,it return pointer on the freed Population (NULL)
+ * (table of pointers to Individuals).
+ * It return a pointer on the freed Population (NULL).
  *
- * \author Evan Cutaia
+ * \author Group 14
  * \version 0.0.1
  * \date 2019
  * \fn Population *ga_population_destroy(Population *population)
  * \param population a pointer to the Population to destroy.
+ * \return a pointer on the freed Population (NULL).
  * \sa ga_population_create, genetic_generator_individual
  */
 extern Population *ga_population_destroy(Population *population);
 
 // New functions (getters and setters) for population
-
+/**
+ * \brief getter for the size of a Population.
+ *
+ * This function returns the size attribute of a Population.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int ga_population_get_size(const Population *population)
+ * \param population a pointer to the Population to get the size from.
+ * \return the size of the Population.
+ * \sa ga_population_get_generator, ga_population_get_individual_gene,
+ * ga_population_set_individual_gene
+ */
 extern unsigned int ga_population_get_size(const Population *population);
 
+/**
+ * \brief getter for the generator of a Population.
+ *
+ * This function returns the generator pointer of a Population.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn GeneticGenerator *ga_population_get_generator(
+ * const Population *population)
+ * \param population a pointer to the Population to get the generator from.
+ * \return the generator pointer of the Population.
+ * \sa ga_population_get_size, ga_population_get_individual_gene,
+ * ga_population_set_individual_gene
+ */
 extern GeneticGenerator *ga_population_get_generator(
     const Population *population);
 
+/**
+ * \brief getter for the value in the genes table (at the specified index)
+ * of the Individual owned by the Population.
+ *
+ * This function returns the int value wanted in the genes table
+ * of the Individual owned by the Population.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int ga_population_get_individual_gene(
+ * const Population *population, unsigned int individual_index,
+ * unsigned int gene_index)
+ * \param population a pointer to the Population to get the generator from.
+ * \param individual_index an index to get a specific Individual from the
+ * individuals attribute of the Population.
+ * \param gene_index the index of the slot where we want
+ * to get the gene_value.
+ * \return the value wanted in the genes table of the Individual owned by
+ * the Population.
+ * \sa ga_population_set_individual_gene
+ */
 extern unsigned int ga_population_get_individual_gene(
     const Population *population, unsigned int individual_index,
     unsigned int gene_index);
 
+/**
+ * \brief setter for for the value in the genes table (at the specified index)
+ * of the Individual owned by the Population.
+ *
+ * This function sets the int value wanted in the genes table
+ * of the Individual owned by the Population.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Population *ga_population_set_individual_gene(
+ * Population *population, unsigned int individual_index,
+ * unsigned int gene_index, unsigned int gene_value)
+ * \param population a pointer to the Population to get the generator from.
+ * \param individual_index an index to get a specific Individual from the
+ * individuals attribute of the Population.
+ * \param gene_index the index of the slot where we want
+ * to insert the gene_value.
+ * \param gene_value the value that we want to insert in the genes table.
+ * \return the gene_value set in the genes table of the Individual owned by
+ * the Population.
+ * \sa ga_population_get_individual_gene
+ */
 extern Population *ga_population_set_individual_gene(
     Population *population, unsigned int individual_index,
     unsigned int gene_index, unsigned int gene_value);
