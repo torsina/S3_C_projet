@@ -205,6 +205,12 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
   }
 }
 
+static unsigned int _ga_individual_get_gene(Individual *individual,
+                                    unsigned int index) {
+  // TODO(T-MMLR): assert(index < individual->size);
+  return individual->genes[index];
+}
+
 void ga_individual_destroy(Individual *individual) {
   ga_free(individual->genes);
   ga_free(individual);
@@ -335,6 +341,3 @@ Population *ga_population_set_individual_gene(Population *population,
     return NULL;
   }
 }
-
-
-//com à la con
