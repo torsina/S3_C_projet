@@ -322,4 +322,16 @@ extern Population *ga_population_create(const GeneticGenerator *generator,
 
 extern Population *ga_population_destroy(Population *population);
 
+extern unsigned int ga_population_get_size(const Population *population);
+
+extern GeneticGenerator *ga_population_get_generator(
+    const Population *population);
+
+extern Individual *ga_population_get_individual(const Population *population,
+                                                unsigned int index);
+
+extern unsigned int ga_population_get_individual_gene(
+    Population *population, unsigned int individual_index,
+    unsigned int gene_index);
+
 #endif  // SRC_GA_INCLUDES_GA_H_
