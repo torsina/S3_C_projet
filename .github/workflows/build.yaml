@@ -22,7 +22,7 @@ jobs:
         run: sudo apt-get -y update
 
       - name: Install cclint, sphinx, breathe
-        run: sudo pip install -U cclint sphinx breathe
+        run: sudo pip3 install -U cclint sphinx breathe
 
       - name: Run cclint
         run: cclint --recursive --extensions=c,h,inc ./
