@@ -407,7 +407,8 @@ extern Population *ga_population_destroy(Population *population);
  * \param population a pointer to the Population to get the size
  *  from.
  * \return the size of the Population.
- * \sa ga_population_get_generator, _ga_population_get_individual
+ * \sa ga_population_get_generator,
+ * ga_population_get_individual_gene, ga_population_set_individual_gene
  */
 extern unsigned int ga_population_get_size(const Population *population);
 
