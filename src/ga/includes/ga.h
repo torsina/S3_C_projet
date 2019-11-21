@@ -313,10 +313,28 @@ extern const char *genetic_generator_to_string(
 extern Individual *genetic_generator_individual(
     const GeneticGenerator *generator);
 
+
 extern void ga_individual_destroy(Individual *individual);
 
 // Population functions
-
+/**
+ * \brief Allocates and initialize a new Population struct.
+ *
+ * This function allocates memory space for a new Population
+ * and initialize it. If the allocation fails, a NULL pointer will be returned.
+ * The parameter size is be used to initialize the size of the Individual table.
+ * The parameter generator is be used to add a own GeneticGenerator to the Population struct.
+ *
+ * \author Evan Cutaia
+ * \version 0.0.1
+ * \date 2019
+ * \fn Population *ga_population_create(const GeneticGenerator *generator,unsigned int size)
+ * \param generator the pointer to a GeneticGenerator used to create Individuals.
+ * \param size the the size of the Individual table.
+ * \return a Population with the specified size, generator and with all the Individuals
+ *      created, or NULL if something goes wrong.
+ * \sa genetic_generator_individual
+ */
 extern Population *ga_population_create(const GeneticGenerator *generator,
                                         unsigned int size);
 
