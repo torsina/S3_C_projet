@@ -1,5 +1,5 @@
-#ifndef GENETIC_GENERATOR_STRUCT_
-#define GENETIC_GENERATOR_STRUCT_
+#ifndef SRC_GA_GA_INC_
+#define SRC_GA_GA_INC_
 
 struct _GeneticGenerator {
   unsigned int size;
@@ -7,13 +7,14 @@ struct _GeneticGenerator {
 };
 
 struct _Individual {
-  unsigned int *gene;
+  unsigned int *genes;
 };
 
 struct _Population {
   unsigned int size;
-  const struct _GeneticGenerator* generator;
-  struct _Individual individuals;
+  // TODO(T-MMLR, torsina) : Check if the const qualifier is needed
+  const GeneticGenerator* generator;
+  Individual** individuals;
 };
 
-#endif  // GENETIC_GENERATOR_STRUCT_
+#endif  // SRC_GA_GA_INC_

@@ -25,11 +25,24 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 enable_testing()
 find_program(VALGRIND "valgrind")
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+find_package(Sphinx)
+
 #Mettre les enable_testing et find_program avant.
 add_subdirectory(src/)
 add_subdirectory(test/)
+add_subdirectory(docs/)
 
 #Generate zip
 set(CPACK_SOURCE_GENERATOR "ZIP")
 set(CPACK_SOURCE_IGNORE_FILES "~$;${CPACK_SOURCE_IGNORE_FILES}")
 include(CPack)
+
+#add_custom_target(docs ALL
+#        ${SPHINX_EXECUTABLE}
+#        -q -b html
+#        -c "${BINARY_BUILD_DIR}"
+#        -d "${SPHINX_CACHE_DIR}"
+#        "${CMAKE_CURRENT_SOURCE_DIR}"
+#        "${SPHINX_HTML_DIR}"
+#        COMMENT "Building HTML documentation with Sphinx")

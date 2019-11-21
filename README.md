@@ -57,13 +57,24 @@ Aller dans Settings > Editor > Code Style.
 - Ajouter `C:\MinGW\bin` au PATH (chercher "variables d'environnement" sur Windows, cliquer sur "variables d'environnement" puis modifier "path" et ajouter la ligne).
 - Pour faire un make : aller (avec `cd`) dans `/cmake-build-debug` puis `mingw32-make`.
 
+## PYTHON
+- Settings > Build, Execution, Deployment > Python Interpreter et configurer l'interpréteur Python.
+
 ## SPHINX
 - Utiliser la commande `pip install -U sphinx`.
 - Utiliser la norme [Doxygen](http://www.doxygen.nl/manual/docblocks.html).
 - [Voici la description de la norme](https://franckh.developpez.com/tutoriels/outils/doxygen/)
 - Faire un CMakeLists.txt avec `make docs`
-- - Appeler [sphinx-build](https://www.sphinx-doc.org/en/master/man/sphinx-build.html)
+- Appeler [sphinx-build](https://www.sphinx-doc.org/en/master/man/sphinx-build.html)
     `sphinx-build.exe -b html src docs`
+## DOXYGEN
+- Télécharger [Doxygen](http://www.doxygen.nl/download.html) (installateur Windows).
+- Doxygen doit être ajouté au PATH. Tester dans un dossier vide d'utiliser la commande `doxygen` dans
+    l'interpréteur de commande.
+
+## BREATHE
+- Utiliser la commande `pip install -U breathe`.
+
 ### Exemple :
 ```c
 
@@ -82,3 +93,6 @@ double sqrt(double val) {
     ...
 }
 ```
+
+## GÉNÉRATION DE LA DOCUMENTATION
+- Utiliser la commande `mingw32-make docs`

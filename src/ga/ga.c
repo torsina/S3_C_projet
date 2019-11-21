@@ -1,11 +1,12 @@
+#include "includes/ga.h"
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "ga.inc" // NOLINT
-#include "includes/ga.h"
+#include "ga.inc"
 
 void *(*ga_malloc)(size_t size) = malloc;
 
@@ -140,9 +141,9 @@ static bool _add_string(char **pstring, unsigned int *plength,
                         const char *add) {
   if (add) {
     unsigned int inc_length = strlen(add);
-    char *string = ga_realloc(*pstring, *plength + inc_length + 1);
-    if (string) {
-      *pstring = string;
+    char *str = ga_realloc(*pstring, *plength + inc_length + 1);
+    if (str) {
+      *pstring = str;
       strncpy(*pstring + *plength, add, inc_length + 1);
       *plength += inc_length;
       return true;
@@ -155,28 +156,88 @@ static bool _add_string(char **pstring, unsigned int *plength,
 }
 
 const char *genetic_generator_to_string(const GeneticGenerator *generator) {
-  static char *string = NULL;
+  static char *str = NULL;
   unsigned int length;
 
   length = 0;
 
-  if (!_add_string(&string, &length, "[")) {
+  if (!_add_string(&str, &length, "[")) {
     return NULL;
   }
   for (unsigned int index = 0; index < generator->size; index++) {
     if (index) {
-      if (!_add_string(&string, &length, ",")) {
+      if (!_add_string(&str, &length, ",")) {
         return NULL;
       }
     }
     char element[100];
     snprintf(element, sizeof(element), "%u", generator->cardinalities[index]);
-    if (!_add_string(&string, &length, element)) {
+    if (!_add_string(&str, &length, element)) {
       return NULL;
     }
   }
-  if (!_add_string(&string, &length, "]")) {
+  if (!_add_string(&str, &length, "]")) {
     return NULL;
   }
-  return string;
+  return str;
+}
+// our code
+Individual *genetic_generator_individual(const GeneticGenerator *generator) {
+  Individual *individual = ga_malloc(sizeof(Individual));
+  if (individual) {
+    individual->genes = ga_malloc(generator->size * sizeof(unsigned int));
+    if (individual->genes) {
+      for (unsigned int i = 0; i < generator->size; i++) {
+        unsigned int value =
+            generator->cardinalities[i] == 0
+                ? 0
+                : rand() % generator->cardinalities[i];  // NOLINT
+        individual->genes[i] = value;
+      }
+      return individual;
+    } else {
+      ga_individual_destroy(individual);
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+
+static unsigned int _ga_individual_get_gene(Individual *individual,
+                                    unsigned int index) {
+  // TODO(T-MMLR): assert(index < individual->size);
+  return individual->genes[index];
+}
+
+void ga_individual_destroy(Individual *individual) {
+  ga_free(individual->genes);
+  ga_free(individual);
+}
+
+Population *ga_population_create(const GeneticGenerator *generator,
+                                 unsigned int size) {
+  if (generator) {
+    Population *population = ga_malloc(sizeof(Population));
+    if (population) {
+      population->size = size;
+      population->generator = generator;
+      population->individuals = ga_malloc(sizeof(Individual) * size);
+      for (unsigned int i = 0; i < size; i++) {
+        population->individuals[i] = genetic_generator_individual(generator);
+      }
+      return population;
+    }
+    return NULL;
+  }
+  return NULL;
+}
+
+Population *ga_population_destroy(Population *population) {
+  for (unsigned int i = 0; i < population->size; i++) {
+    ga_individual_destroy(population->individuals[i]);
+  }
+  ga_free(population->individuals);
+  ga_free(population);
+  return NULL;
 }
