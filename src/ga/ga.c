@@ -335,3 +335,6 @@ Population *ga_population_set_individual_gene(Population *population,
     return NULL;
   }
 }
+
+
+//com à la con
