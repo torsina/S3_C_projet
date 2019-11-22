@@ -383,17 +383,15 @@ extern Population *ga_population_create(const GeneticGenerator *generator,
  * This function frees the memory used by a Population struct
  * (pointed by the parameter population) and its associated elements
  * (table of pointers to Individuals).
- * It return a pointer on the freed Population (NULL).
  *
  * \author Group 14
  * \version 0.0.1
  * \date 2019
  * \fn Population *ga_population_destroy(Population *population)
  * \param population a pointer to the Population to destroy.
- * \return a pointer on the freed Population (NULL).
  * \sa ga_population_create, genetic_generator_individual
  */
-extern Population *ga_population_destroy(Population *population);
+extern void ga_population_destroy(Population *population);
 
 // New functions (getters and setters) for population
 /**

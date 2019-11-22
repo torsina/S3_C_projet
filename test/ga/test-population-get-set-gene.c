@@ -33,7 +33,7 @@ int main(void) {
         assert(ga_population_get_individual_gene(population, x, y) == 0);
       }
     }
-    assert(!ga_population_destroy(population));
+    ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }
   ga_finish();

@@ -24,7 +24,7 @@ int main(void) {
     assert(population);
     assert(ga_population_get_generator(population));
     assert(ga_population_get_generator(population) == generator);
-    assert(!ga_population_destroy(population));
+    ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }
   ga_finish();

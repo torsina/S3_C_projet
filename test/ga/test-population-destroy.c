@@ -22,8 +22,7 @@ int main(void) {
     // Creating a population with this GeneticGenerator
     Population* population = ga_population_create(generator, 5);
     assert(population);
-    Population* res = ga_population_destroy(population);
-    assert(res == NULL);
+    ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }
   ga_finish();

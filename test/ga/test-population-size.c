@@ -23,7 +23,7 @@ int main(void) {
     Population *population = ga_population_create(generator, NB_INDIVIDUALS);
     assert(population);
     assert(ga_population_get_size(population) == NB_INDIVIDUALS);
-    assert(!ga_population_destroy(population));
+    ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }
   ga_finish();
