@@ -10,9 +10,13 @@ struct _Individual {
   unsigned int *genes;
 };
 
+struct _FortuneWheel {
+  unsigned int size;
+  Individual** individuals;
+};
+
 struct _Population {
   unsigned int size;
-  // TODO(T-MMLR, torsina) : Check if the const qualifier is needed
   GeneticGenerator* generator;
   Individual** individuals;
 };

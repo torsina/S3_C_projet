@@ -18,6 +18,7 @@
  */
 typedef struct _GeneticGenerator GeneticGenerator;
 typedef struct _Individual Individual;
+typedef struct _FortuneWheel FortuneWheel;
 typedef struct _Population Population;
 
 /**
