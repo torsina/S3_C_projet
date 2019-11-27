@@ -29,10 +29,9 @@ static Individual **_array_list_add(Individual **array, unsigned int *size,
 }
 
 static Individual *fortune_wheel_draw(FortuneWheel *wheel) {
-  if(wheel) {
-    return wheel->individuals[(unsigned  int) random_double(wheel->size - 1)];
-  }
-  else {
+  if (wheel) {
+    return wheel->individuals[(unsigned int)random_double(wheel->size - 1)];
+  } else {
     return NULL;
   }
 }
@@ -67,24 +66,31 @@ FortuneWheel *fortune_wheel(Population *population,
 
   Individual **wheel = NULL;
   unsigned int size = 0;
+  printf("------------ROUE------------\n");
+  printf("[index] -> proba (nombre d'occurences dans la roue)\n");
   for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
     double prob =
         (double)scores_double[i] / total * ga_population_get_size(population);
-    printf("[%u] -> %g", i, prob);
-    if (i != ga_population_get_size(population) - 1) {
-      printf(", ");
-    }
+    printf("[%u] -> %g (", i, prob);
 
     unsigned int whole_part = (unsigned int)prob;
     double fractional_part = prob - whole_part;
 
     for (unsigned int j = 0; j < whole_part; j++) {
       wheel = _array_list_add(wheel, &size, population->individuals[i]);
+      printf("%u", whole_part);
     }
     if (random_double(1.0) < fractional_part) {
       wheel = _array_list_add(wheel, &size, population->individuals[i]);
+      printf("+1");
     }
+    printf(")\n");
+
+    /*if (i != ga_population_get_size(population) - 1) {
+      printf(", ");
+    }*/
   }
+  printf("----------------------------\n");
   FortuneWheel *fortune_wheel = malloc(sizeof *fortune_wheel);
   fortune_wheel->size = size;
   fortune_wheel->individuals = wheel;
@@ -111,8 +117,6 @@ int main(void) {
     for (unsigned int i = 0; i < fortunewheel->size; i++) {
       printf("%p ", fortunewheel->individuals[i]);
     }
-
-
 
     ga_population_destroy(population);
     genetic_generator_destroy(generator);
