@@ -482,4 +482,7 @@ extern Population *ga_population_set_individual_gene(
     Population *population, unsigned int individual_index,
     unsigned int gene_index, unsigned int gene_value);
 
+//mutates part of an individual's genes
+extern Individual *mutate(Individual *individual);
+
 #endif  // SRC_GA_INCLUDES_GA_H_
