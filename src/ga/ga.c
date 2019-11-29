@@ -366,6 +366,29 @@ Population *ga_population_set_individual_gene(Population *population,
 }
 
 //[0..max]
-/*static double random_double(double max) {
+static double random_double(double max) {
   return (double)rand() / (double)(RAND_MAX / max);
-}*/
+}
+
+Individual *mutate(Population *population, unsigned int individual_index,
+                   Individual *individual) {
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+      unsigned int gene_index = (int)random_double(nb_genes);
+      unsigned int gene_value = (int)random_double(9);
+      if (individual && gene_index < nb_genes) {
+        ga_population_set_individual_gene(population, individual_index,
+                                          gene_index, gene_value);
+        return individual;
+      } else {
+        return NULL;
+      }
+    } else {
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
