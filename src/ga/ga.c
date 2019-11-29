@@ -376,8 +376,32 @@ Individual *mutate(Population *population, unsigned int individual_index) {
     GeneticGenerator *generator = ga_population_get_generator(population);
     if (generator) {
       unsigned int nb_genes = genetic_generator_get_size(generator);
-      unsigned int gene_index = (int)random_double(nb_genes);
+      unsigned int gene_index = (int)random_double(nb_genes-1);
       unsigned int gene_value = (int)random_double(9);
+      Individual *individual =
+          _ga_population_get_individual(population, individual_index);
+      if (individual && gene_index < nb_genes) {
+        ga_population_set_individual_gene(population, individual_index,
+                                          gene_index, gene_value);
+        return individual;
+      } else {
+        return NULL;
+      }
+    } else {
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+Individual *crossover(Population *population, unsigned int individual_index,
+                      unsigned int second_individual_index) {
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+      unsigned int gene_index = (int)random_double(nb_genes);
+      unsigned int gene_value = (int)random_double(genetic_generator_get_size(generator));
       Individual *individual =
           _ga_population_get_individual(population, individual_index);
       if (individual && gene_index < nb_genes) {
