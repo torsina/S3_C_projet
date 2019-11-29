@@ -366,7 +366,7 @@ Population *ga_population_set_individual_gene(Population *population,
   }
 }
 
-//[0..max]
+// [0..max]
 static double random_double(double max) {
   return (double)rand() / (double)(RAND_MAX / max);
 }
