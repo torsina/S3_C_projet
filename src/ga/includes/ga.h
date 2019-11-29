@@ -394,7 +394,6 @@ extern Population *ga_population_create(const GeneticGenerator *generator,
  */
 extern void ga_population_destroy(Population *population);
 
-// New functions (getters and setters) for population
 /**
  * \brief getter for the size of a Population.
  *
@@ -482,11 +481,49 @@ extern Population *ga_population_set_individual_gene(
     Population *population, unsigned int individual_index,
     unsigned int gene_index, unsigned int gene_value);
 
-// mutates part of an individual's genes
+/**
+ * \brief mutates part of an Individual's genes (only one gene)
+ * owned by the Population.
+ *
+ * This function change one gene of an Individual by an other random value
+ * between 0 and the size of the Generator owned by the Population.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Individual *mutate(Population *population, unsigned int individual_index)
+ * \param population a pointer to the Population to deal with.
+ * \param individual_index an index to get a specific Individual from the
+ * individuals attribute of the Population.
+ * \return the individual after the mutation (change of one of his genes).
+ * \sa crossover
+ */
 extern Individual *mutate(Population *population,
                           unsigned int individual_index);
 
-extern Individual *crossover(Population *population,
+/**
+ * \brief mixes parts of two Individuals's genes owned by the Population
+ * to make a individual child.
+ *
+ *
+ * This function mixes parts of two Individuals's genes with a pivot to take
+ * more or less of each parent's genes to make a new individual child (so cute).
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Individual *crossover(Population *population,
                              unsigned int individual_index,
+                             unsigned int second_individual_index)
+ * \param population a pointer to the Population to deal with.
+ * \param first_individual_index an index to get the 1st Individual from the
+ * individuals attribute of the Population (the alpha male).
+ * \param second_individual_index an index to get the 2nd Individual from the
+ * individuals attribute of the Population (the female, also aplha :-) ).
+ * \return an individual child who is a natural mix of the 2 parents.
+ * \sa mutate
+ */
+extern Individual *crossover(Population *population,
+                             unsigned int first_individual_index,
                              unsigned int second_individual_index);
 #endif  // SRC_GA_INCLUDES_GA_H_
