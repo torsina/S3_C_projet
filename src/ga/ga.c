@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "ga.inc"
 
@@ -370,14 +371,15 @@ static double random_double(double max) {
   return (double)rand() / (double)(RAND_MAX / max);
 }
 
-Individual *mutate(Population *population, unsigned int individual_index,
-                   Individual *individual) {
+Individual *mutate(Population *population, unsigned int individual_index) {
   if (population) {
     GeneticGenerator *generator = ga_population_get_generator(population);
     if (generator) {
       unsigned int nb_genes = genetic_generator_get_size(generator);
       unsigned int gene_index = (int)random_double(nb_genes);
       unsigned int gene_value = (int)random_double(9);
+      Individual *individual =
+          _ga_population_get_individual(population, individual_index);
       if (individual && gene_index < nb_genes) {
         ga_population_set_individual_gene(population, individual_index,
                                           gene_index, gene_value);

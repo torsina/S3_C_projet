@@ -484,7 +484,7 @@ extern Population *ga_population_set_individual_gene(
 
 //mutates part of an individual's genes
 extern Individual *mutate(Population *population,
-                          unsigned int individual_index,
-                          Individual *individual);
+                          unsigned int individual_index);
 
+extern Individual *crossover(Population *population, unsigned int individual_index, unsigned int second_individual_index);
 #endif  // SRC_GA_INCLUDES_GA_H_
