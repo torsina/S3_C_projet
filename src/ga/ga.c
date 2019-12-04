@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "ga.inc"
 
@@ -19,6 +20,7 @@ static int counter = 0;
 bool ga_init(void) {
   if (!counter++) {
     assert(printf("GA initialised\n"));
+    srand(time(NULL));
   }
   return true;
 }
@@ -382,9 +384,12 @@ Individual *mutate(Population *population, unsigned int individual_index) {
       Individual *individual =
           _ga_population_get_individual(population, individual_index);
       if (individual && gene_index < nb_genes) {
-        ga_population_set_individual_gene(population, individual_index,
-                                          gene_index, gene_value);
-        return individual;
+        if (ga_population_set_individual_gene(population, individual_index,
+                                              gene_index, gene_value)) {
+          return individual;
+        } else {
+          return NULL;
+        }
       } else {
         return NULL;
       }
@@ -396,7 +401,7 @@ Individual *mutate(Population *population, unsigned int individual_index) {
   }
 }
 
-Individual *crossover(Population *population,
+Individual *crossover(const Population *population,
                       unsigned int first_individual_index,
                       unsigned int second_individual_index) {
   if (population) {

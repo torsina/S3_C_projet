@@ -507,23 +507,23 @@ extern Individual *mutate(Population *population,
  *
  *
  * This function mixes parts of two Individuals's genes with a pivot to take
- * more or less of each parent's genes to make a new individual child (so cute).
+ * more or less of each parent's genes to make a new individual child.
  *
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Individual *crossover(Population *population,
+ * \fn Individual *crossover(const Population *population,
                              unsigned int individual_index,
                              unsigned int second_individual_index)
  * \param population a pointer to the Population to deal with.
  * \param first_individual_index an index to get the 1st Individual from the
- * individuals attribute of the Population (the alpha male).
+ * individuals attribute of the Population.
  * \param second_individual_index an index to get the 2nd Individual from the
- * individuals attribute of the Population (the female, also aplha :-) ).
- * \return an individual child who is a natural mix of the 2 parents.
+ * individuals attribute of the Population.
+ * \return an individual child who is a mix of the 2 parents.
  * \sa mutate
  */
-extern Individual *crossover(Population *population,
+extern Individual *crossover(const Population *population,
                              unsigned int first_individual_index,
                              unsigned int second_individual_index);
 #endif  // SRC_GA_INCLUDES_GA_H_
