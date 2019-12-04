@@ -240,6 +240,28 @@ static unsigned int _ga_individual_get_gene(Individual *individual,
   return individual->genes[index];
 }
 
+Individual *ga_individual_clone(const Population *pop, unsigned int index) {
+  assert(pop);
+  assert(index < ga_population_get_size(pop));
+
+  Individual *clone = ga_malloc(sizeof *clone);
+  if (clone) {
+    size_t nb = genetic_generator_get_size(ga_population_get_generator(pop));
+    unsigned int *genes = ga_malloc(sizeof(unsigned int) * nb);
+    if (genes) {
+      memcpy(genes, pop->individuals[index]->genes, nb * sizeof(unsigned int));
+      clone->genes = genes;
+      return clone;
+    } else {
+      free(clone);
+      return NULL;
+    }
+
+  } else {
+    return NULL;
+  }
+}
+
 void ga_individual_destroy(Individual *individual) {
   // In debug : check if the individual pointer is not NULL
   assert(individual);
@@ -379,8 +401,8 @@ Individual *mutate(Population *population, unsigned int individual_index) {
     if (generator) {
       unsigned int nb_genes = genetic_generator_get_size(generator);
       unsigned int gene_index = (int)random_double(nb_genes - 1);
-      unsigned int gene_value =
-          (int)random_double(genetic_generator_get_size(generator));
+      unsigned int gene_value = (int)random_double(
+          genetic_generator_get_cardinality(generator, gene_index) - 1);
       Individual *individual =
           _ga_population_get_individual(population, individual_index);
       if (individual && gene_index < nb_genes) {

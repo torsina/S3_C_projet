@@ -334,10 +334,29 @@ extern const char *genetic_generator_to_string(
  * filled, or NULL if something goes wrong..
  * \sa ga_individual_destroy
  */
-
 extern Individual *genetic_generator_individual(
     const GeneticGenerator *generator);
 
+/**
+ * \brief Clones an Individual.
+ *
+ * Clones an Individual of a Population and returns a pointer to the newly
+ * created Individual. If something goes wrong (for instance, a memory
+ * allocation error), NULL is returned.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Individual *ga_individual_clone(const Population *pop,
+                                       unsigned int index)
+ * \param pop a pointer to the Population to get the individual from.
+ * \param index the index of the Individual in the Population.
+ * \return a new Individual, with the same values as the Individual whose index
+ * is specified.
+ * \sa ga_individual_destroy
+ */
+extern Individual *ga_individual_clone(const Population *pop,
+                                       unsigned int index);
 /**
  * \brief frees the memory used by a Individual struct.
  *
