@@ -92,6 +92,8 @@ int main(void) {
 
     assert(_check_mutate(population, 0, cloned));
 
+    //We must free the memory allocated to the cloned Individual
+    ga_individual_destroy((Individual *) cloned);
     ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }

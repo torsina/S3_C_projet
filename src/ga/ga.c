@@ -256,7 +256,6 @@ Individual *ga_individual_clone(const Population *pop, unsigned int index) {
       free(clone);
       return NULL;
     }
-
   } else {
     return NULL;
   }
