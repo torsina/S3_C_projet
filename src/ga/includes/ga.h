@@ -532,7 +532,7 @@ extern Individual *mutate(Population *population,
  * \version 0.0.1
  * \date 2019
  * \fn Individual *crossover(const Population *population,
-                             unsigned int individual_index,
+                             unsigned int first_individual_index,
                              unsigned int second_individual_index)
  * \param population a pointer to the Population to deal with.
  * \param first_individual_index an index to get the 1st Individual from the

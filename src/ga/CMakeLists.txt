@@ -5,7 +5,7 @@ install(
         TARGETS ga
         LIBRARY DESTINATION lib COMPONENT "Library"
         ARCHIVE DESTINATION lib COMPONENT "Library"
-        RUNTIME DESTINATION bin COMPONENT "Runtime"
+        RUNTIME DESTINATION lib COMPONENT "Runtime"
 )
 
 install(

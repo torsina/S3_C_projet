@@ -1,1 +1,7 @@
 #Rien pour l'instant
+add_executable(main main.c)
+find_package(GA REQUIRED)
+#find_library(GA_LIB ga PATHS C:/Users/timgo/CLionProjects/S3_C_projet/cmake-build-debug)
+include_directories(${GA_INCLUDE_DIRS})
+link_directories(${GA_LIB_DIRS})
+target_link_libraries(main ${GA_LIBRARIES})
