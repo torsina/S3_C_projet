@@ -6,7 +6,7 @@ find_package(Sphinx)
 if(SPHINX_EXECUTABLE AND DOXYGEN_EXECUTABLE)
     add_custom_target(docs
             COMMAND
-            python ${SPHINX_EXECUTABLE}
+            ${SPHINX_EXECUTABLE}
             -q
             -b html
             "${CMAKE_CURRENT_SOURCE_DIR}"
