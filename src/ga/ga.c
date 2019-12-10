@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "ga.inc"
 
@@ -19,6 +20,7 @@ static int counter = 0;
 bool ga_init(void) {
   if (!counter++) {
     assert(printf("GA initialised\n"));
+    srand(time(NULL));
   }
   return true;
 }
@@ -238,6 +240,27 @@ static unsigned int _ga_individual_get_gene(Individual *individual,
   return individual->genes[index];
 }
 
+Individual *ga_individual_clone(const Population *pop, unsigned int index) {
+  assert(pop);
+  assert(index < ga_population_get_size(pop));
+
+  Individual *clone = ga_malloc(sizeof *clone);
+  if (clone) {
+    size_t nb = genetic_generator_get_size(ga_population_get_generator(pop));
+    unsigned int *genes = ga_malloc(sizeof(unsigned int) * nb);
+    if (genes) {
+      memcpy(genes, pop->individuals[index]->genes, nb * sizeof(unsigned int));
+      clone->genes = genes;
+      return clone;
+    } else {
+      free(clone);
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+
 void ga_individual_destroy(Individual *individual) {
   // In debug : check if the individual pointer is not NULL
   assert(individual);
@@ -288,7 +311,7 @@ GeneticGenerator *ga_population_get_generator(const Population *population) {
   assert(population->generator);
   return (GeneticGenerator *)population->generator;
 }
-
+// Return the individual of a population with the following index
 static Individual *_ga_population_get_individual(const Population *population,
                                                  unsigned int index) {
   if (population) {
@@ -302,7 +325,8 @@ static Individual *_ga_population_get_individual(const Population *population,
     return NULL;
   }
 }
-
+/*Set the individual of a population with the following index and with the
+ individual to set*/
 static Population *_ga_population_set_individual(const Population *population,
                                                  unsigned int index,
                                                  const Individual *individual) {
@@ -354,6 +378,85 @@ Population *ga_population_set_individual_gene(Population *population,
       if (individual && gene_index < nb_genes) {
         individual->genes[gene_index] = gene_value;
         return population;
+      } else {
+        return NULL;
+      }
+    } else {
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+
+// Return a pseudo-random double between 0 and max included
+static double random_double(double max) {
+  return (double)rand() / (double)(RAND_MAX / max);
+}
+
+Individual *mutate(Population *population, unsigned int individual_index) {
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+      unsigned int gene_index = (int)random_double(nb_genes - 1);
+      unsigned int gene_value = (int)random_double(
+          genetic_generator_get_cardinality(generator, gene_index) - 1);
+      Individual *individual =
+          _ga_population_get_individual(population, individual_index);
+      if (individual && gene_index < nb_genes) {
+        if (ga_population_set_individual_gene(population, individual_index,
+                                              gene_index, gene_value)) {
+          return individual;
+        } else {
+          return NULL;
+        }
+      } else {
+        return NULL;
+      }
+    } else {
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+
+Individual *crossover(const Population *population,
+                      unsigned int first_individual_index,
+                      unsigned int second_individual_index) {
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+      unsigned int gene_pivot_index = (int)random_double(nb_genes - 1);
+      Individual *first_individual =
+          _ga_population_get_individual(population, first_individual_index);
+      Individual *second_individual =
+          _ga_population_get_individual(population, second_individual_index);
+      if (first_individual && second_individual &&
+          gene_pivot_index < nb_genes) {
+        Individual *child_individual = ga_malloc(sizeof(Individual));
+        if (child_individual) {
+          child_individual->genes =
+              ga_malloc(generator->size * sizeof(unsigned int));
+          if (child_individual->genes) {
+            for (unsigned int i = 0; i < gene_pivot_index; i++) {
+              unsigned int value = first_individual->genes[i];
+              child_individual->genes[i] = value;
+            }
+            for (unsigned int i = gene_pivot_index; i < generator->size; i++) {
+              unsigned int value = second_individual->genes[i];
+              child_individual->genes[i] = value;
+            }
+            return child_individual;
+          } else {
+            ga_individual_destroy(child_individual);
+            return NULL;
+          }
+        } else {
+          return NULL;
+        }
       } else {
         return NULL;
       }
