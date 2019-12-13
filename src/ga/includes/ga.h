@@ -545,4 +545,33 @@ extern Individual *mutate(Population *population,
 extern Individual *crossover(const Population *population,
                              unsigned int first_individual_index,
                              unsigned int second_individual_index);
+
+/**
+ * \brief Evolves a generation.
+ *
+ *
+ * This function makes a population evolve and returns a new generation.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Population *ga_population_next(
+    Population *population, const float cross_over, const float mutation,
+    unsigned int (*evaluate)(unsigned int *, const void *),
+    const void *problem)
+ * \param population a pointer to the Population to evolve.
+ * \param cross_over probability that 2 individuals exchange some of their
+ * genes.
+ * \param mutation probability that an Individual mutates.
+ * \param evaluate a pointer to a function used to evaluate each Individual
+ * and getting its score relative to the problem.
+ * \param problem a pointer to the problem to solve, passed to evaluate.
+ * \return The new generation.
+ * \sa mutate
+ */
+extern Population *ga_population_next(
+    Population *population, const float cross_over, const float mutation,
+    unsigned int (*evaluate)(unsigned int *, const void *),
+    const void *problem);
+
 #endif  // SRC_GA_INCLUDES_GA_H_
