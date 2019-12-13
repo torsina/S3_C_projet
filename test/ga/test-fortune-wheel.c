@@ -10,7 +10,7 @@
 
 #include "../../src/ga/ga.inc"
 
-//[0..max]
+// [0..max]
 static double random_double(double max) {
   return (double)rand() / (double)(RAND_MAX / max);
 }
@@ -28,7 +28,19 @@ static Individual **_array_list_add(Individual **array, unsigned int *size,
   }
 }
 
-static Individual *fortune_wheel_draw(FortuneWheel *wheel) {
+/**
+ * \brief This function randomly selects an Individual from an already
+ * generated FortuneWheel.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn static Individual *_fortune_wheel_draw(FortuneWheel *wheel)
+ * \param wheel a pointer to a FortuneWheel.
+ * \return A pointer to a randomly chosen Individual among the wheel.
+ * \sa fortune_wheel
+ */
+static Individual *_fortune_wheel_draw(FortuneWheel *wheel) {
   if (wheel) {
     return wheel->individuals[(unsigned int)random_double(wheel->size - 1)];
   } else {
@@ -41,7 +53,8 @@ static int _pb[] = {20, 5, 1, 0, 1, 4};
 unsigned int evaluate(Individual *individual, const void *pb) {
   unsigned int points = 0;
   for (unsigned int i = 0; i < 5; i++) {
-    points += labs((long)individual->genes[i] - (long)((unsigned int *)pb)[i]);
+    // TODO(T-MMLR) : fix data type
+    points += individual->genes[i] - ((unsigned int *)pb)[i];
   }
   return points;
 }
@@ -49,51 +62,90 @@ unsigned int evaluate(Individual *individual, const void *pb) {
 FortuneWheel *fortune_wheel(Population *population,
                             unsigned int (*evaluate)(Individual *,
                                                      const void *)) {
-  unsigned int scores_double[population->size];
-  unsigned int total = 0;
-  for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
-    // remplacer par _ga_individual_get_gene
-    unsigned int score_int = evaluate(population->individuals[i], _pb);
-    total += score_int;
-    scores_double[i] = score_int;
-    printf("%p : %u", population->individuals[i], score_int);
-    if (i != ga_population_get_size(population) - 1) {
-      printf(", ");
-    }
+  if (!population) {
+    return NULL;
+  }
+  if (!evaluate) {
+    return NULL;
   }
 
-  printf("\n");
-
-  Individual **wheel = NULL;
-  unsigned int size = 0;
-  printf("------------ROUE------------\n");
-  printf("[index] -> proba (nombre d'occurences dans la roue)\n");
+  /* We create an array of the same size as the population to hold all of the
+   scores of its individuals*/
+  unsigned int scores[population->size];
+  // This variable represents the sum of all the scores of a population
+  unsigned int total = 0;
+  // The algorithm iterates the individuals
   for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
-    double prob =
-        (double)scores_double[i] / total * ga_population_get_size(population);
-    printf("[%u] -> %g (", i, prob);
+    // TODO(T-MMLR) : remplacer par _ga_individual_get_gene
+    unsigned int score_int = evaluate(population->individuals[i], _pb);
 
-    unsigned int whole_part = (unsigned int)prob;
-    double fractional_part = prob - whole_part;
+    // We add the score of the current Individual to the total
+    total += score_int;
+    // We store the score of the current Individual in the array
+    scores[i] = score_int;
+    // assert(printf("%p : %u", population->individuals[i], score_int));
+    /*if (i != ga_population_get_size(population) - 1) {
+      assert(printf(", "));
+    }*/
+  }
 
+  // assert(printf("\n"));
+
+  /* This is the fortune wheel (an array of individuals). By default, it is
+   * initialised to NULL, but the _array_list_add will allocate memory for it
+   * by calling realloc*/
+  Individual **wheel = NULL;
+  // Number of elements in the wheel
+  unsigned int size = 0;
+  // assert(printf("------------ROUE------------\n"));
+  // assert(printf("[index] -> proba (nombre d'occurences dans la roue)\n"));
+  for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
+    /* The probability for an individual to be chosen is equal to :
+     * P=(score / total_score)
+     *
+     * In order to create a fortune wheel we repeat a certain number of
+     * times n an Individual based on its probability :
+     * n=P*population_size
+     */
+    double n = (double)scores[i] / total * ga_population_get_size(population);
+    // assert(printf("[%u] -> %g (", i, prob));
+
+    /* By casting a double to an unsigned int we effectively obtain the whole
+     part*/
+    unsigned int whole_part = (unsigned int)n;
+    double fractional_part = n - whole_part;
+
+    // We add exactly "whole_part" times the Individual to the list
     for (unsigned int j = 0; j < whole_part; j++) {
       wheel = _array_list_add(wheel, &size, population->individuals[i]);
-      printf("%u", whole_part);
+      // assert(printf("%u", whole_part));
     }
+    /* Then, since we can't add 0.1 (or 0.5, 0.3, ...) times an Individual,
+      we add it based on a probability : fractional_part
+
+      This is the best solution since we can't just ignore the fractional part
+      Ex : if an individual has a value of 0.9 -> it's almost 1, we can't just
+      ignore it.
+    */
     if (random_double(1.0) < fractional_part) {
       wheel = _array_list_add(wheel, &size, population->individuals[i]);
-      printf("+1");
+      // assert(printf("+1"));
     }
-    printf(")\n");
+    // assert(printf(")\n"));
 
     /*if (i != ga_population_get_size(population) - 1) {
       printf(", ");
     }*/
   }
-  printf("----------------------------\n");
-  FortuneWheel *fortune_wheel = malloc(sizeof *fortune_wheel);
-  fortune_wheel->size = size;
-  fortune_wheel->individuals = wheel;
+  // assert(printf("----------------------------\n"));
+  if (wheel) {
+    FortuneWheel *fortune_wheel = malloc(sizeof *fortune_wheel);
+    fortune_wheel->size = size;
+    fortune_wheel->individuals = wheel;
+    return fortune_wheel;
+  } else {
+    return NULL;
+  }
 }
 
 int main(void) {
