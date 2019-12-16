@@ -695,6 +695,7 @@ Population *ga_population_next(Population *population, const float cross_over,
                                                         const void *),
                                const void *problem) {
   if (population && evaluate && problem) {
+    printf("Population generator : %p\n", population->generator);
     if (cross_over < 0.0f || cross_over > 1.0 || mutation < 0.0f ||
         mutation > 1.0f) {
       return NULL;
@@ -706,6 +707,7 @@ Population *ga_population_next(Population *population, const float cross_over,
         Population *next_generation =
             ga_population_create(ga_population_get_generator(population),
                                  ga_population_get_size(population));
+        printf("Next generation generator : %p\n", next_generation->generator);
         // The size is meant to be even
         if (next_generation &&
             ga_population_get_size(next_generation) % 2 == 0) {
