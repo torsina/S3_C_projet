@@ -18,6 +18,7 @@ static bool _check_mutate(const Population* pop, unsigned int index,
   assert(old);
   const GeneticGenerator* gen = ga_population_get_generator(pop);
   assert(gen);
+  printf("AAAAAAAAAA");
   unsigned int i = 0;
   unsigned int size = genetic_generator_get_size(gen);
   while (i < size &&
@@ -48,51 +49,75 @@ static bool _check_mutate(const Population* pop, unsigned int index,
   }
 }
 
+static void _display_population(Population* population) {
+  assert(population);
+  const GeneticGenerator* gen = ga_population_get_generator(population);
+  assert(gen);
+
+  for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
+    printf("\t");
+    for (unsigned int j = 0; j < genetic_generator_get_size(gen); j++) {
+      printf("%u|", ga_population_get_individual_gene(population, i, j));
+    }
+    printf("\n");
+  }
+}
+
+typedef struct {
+  unsigned int* values;
+  unsigned int size;
+} Problem;
+
+static unsigned int evaluate(unsigned int* individual, const void* problem) {
+  unsigned int score = 0;
+  Problem* pb = (Problem*)problem;
+  for (unsigned int i = 0; i < pb->size; i++) {
+    if (individual[i] == pb->values[i]) {
+      score++;
+    }
+  }
+  return score;
+}
+
 int main(void) {
   ga_init();
   {
     const unsigned int NB_CHROMOSOMES = 10;
     const unsigned int NB_INDIVIDUALS = 10;
+
+    // Creating the generator
     GeneticGenerator* generator = genetic_generator_create(NB_CHROMOSOMES);
     assert(generator);
     assert(genetic_generator_get_size(generator) == NB_CHROMOSOMES);
+
+    // Setting all the cardinalities of the generator
     for (unsigned int cardinality_index = 0; cardinality_index < NB_CHROMOSOMES;
          cardinality_index++) {
       assert(genetic_generator_set_cardinality(generator, cardinality_index,
                                                cardinality_index + 1));
     }
 
+    // Creating a Population of individuals
     Population* population = ga_population_create(generator, NB_INDIVIDUALS);
     assert(population);
 
-    // Test mutate
-    // assert(printf("Individual 0 :\n"));
-    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++) {
-      // assert(printf("%u|", ga_population_get_individual_gene(population, 0, i)));
-    // }
-    // assert(printf("\n"));
+    printf("Generation 0 :\n");
+    _display_population(population);
+    printf("-------------------------------------\n");
 
-    const Individual* cloned = ga_population_individual_clone(population, 0);
-    assert(cloned);
+    Problem pb;
+    pb.size = NB_CHROMOSOMES;
+    pb.values = calloc(sizeof(unsigned int), NB_CHROMOSOMES);
 
-    mutate(population, 0);
+    population = ga_population_next(population, 0.1f, 0.1f, &evaluate, &pb);
 
-    // assert(printf("Individual 0  mutated :\n"));
-    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++) {
-      // assert(printf("%u|", ga_population_get_individual_gene(population, 0, i)));
-    // }
-    // assert(printf("\n"));
+    assert(population);
 
-    // assert(printf("Individual 0  cloned :\n"));
-    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++) {
-      // assert(printf("%u|", cloned->genes[i]));
-    // }
-    // assert(printf("\n"));
+    printf("Generation 1 :\n");
+    _display_population(population);
+    printf("-------------------------------------\n");
 
-    assert(_check_mutate(population, 0, cloned));
-
-    // We must free the memory allocated to the cloned Individual
-    ga_individual_destroy((Individual*)cloned);
+    free(pb.values);
     ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }

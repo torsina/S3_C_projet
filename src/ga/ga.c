@@ -240,16 +240,43 @@ static unsigned int _ga_individual_get_gene(Individual *individual,
   return individual->genes[index];
 }
 
-Individual *ga_individual_clone(const Population *pop, unsigned int index) {
+Individual *ga_population_individual_clone(const Population *pop,
+                                           unsigned int index) {
   assert(pop);
   assert(index < ga_population_get_size(pop));
 
+  return ga_individual_clone(pop->individuals[index],
+                             ga_population_get_generator(pop));
+  /*TODO(T-MMLR) : test and remove
   Individual *clone = ga_malloc(sizeof *clone);
   if (clone) {
     size_t nb = genetic_generator_get_size(ga_population_get_generator(pop));
     unsigned int *genes = ga_malloc(sizeof(unsigned int) * nb);
     if (genes) {
       memcpy(genes, pop->individuals[index]->genes, nb * sizeof(unsigned int));
+      clone->genes = genes;
+      return clone;
+    } else {
+      free(clone);
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }*/
+}
+
+Individual *ga_individual_clone(const Individual *src,
+                                const GeneticGenerator *generator) {
+  if (!src || !generator) {
+    return NULL;
+  }
+
+  Individual *clone = ga_malloc(sizeof *clone);
+  if (clone) {
+    size_t nb = genetic_generator_get_size(generator);
+    unsigned int *genes = ga_malloc(sizeof(unsigned int) * nb);
+    if (genes) {
+      memcpy(genes, src->genes, nb * sizeof(unsigned int));
       clone->genes = genes;
       return clone;
     } else {
@@ -422,8 +449,6 @@ Individual *mutate(Population *population, unsigned int individual_index) {
   }
 }
 
-
-
 Individual *crossover(const Population *population,
                       unsigned int first_individual_index,
                       unsigned int second_individual_index) {
@@ -459,6 +484,41 @@ Individual *crossover(const Population *population,
         } else {
           return NULL;
         }
+      } else {
+        return NULL;
+      }
+    } else {
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+
+Population *crossover_2(const Population *population,
+                        unsigned int first_individual_index,
+                        unsigned int second_individual_index) {
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+      unsigned int gene_pivot_index = (int)random_double(nb_genes - 1);
+      Individual *first_individual =
+          _ga_population_get_individual(population, first_individual_index);
+      Individual *second_individual =
+          _ga_population_get_individual(population, second_individual_index);
+      if (first_individual && second_individual &&
+          gene_pivot_index < nb_genes) {
+        unsigned int gene1 =
+            _ga_individual_get_gene(first_individual, gene_pivot_index);
+        // Swapping genes
+        ga_population_set_individual_gene(
+            (Population *)population, first_individual_index, gene_pivot_index,
+            _ga_individual_get_gene(second_individual, gene_pivot_index));
+        ga_population_set_individual_gene((Population *)population,
+                                          second_individual_index,
+                                          gene_pivot_index, gene1);
+        return (Population *)population;
       } else {
         return NULL;
       }
@@ -537,7 +597,7 @@ static Individual *_fortune_wheel_draw(FortuneWheel *wheel) {
  * \sa _fortune_wheel_draw
  */
 static FortuneWheel *_fortune_wheel(Population *population,
-                                    unsigned int (*evaluate)(Individual *,
+                                    unsigned int (*evaluate)(unsigned int *,
                                                              const void *),
                                     const void *problem) {
   if (!population) {
@@ -555,7 +615,7 @@ static FortuneWheel *_fortune_wheel(Population *population,
   // The algorithm iterates the individuals
   for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
     unsigned int score_int =
-        evaluate(_ga_population_get_individual(population, i), problem);
+        evaluate(_ga_population_get_individual(population, i)->genes, problem);
 
     // We add the score of the current Individual to the total
     total += score_int;
@@ -622,6 +682,86 @@ static FortuneWheel *_fortune_wheel(Population *population,
     fortune_wheel->size = size;
     fortune_wheel->individuals = wheel;
     return fortune_wheel;
+  } else {
+    return NULL;
+  }
+}
+
+Population *ga_population_next(Population *population, const float cross_over,
+                               const float mutation,
+                               unsigned int (*evaluate)(unsigned int *,
+                                                        const void *),
+                               const void *problem) {
+  if (population && evaluate && problem) {
+    if (cross_over < 0.0f || cross_over > 1.0 || mutation < 0.0f ||
+        mutation > 1.0f) {
+      return NULL;
+    } else {
+      // Generating the fortune wheel for this population.
+      FortuneWheel *wheel = _fortune_wheel(population, evaluate, problem);
+
+      if (wheel && wheel->size > 0) {
+        Population *next_generation =
+            ga_population_create(ga_population_get_generator(population),
+                                 ga_population_get_size(population));
+        // The size is meant to be even
+        if (next_generation &&
+            ga_population_get_size(next_generation) % 2 == 0) {
+          unsigned int current_size = 0;
+
+          // The size is meant to be even
+          while (current_size < ga_population_get_size(next_generation)) {
+            Individual *individual1 =
+                ga_individual_clone(_fortune_wheel_draw(wheel),
+                                    ga_population_get_generator(population));
+            Individual *individual2 =
+                ga_individual_clone(_fortune_wheel_draw(wheel),
+                                    ga_population_get_generator(population));
+            if (individual1 && individual2) {
+              /* The postfix increment operator increments after passing the
+               value to the function*/
+              _ga_population_set_individual(next_generation, current_size++,
+                                            individual1);
+              _ga_population_set_individual(next_generation, current_size++,
+                                            individual2);
+              // If we want to use the default "crossover", remove these lines
+
+              if (random_double(1.0) < cross_over) {
+                crossover_2(next_generation, current_size - 2,
+                            current_size - 1);
+              }
+
+              // Random mutation on the 2 individual
+              if (random_double(1.0) < mutation) {
+                mutate(next_generation, current_size - 2);
+              }
+
+              if (random_double(1.0) < mutation) {
+                mutate(next_generation, current_size - 1);
+              }
+            } else {
+              if (individual1)
+                ga_individual_destroy(individual1);
+              if (individual1)
+                ga_individual_destroy(individual2);
+            }
+          }
+
+          free(wheel->individuals);
+          free(wheel);
+
+          ga_population_destroy(population);
+
+          return next_generation;
+        } else {
+          free(wheel->individuals);
+          free(wheel);
+          return NULL;
+        }
+      } else {
+        return NULL;
+      }
+    }
   } else {
     return NULL;
   }
