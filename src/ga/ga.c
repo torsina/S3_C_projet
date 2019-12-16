@@ -354,15 +354,33 @@ static Individual *_ga_population_get_individual(const Population *population,
     return NULL;
   }
 }
-/*Set the individual of a population with the following index and with the
- individual to set*/
+
+/**
+ * \brief This function replaces an Individual of a Population at the
+ * specified index.
+ *
+ * Frees the previous value at this index.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Population *_ga_population_set_individual(const Population *population,
+                                                 unsigned int index,
+                                                 const Individual *individual)
+ * \param population a pointer to the Population to modify.
+ * \param index the index of the Individual to change.
+ * \param individual the Individual to put at this index.
+ * \return A pointer to the Population or NULL if something goes wrong.
+ * \sa fortune_wheel
+ */
 static Population *_ga_population_set_individual(const Population *population,
                                                  unsigned int index,
                                                  const Individual *individual) {
   if (population) {
     unsigned int nb_individuals = ga_population_get_size(population);
     if (index < nb_individuals) {
-      if(population->individuals[index]) {
+      // If the Individual is not NULL, free it and replace it
+      if (population->individuals[index]) {
         ga_individual_destroy(population->individuals[index]);
       }
       population->individuals[index] = (Individual *)individual;
