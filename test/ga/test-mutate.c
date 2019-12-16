@@ -67,8 +67,9 @@ int main(void) {
 
     // Test mutate
     // assert(printf("Individual 0 :\n"));
-    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++) {
-      // assert(printf("%u|", ga_population_get_individual_gene(population, 0, i)));
+    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++)
+    // { assert(printf("%u|", ga_population_get_individual_gene(population, 0,
+    // i)));
     // }
     // assert(printf("\n"));
 
@@ -78,14 +79,15 @@ int main(void) {
     mutate(population, 0);
 
     // assert(printf("Individual 0  mutated :\n"));
-    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++) {
-      // assert(printf("%u|", ga_population_get_individual_gene(population, 0, i)));
+    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++)
+    // { assert(printf("%u|", ga_population_get_individual_gene(population, 0,
+    // i)));
     // }
     // assert(printf("\n"));
 
     // assert(printf("Individual 0  cloned :\n"));
-    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++) {
-      // assert(printf("%u|", cloned->genes[i]));
+    // for (unsigned int i = 0; i < genetic_generator_get_size(generator); i++)
+    // { assert(printf("%u|", cloned->genes[i]));
     // }
     // assert(printf("\n"));
 

@@ -567,7 +567,6 @@ extern Individual *crossover(const Population *population,
                              unsigned int first_individual_index,
                              unsigned int second_individual_index);
 
-
 /**
  * \brief Swaps one gene of the two individuals.
  *
@@ -590,8 +589,8 @@ extern Individual *crossover(const Population *population,
  * \sa crossover
  */
 extern Population *crossover_2(const Population *population,
-                        unsigned int first_individual_index,
-                        unsigned int second_individual_index);
+                               unsigned int first_individual_index,
+                               unsigned int second_individual_index);
 /**
  * \brief Evolves a generation.
  *
