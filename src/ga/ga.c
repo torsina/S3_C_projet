@@ -316,10 +316,12 @@ Population *ga_population_create(const GeneticGenerator *generator,
 void ga_population_destroy(Population *population) {
   // In debug : check if the population pointer is not null
   assert(population);
+  printf("Population pointer : %p\n", population);
   for (unsigned int i = 0; i < population->size; i++) {
     // In debug : check if the individual pointer is not NULL
     assert(population->individuals[i]);
     ga_individual_destroy(population->individuals[i]);
+    printf("\tDestroying individual %u\n", i);
   }
   ga_free(population->individuals);
   ga_free(population);
