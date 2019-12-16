@@ -362,6 +362,9 @@ static Population *_ga_population_set_individual(const Population *population,
   if (population) {
     unsigned int nb_individuals = ga_population_get_size(population);
     if (index < nb_individuals) {
+      if(population->individuals[index]) {
+        ga_individual_destroy(population->individuals[index]);
+      }
       population->individuals[index] = (Individual *)individual;
       return (Population *)population;
     } else {
