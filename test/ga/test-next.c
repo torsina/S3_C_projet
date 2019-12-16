@@ -110,7 +110,7 @@ int main(void) {
     pb.values = calloc(sizeof(unsigned int), NB_CHROMOSOMES);
 
     Population* new_pop =
-        ga_population_next(population, 0.1f, 0.1f, &evaluate, &pb);
+        ga_population_next(population, 0.0f, 0.0f, &evaluate, &pb);
 
     assert(new_pop);
     population = new_pop;
