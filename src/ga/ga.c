@@ -751,6 +751,7 @@ Population *ga_population_next(Population *population, const float cross_over,
           free(wheel);
 
           ga_population_destroy(population);
+          printf("Destroyed wheel and old population !\n");
 
           return next_generation;
         } else {
