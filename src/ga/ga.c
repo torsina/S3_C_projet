@@ -756,6 +756,7 @@ Population *ga_population_next(Population *population, const float cross_over,
         } else {
           free(wheel->individuals);
           free(wheel);
+          ga_population_destroy(next_generation);
           return NULL;
         }
       } else {
