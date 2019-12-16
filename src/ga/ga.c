@@ -742,7 +742,7 @@ Population *ga_population_next(Population *population, const float cross_over,
             } else {
               if (individual1)
                 ga_individual_destroy(individual1);
-              if (individual1)
+              if (individual2)
                 ga_individual_destroy(individual2);
             }
           }
