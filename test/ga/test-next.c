@@ -121,6 +121,7 @@ int main(void) {
 
     free(pb.values);
     ga_population_destroy(population);
+    ga_population_destroy(new_pop);
     genetic_generator_destroy(generator);
   }
   ga_finish();
