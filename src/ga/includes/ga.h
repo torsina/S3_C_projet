@@ -402,7 +402,8 @@ extern void ga_individual_destroy(Individual *individual);
  * and initialize it.
  * If the allocation fails, a NULL pointer will be returned.
  * The parameter size is be used to initialize the size of the Individual
- * table. The parameter generator is be used to add a own GeneticGenerator to
+ * table. The size must be even otherwise NULL will be returned.
+ * The parameter generator is be used to add a own GeneticGenerator to
  * the Population struct.
  *
  * \author Group 14
@@ -412,10 +413,11 @@ extern void ga_individual_destroy(Individual *individual);
  * const GeneticGenerator *generator,unsigned int size)
  * \param generator the pointer to a GeneticGenerator used to create
  * Individuals.
- * \param size the the size of the Individual table.
- * \return a Population with the specified size, generator and  with all the
- * Individuals created, or NULL if something goes wrong.
- * \sa genetic_generator_individual, ga_population_destroy
+ * \param size the the size of the Individual table. Must be even or NULL is
+ * returned.
+ * \return a Population with the specified size, generator and  with
+ * all the Individuals created, or NULL if something goes wrong. \sa
+ * genetic_generator_individual, ga_population_destroy
  */
 extern Population *ga_population_create(const GeneticGenerator *generator,
                                         unsigned int size);
@@ -606,8 +608,8 @@ extern Population *crossover_2(const Population *population,
     const void *problem)
  * \param population a pointer to the Population to evolve.
  * \param cross_over probability that 2 individuals exchange some of their
- * genes.
- * \param mutation probability that an Individual mutates.
+ * genes. Between 0 and 1.
+ * \param mutation probability that an Individual mutates. Between 0 and 1.
  * \param evaluate a pointer to a function used to evaluate each Individual
  * and getting its score relative to the problem.
  * \param problem a pointer to the problem to solve, passed to evaluate.

@@ -297,6 +297,10 @@ void ga_individual_destroy(Individual *individual) {
 
 Population *ga_population_create(const GeneticGenerator *generator,
                                  unsigned int size) {
+  if (size % 2 != 0) {
+    return NULL;
+  }
+
   if (generator) {
     Population *population = ga_malloc(sizeof(Population));
     if (population) {
@@ -316,12 +320,10 @@ Population *ga_population_create(const GeneticGenerator *generator,
 void ga_population_destroy(Population *population) {
   // In debug : check if the population pointer is not null
   assert(population);
-  printf("Population pointer : %p\n", population);
   for (unsigned int i = 0; i < population->size; i++) {
     // In debug : check if the individual pointer is not NULL
     assert(population->individuals[i]);
     ga_individual_destroy(population->individuals[i]);
-    printf("\tDestroying individual %u\n", i);
   }
   ga_free(population->individuals);
   ga_free(population);
@@ -716,7 +718,7 @@ Population *ga_population_next(Population *population, const float cross_over,
                                                         const void *),
                                const void *problem) {
   if (population && evaluate && problem) {
-    printf("Population generator : %p\n", population->generator);
+    // The probabilities need to be between 0 and 1
     if (cross_over < 0.0f || cross_over > 1.0 || mutation < 0.0f ||
         mutation > 1.0f) {
       return NULL;
@@ -728,7 +730,6 @@ Population *ga_population_next(Population *population, const float cross_over,
         Population *next_generation =
             ga_population_create(ga_population_get_generator(population),
                                  ga_population_get_size(population));
-        printf("Next generation generator : %p\n", next_generation->generator);
         // The size is meant to be even
         if (next_generation &&
             ga_population_get_size(next_generation) % 2 == 0) {
@@ -772,11 +773,11 @@ Population *ga_population_next(Population *population, const float cross_over,
             }
           }
 
+          /* Every time ga_population_next is called, the old population is
+            destroyed*/
           ga_population_destroy(population);
           free(wheel->individuals);
           free(wheel);
-
-          printf("Destroyed wheel and old population !\n");
 
           return next_generation;
         } else {
