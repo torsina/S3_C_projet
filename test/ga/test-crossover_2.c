@@ -33,12 +33,13 @@ static bool _check_crossover(const Population *pop, unsigned int p1,
    * - otherwise, we reached the end of the "genes" array and every gene of
    *    "child" equals p1's genes.
    */
+  i++;
   if (i < size) {
     /* Iterate over the child's genes and check if every gene is equal to p2's
      * gene.
      */
     while (i < size &&
-           cloned1->genes[i] == ga_population_get_individual_gene(pop, p1, i)) {
+           cloned0->genes[i] == ga_population_get_individual_gene(pop, p1, i)) {
       i++;
     }
     if (i < size) {
