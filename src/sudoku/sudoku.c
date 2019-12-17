@@ -2,7 +2,7 @@
 // Created by Tim on 08/12/2019.
 //
 #include "includes/sudoku.h"
-#include <ga.h>
+
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -15,7 +15,7 @@ unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
 unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
                                                const Sudoku* sudoku) {
   size_t size = pow(sudoku_get_dim_size(sudoku), 2);
-  unsigned int* merge = ga_malloc(sizeof(unsigned int) * size);
+  unsigned int* merge = malloc(sizeof(unsigned int) * size);
   for (unsigned int i = 0; i < size; i++) {
     if (sudoku->problem[i] != 0)
       merge[i] = (unsigned int)sudoku->problem[i];
