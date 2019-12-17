@@ -4,6 +4,6 @@
 struct _Sudoku {
     unsigned int* problem;
     unsigned int dim_size;
-}
+};
 
 #endif  // SRC_SUDOKU_SUDOKU_INC_
