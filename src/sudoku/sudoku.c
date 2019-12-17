@@ -8,10 +8,6 @@
 #include <stdlib.h>
 #include "sudoku.inc"
 
-int main(void) {
-  return EXIT_SUCCESS;
-}
-
 unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
   return sudoku->dim_size;
 }
