@@ -13,6 +13,5 @@
 #include "../../src/sudoku/sudoku.inc"
 
 int main(void) {
-
   return EXIT_SUCCESS;
 }
