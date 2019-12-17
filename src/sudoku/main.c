@@ -1,7 +1,3 @@
-//
-// Created by Aelis on 17/12/2019.
-//
-
 #include <stdlib.h>
 #include "includes/sudoku.h"
 #include "sudoku.inc"
