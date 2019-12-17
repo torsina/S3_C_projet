@@ -14,7 +14,6 @@ Welcome to S3 Projet C's documentation!
    APIs <api>
    Private Source Code <psrc>
 
-
 Indices and tables
 ==================
 

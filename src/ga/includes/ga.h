@@ -195,7 +195,7 @@ extern unsigned int genetic_generator_get_size(
     const GeneticGenerator *generator);
 
 /**
- * \brief clones the GeneticGenerator and returns a new GeneticGenerator
+ * \brief Clones the GeneticGenerator and returns a new GeneticGenerator
  * with the same values.
  *
  * This function returns a new GeneticGenerator, a deep copy of the
@@ -209,7 +209,7 @@ extern unsigned int genetic_generator_get_size(
  * \fn GeneticGenerator *genetic_generator_clone(
  * const GeneticGenerator *genetic_generator)
  * \param genetic_generator a pointer to the GeneticGenerator to clone.
- * \return a pointer to a new GeneticGenerator with the same values as
+ * \return A pointer to a new GeneticGenerator with the same values as
  * `genetic_generator` or a NULL pointer if something goes wrong.
  * \sa genetic_generator_copy
  */
@@ -338,7 +338,7 @@ extern Individual *genetic_generator_individual(
     const GeneticGenerator *generator);
 
 /**
- * \brief Clones an Individual.
+ * \brief Clones an Individual of a Population.
  *
  * Clones an Individual of a Population and returns a pointer to the newly
  * created Individual. If something goes wrong (for instance, a memory
@@ -347,7 +347,7 @@ extern Individual *genetic_generator_individual(
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Individual *ga_individual_clone(const Population *pop,
+ * \fn Individual *ga_population_individual_clone(const Population *pop,
                                        unsigned int index)
  * \param pop a pointer to the Population to get the individual from.
  * \param index the index of the Individual in the Population.
@@ -355,8 +355,30 @@ extern Individual *genetic_generator_individual(
  * is specified.
  * \sa ga_individual_destroy
  */
-extern Individual *ga_individual_clone(const Population *pop,
-                                       unsigned int index);
+extern Individual *ga_population_individual_clone(const Population *pop,
+                                                  unsigned int index);
+
+/**
+ * \brief Clones an Individual.
+ *
+ * Clones an Individual and returns a pointer to the newly
+ * created Individual. If something goes wrong (for instance, a memory
+ * allocation error), NULL is returned.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Individual *ga_individual_clone(const Individual *src,
+                                       const GeneticGenerator *generator)
+ * \param src a pointer to the Individual to clone.
+ * \param generator a pointer to the GeneticGenerator used for generating the
+ Individual.
+ * \return a new Individual, with the same values as the Individual whose index
+ * is specified.
+ * \sa ga_individual_destroy
+ */
+extern Individual *ga_individual_clone(const Individual *src,
+                                       const GeneticGenerator *generator);
 /**
  * \brief frees the memory used by a Individual struct.
  *
@@ -379,9 +401,10 @@ extern void ga_individual_destroy(Individual *individual);
  * This function allocates memory space for a new Population
  * and initialize it.
  * If the allocation fails, a NULL pointer will be returned.
- * The parameter size is be used to initialize the size of the Individual table.
- * The parameter generator is be used to add a own GeneticGenerator to the
- * Population struct.
+ * The parameter size is be used to initialize the size of the Individual
+ * table. The size must be even otherwise NULL will be returned.
+ * The parameter generator is be used to add a own GeneticGenerator to
+ * the Population struct.
  *
  * \author Group 14
  * \version 0.0.1
@@ -390,10 +413,11 @@ extern void ga_individual_destroy(Individual *individual);
  * const GeneticGenerator *generator,unsigned int size)
  * \param generator the pointer to a GeneticGenerator used to create
  * Individuals.
- * \param size the the size of the Individual table.
- * \return a Population with the specified size, generator and  with all the
- * Individuals created, or NULL if something goes wrong.
- * \sa genetic_generator_individual, ga_population_destroy
+ * \param size the the size of the Individual table. Must be even or NULL is
+ * returned.
+ * \return a Population with the specified size, generator and  with
+ * all the Individuals created, or NULL if something goes wrong. \sa
+ * genetic_generator_individual, ga_population_destroy
  */
 extern Population *ga_population_create(const GeneticGenerator *generator,
                                         unsigned int size);
@@ -501,19 +525,20 @@ extern Population *ga_population_set_individual_gene(
     unsigned int gene_index, unsigned int gene_value);
 
 /**
- * \brief mutates part of an Individual's genes (only one gene)
+ * \brief Mutates part of an Individual's genes (only one gene)
  * owned by the Population.
  *
- * This function change one gene of an Individual by an other random value
+ * This function changes one gene of an Individual by another random value
  * between 0 and the size of the Generator owned by the Population.
  *
  * \author Group 14
  * \version 0.0.1
  * \date 2019
  * \fn Individual *mutate(Population *population, unsigned int individual_index)
- * \param population a pointer to the Population to deal with.
- * \param individual_index an index to get a specific Individual from the
- * individuals attribute of the Population.
+ * \param population a pointer to the Population to deal
+ * with.
+ * \param individual_index an index to get a specific Individual from
+ * the individuals attribute of the Population.
  * \return the individual after the mutation (change of one of his genes).
  * \sa crossover
  */
@@ -521,7 +546,7 @@ extern Individual *mutate(Population *population,
                           unsigned int individual_index);
 
 /**
- * \brief mixes parts of two Individuals's genes owned by the Population
+ * \brief Mixes parts of two Individuals's genes owned by the Population
  * to make a individual child.
  *
  *
@@ -547,6 +572,30 @@ extern Individual *crossover(const Population *population,
                              unsigned int second_individual_index);
 
 /**
+ * \brief Swaps one gene of the two individuals.
+ *
+ *
+ * This function exchanges a randomly chosen gene of two Individuals's genes
+ * and returns the Population.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Population *crossover_2(const Population *population,
+                        unsigned int first_individual_index,
+                        unsigned int second_individual_index)
+ * \param population a pointer to the Population to deal with.
+ * \param first_individual_index an index to get the 1st Individual from the
+ * individuals attribute of the Population.
+ * \param second_individual_index an index to get the 2nd Individual from the
+ * individuals attribute of the Population.
+ * \return a pointer to the initial Population or NULL if something goes wrong.
+ * \sa crossover
+ */
+extern Population *crossover_2(const Population *population,
+                               unsigned int first_individual_index,
+                               unsigned int second_individual_index);
+/**
  * \brief Evolves a generation.
  *
  *
@@ -561,8 +610,8 @@ extern Individual *crossover(const Population *population,
     const void *problem)
  * \param population a pointer to the Population to evolve.
  * \param cross_over probability that 2 individuals exchange some of their
- * genes.
- * \param mutation probability that an Individual mutates.
+ * genes. Between 0 and 1.
+ * \param mutation probability that an Individual mutates. Between 0 and 1.
  * \param evaluate a pointer to a function used to evaluate each Individual
  * and getting its score relative to the problem.
  * \param problem a pointer to the problem to solve, passed to evaluate.

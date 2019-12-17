@@ -20,8 +20,10 @@ int main(void) {
       assert(genetic_generator_get_cardinality(generator, i) == 0);
     }
     // Creating a population with this GeneticGenerator
-    Population* population = ga_population_create(generator, 5);
+    Population* population = ga_population_create(generator, 6);
     assert(population);
+    Population* population_wrong_size = ga_population_create(generator, 5);
+    assert(!population_wrong_size);
     ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }

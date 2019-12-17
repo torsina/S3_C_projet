@@ -2,6 +2,8 @@
 Private Source Code documentation
 =================================
 
+//.. doxygenfile:: ga.c
+
 .. hlist::
    :columns: 3
 

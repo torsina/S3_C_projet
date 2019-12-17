@@ -19,12 +19,13 @@ if not output_dir:
 os.system('cd ../ && cd src && doxygen')
 print("------------------------")
 
+
 extensions = ['breathe', 'sphinx.ext.autodoc', 'sphinx.ext.doctest',
               'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.ifconfig', 'sphinx.ext.viewcode',
               'sphinx.ext.inheritance_diagram',
               'sphinx.ext.autosummary',
-              'sphinx.ext.imgmath', 'sphinx.ext.todo'] #'m2r'
+              'sphinx.ext.imgmath', 'sphinx.ext.todo', 'sphinx.ext.autosummary'] #'m2r'
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -47,6 +48,7 @@ extensions = ['breathe', 'sphinx.ext.autodoc', 'sphinx.ext.doctest',
 #
 # import os
 import sys
+# Root of the project
 sys.path.insert(0, os.path.abspath('../'))
 
 
