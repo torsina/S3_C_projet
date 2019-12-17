@@ -106,9 +106,9 @@ double sqrt(double val) {
     `add_library(yaml ${SRCS})`
     en
     `add_library(yaml SHARED ${SRCS})`
-4. Exécutez CMake avec le CMakeLists.txt
-5. Faites un make all (ou CMake > Générer uniquement > Tout (yaml) sur VS)
-6. Faites un make install (ou CMake > Installer > yaml)
+4. Exécutez CMake avec le CMakeLists.txt.
+5. Faites un make all (ou CMake > Générer uniquement > Tout (yaml) sur VS).
+6. Faites un make install (ou CMake > Installer > yaml).
 7. Sur Windows, ajouter le dossier d'installation de la DLL (C:/Program Files (x86)/yaml/bin/) au PATH.
 
 ### Sous linux
