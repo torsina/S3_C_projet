@@ -2,11 +2,12 @@
 include_directories(${CMAKE_SOURCE_DIR}/src/includes)
 
 file(GLOB FILES "${CMAKE_CURRENT_SOURCE_DIR}/test-*.c")
-
+message(${CMAKE_SOURCE_DIR})
 foreach (FILENAME ${FILES})
     get_filename_component(SRC ${FILENAME} NAME)
     get_filename_component(TEST ${FILENAME} NAME_WE)
-    add_executable(${TEST} "${CMAKE_CURRENT_SOURCE_DIR}/${SRC}")
+    #add_executable(${TEST} "${CMAKE_CURRENT_SOURCE_DIR}/${SRC}")
+    add_executable(${TEST} "${CMAKE_CURRENT_SOURCE_DIR}/${SRC}" "${CMAKE_SOURCE_DIR}/src/sudoku/sudoku.c")
     add_dependencies(${TEST} ga)
     target_link_libraries(${TEST} ga)
     if (VALGRIND)

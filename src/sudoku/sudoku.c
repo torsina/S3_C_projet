@@ -1,18 +1,14 @@
 //
 // Created by Tim on 08/12/2019.
 //
+#include "includes/sudoku.h"
 #include <ga.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
-typedef struct {
-    unsigned int* problem;
-    unsigned int dim_size;
-} Sudoku;
+#include "sudoku.inc"
 
 int main(void) {
-
   return EXIT_SUCCESS;
 }
 
@@ -109,4 +105,3 @@ unsigned int evaluate(unsigned int* individual, const void* sudoku) {
   // can be counted multiple times) so squaring score to be sure
   return pow(score, 2) - duplicates;
 }
-

@@ -9,8 +9,8 @@
 #endif
 #include <assert.h>
 
-#include "../../src/sudoku/includes/sudoku.h"
-#include "../../src/sudoku/sudoku.inc"
+//#include "../../src/sudoku/includes/sudoku.h"
+//#include "../../src/sudoku/sudoku.inc"
 
 int main(void) {
   return EXIT_SUCCESS;
