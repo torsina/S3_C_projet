@@ -18,6 +18,14 @@ jobs:
         # We'll use this as our working directory for all subsequent commands
         run: cmake -E make_directory ${{runner.workspace}}/build
 
+      - name: Clone libyaml
+        working-directory: ${{runner.workspace}}/..
+        run: git clone https://github.com/yaml/libyaml.git
+
+      - name: Clone libyaml
+        working-directory: ${{runner.workspace}}/../libyaml
+        run: ls
+
       - name: Update stuff
         run: sudo apt-get -y update
 
@@ -33,9 +41,7 @@ jobs:
       - name: Install Valgrind, Doxygen, autoconf, libtool
         run: sudo apt-get -y install valgrind doxygen autoconf libtool
 
-      - name: Clone libyaml
-        working-directory: ${{runner.workspace}}/..
-        run: git clone https://github.com/yaml/libyaml.git
+
 
       - name: Build libyaml
         working-directory: ${{runner.workspace}}/../libyaml
