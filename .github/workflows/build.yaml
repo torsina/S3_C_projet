@@ -58,7 +58,8 @@ jobs:
 
       - name: Build docs
         run: python3 ./test_docs.py
+
       - name: Build docs 2
-          working-directory: ${{runner.workspace}}/build
-          shell: bash
-          run: make docs
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: make docs
