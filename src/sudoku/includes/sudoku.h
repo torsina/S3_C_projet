@@ -44,6 +44,25 @@ extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
 
 
 /**
+ * \brief Allocates and initialize a new Sudoku struct.
+ *
+ * This function allocates memory space for a new Sudoku
+ * and initialize it. If the allocation fails, a NULL pointer will be returned.
+ * The parameter dim_size is used to define the size (number of tiles in a
+ * square) of one square (dim_size = n²). In total there are dim_size² tiles.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Sudoku *sudoku_create(unsigned int total_size)
+ * \param dim_size the tiles in 1 square (usually 9).
+ * \return a Sudoku of the specified size with the grid initialized to 0,
+ * or NULL if something goes wrong.
+ * \sa sudoku_destroy
+ */
+extern Sudoku *sudoku_create(unsigned int dim_size);
+
+/**
  * \brief Frees the memory used by a Sudoku struct.
  *
  * This function frees the memory used by a Sudoku struct

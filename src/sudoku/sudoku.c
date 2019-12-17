@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <ga.h>
 
@@ -12,6 +13,35 @@
 unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
   assert(sudoku);
   return sudoku->dim_size;
+}
+
+Sudoku *sudoku_create(const unsigned int dim_size) {
+  Sudoku *sudoku = ga_malloc(sizeof(*sudoku));
+  if(sudoku) {
+    sudoku->dim_size = dim_size;
+
+    if(dim_size) {
+      unsigned int total_size = dim_size * dim_size;
+
+      unsigned int *grid = ga_malloc(sizeof(*grid) * total_size);
+      if(grid) {
+        memset(grid, 0, sizeof(*grid) * total_size);
+        sudoku->problem = grid;
+        return sudoku;
+      }
+      else {
+        ga_free(sudoku);
+        return NULL;
+      }
+    }
+    else {
+      sudoku->problem = NULL;
+      return sudoku;
+    }
+  }
+  else {
+    return NULL;
+  }
 }
 
 void sudoku_destroy(Sudoku* sudoku) {
