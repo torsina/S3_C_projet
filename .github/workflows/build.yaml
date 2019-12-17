@@ -56,10 +56,10 @@ jobs:
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C $BUILD_TYPE --output-on-failure
 
-      - name: Build docs
-        run: python3 ./test_docs.py
-
       - name: Build docs 2
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: make docs
+
+      - name: Build docs
+        run: python3 ./test_docs.py
