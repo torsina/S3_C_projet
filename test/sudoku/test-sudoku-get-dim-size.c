@@ -13,11 +13,12 @@
 #include "../../src/sudoku/sudoku.inc"
 
 int main(void) {
-  Sudoku* test = malloc(sizeof(Sudoku));
-  test->dim_size = 5;
-  assert(sudoku_get_dim_size(test) == 5);
-  test->dim_size = 0;
-  assert(sudoku_get_dim_size(test) != 5);
-  sudoku_destroy(test);
+  const unsigned int DIM_SIZE = 5;
+  Sudoku* sudoku = sudoku_create(DIM_SIZE);
+  assert(sudoku);
+  assert(sudoku_get_dim_size(sudoku) == DIM_SIZE);
+  sudoku->dim_size = 0;
+  assert(sudoku_get_dim_size(sudoku) == 0);
+  sudoku_destroy(sudoku);
   return EXIT_SUCCESS;
 }
