@@ -233,7 +233,6 @@ Individual *genetic_generator_individual(const GeneticGenerator *generator) {
   }
 }
 
-
 /**
  * \brief Returns the value of a gene of one Individual.
  *
@@ -685,7 +684,6 @@ static FortuneWheel *_fortune_wheel(Population *population,
     // We store the score of the current Individual in the array
     scores[i] = score_int;
   }
-
 
   /* This is the fortune wheel (an array of individuals). By default, it is
    * initialised to NULL, but the _array_list_add will allocate memory for

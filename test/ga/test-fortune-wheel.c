@@ -42,7 +42,7 @@ static Individual **_array_list_add(Individual **array, unsigned int *size,
  */
 static Individual *_fortune_wheel_draw(FortuneWheel *wheel) {
   if (wheel) {
-    return wheel->individuals[(unsigned int)_random_double(wheel->size - 1)];
+    return wheel->individuals[(unsigned int)random_double(wheel->size - 1)];
   } else {
     return NULL;
   }
@@ -127,7 +127,7 @@ FortuneWheel *fortune_wheel(Population *population,
       Ex : if an individual has a value of 0.9 -> it's almost 1, we can't just
       ignore it.
     */
-    if (_random_double(1.0) < fractional_part) {
+    if (random_double(1.0) < fractional_part) {
       wheel = _array_list_add(wheel, &size, population->individuals[i]);
       // assert(printf("+1"));
     }
@@ -152,7 +152,7 @@ int main(void) {
   ga_init();
   {
     for (unsigned int i = 0; i < 5; i++) {
-      printf("|%g", _random_double(1.0));
+      printf("|%g", random_double(1.0));
     }
     printf("\n");
 
