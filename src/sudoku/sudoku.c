@@ -14,8 +14,8 @@ unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
   return sudoku->dim_size;
 }
 
-void sudoku_destroy(Sudoku *sudoku) {
-  if(sudoku) {
+void sudoku_destroy(Sudoku* sudoku) {
+  if (sudoku) {
     ga_free(sudoku->problem);
     ga_free(sudoku);
   }
