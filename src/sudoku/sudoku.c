@@ -9,11 +9,55 @@
 
 #include "sudoku.inc"
 
+/**
+ * \brief Returns the number of tiles in one square in the Sudoku grid.
+ *
+ * If a square has a width (and length) of n tiles, it contains nxn tiles.
+ * There are nxn tiles in a Sudoku grid. The total number of tiles is :
+ * N=(nxn)x(nxn)
+ *
+ * dim_size corresponds to nxn.
+ * Example : in a "regular" sudoku, squares are made of 3x3 tiles.
+ * dim_size = 9.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int sudoku_get_dim_size(const Sudoku* sudoku)
+ * \param sudoku a pointer to the Sudoku to get the size from.
+ * \return The number of tiles in one square (nxn).
+ * \sa _evaluate_merge_problem_solution
+ */
 unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
   assert(sudoku);
   return sudoku->dim_size;
 }
 
+/**
+ * \brief This fu
+ *
+ * An Individual is a sparse array. When the Sudoku is loaded from a file,
+ * some of its tiles already contain numbers ("constraints"). The
+ * genetic algorithm has to guess the correct combination for the "empty" tiles
+ * (filled with zeroes).
+ *
+ * The individuals used by the genetic algorithm do not represent the complete
+ * grid, only the empty tiles, with values between 0 and dim_size-1 (n²-1).
+ *
+ * This function rebuilds the complete grid for one individual by adding the
+ * values of the individual where they should be, in between the "static"
+ * constraints of the Sudoku.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
+                                               const Sudoku* sudoku)
+ * \param individual a pointer to the genes of an Individual.
+ * \param sudoku a pointer to the Sudoku to solve.
+ * \return The merged grid or NULL if something goes wrong.
+ * \sa _evaluate_merge_problem_solution
+ */
 unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
                                                const Sudoku* sudoku) {
   if (!individual) {
@@ -24,10 +68,17 @@ unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
     return NULL;
   }
 
-  // A sudoku is a grid make of n*n squares of n*n tiles (n² tiles per square).
-  unsigned int n = sudoku_get_dim_size(sudoku);
+  /* A sudoku is a grid make of n*n squares of n*n tiles (n² tiles per square).
+   * dim_size = n² (number of tiles in a square, ex : 9 for a regular sudoku).
+   */
+  unsigned int dim_size = sudoku_get_dim_size(sudoku);
   // The size of one square.
-  size_t size = n * n;
+  size_t size = dim_size * dim_size;
+
+  /* Since an Individual is smaller than a complete grid (because it only holds
+   * values for empty tiles), we need to use different indices.
+   */
+  unsigned int individual_index = 0;
 
   unsigned int* merge = ga_malloc(sizeof(unsigned int) * size);
 
@@ -39,7 +90,11 @@ unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
       if (sudoku->problem[i] != 0) {
         merge[i] = (unsigned int)sudoku->problem[i];
       } else {
-        merge[i] = individual[i] + 1;
+        /* Because the GA library works with number starting at 0, we add one
+         * so that we work between 1 and n².
+         */
+        merge[i] = individual[individual_index] + 1;
+        individual_index++;
       }
     }
     return merge;

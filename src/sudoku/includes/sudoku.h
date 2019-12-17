@@ -21,7 +21,6 @@ extern unsigned int sudoku_get_dim_size(const Sudoku* sudoku);
  * \param sudoku a pointer to the Sudoku to solve.
  * \sa ga_population_next
  */
-
 extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
 
 #endif  // SRC_SUDOKU_INCLUDES_SUDOKU_H_
