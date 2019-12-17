@@ -14,7 +14,10 @@
 
 int main(void) {
   Sudoku* test = malloc(sizeof(Sudoku));
-  sudoku_get_dim_size(test);
+  test->dim_size = 5;
+  assert(sudoku_get_dim_size(test) == 5);
+  test->dim_size = 0;
+  assert(sudoku_get_dim_size(test) != 5);
   sudoku_destroy(test);
   return EXIT_SUCCESS;
 }
