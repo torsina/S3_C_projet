@@ -97,14 +97,18 @@ double sqrt(double val) {
 ## GÉNÉRATION DE LA DOCUMENTATION
 - Utiliser la commande `mingw32-make docs`
 
-## INSTALLATION DE LIBYAML
-1. Allez sur le github de [libYAML](https://github.com/yaml/libyaml/) et téléchargez le zip du master
-2. Ouvrez dans un IDE (Visual Studio, CLion)
+## INSTALLATION DE LIBYAML SUR WINDOWS
+1. Allez sur le github de [libYAML](https://github.com/yaml/libyaml/) et clonez le master.
+2. Ouvrez dans un IDE (Visual Studio, CLion).
 3. A la ligne 56 du CMakeLists.txt, changez :
     `add_library(yaml ${SRCS})`
     en
     `add_library(yaml SHARED ${SRCS})`
-4. Exécutez CMake avec le CMakeLists.txt
-5. Faites un make all (ou CMake > Générer uniquement > Tout (yaml) sur VS)
-6. Faites un make install (ou CMake > Installer > yaml)
+4. Exécutez CMake avec le CMakeLists.txt.
+5. Faites un make all (ou CMake > Générer uniquement > Tout (yaml) sur VS).
+6. Faites un make install (ou CMake > Installer > yaml).
 7. Sur Windows, ajouter le dossier d'installation de la DLL (C:/Program Files (x86)/yaml/bin/) au PATH.
+
+## INSTALLATION DE LIBYAML SUR LINUX
+1. Allez sur le github de [libYAML](https://github.com/yaml/libyaml/) et clonez le master.
+2. Suivez les instructions du README.
