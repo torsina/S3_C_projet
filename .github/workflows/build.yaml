@@ -33,6 +33,14 @@ jobs:
       - name: Install Valgrind, Doxygen
         run: sudo apt-get -y install valgrind doxygen
 
+      - name: Clone libyaml
+        working-directory: ${{runner.workspace}}/..
+        run: git clone https://github.com/yaml/libyaml.git
+
+      - name: test
+        working-directory: ${{runner.workspace}}/..
+        run: ls
+
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment variable
         # access regardless of the host operating system
