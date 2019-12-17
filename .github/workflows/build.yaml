@@ -39,7 +39,7 @@ jobs:
 
       - name: Build & install libyaml
         working-directory: ${{runner.workspace}}/../libyaml
-        run: ./bootstrap ; ./configure ; make ; make install
+        run: ./bootstrap ; ./configure ; sudo make ; sudo make install
 
 
       - name: Configure CMake
