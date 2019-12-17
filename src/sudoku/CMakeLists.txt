@@ -8,5 +8,7 @@ add_library(sudoku sudoku.c includes/sudoku.h sudoku.inc)
 #find_library(GA_LIB ga PATHS C:/Users/timgo/CLionProjects/S3_C_projet/cmake-build-debug)
 #include_directories(${GA_INCLUDE_DIRS})
 #link_directories(${GA_LIB_DIRS})
-target_link_libraries(sudoku ga)
+
+add_dependencies(main sudoku)
+
 target_link_libraries(main sudoku)
