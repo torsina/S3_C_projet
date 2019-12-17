@@ -1,4 +1,4 @@
-find_library(yaml REQUIRED)
+find_package(yaml REQUIRED)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/src/ga/includes)
