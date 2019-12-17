@@ -11,6 +11,7 @@ target_link_libraries(sudoku ga)
 #include_directories(${GA_INCLUDE_DIRS})
 #link_directories(${GA_LIB_DIRS})
 
+add_dependencies(sudoku ga)
 add_dependencies(main sudoku)
-
+target_link_libraries(sudoku ga)
 target_link_libraries(main sudoku)
