@@ -1,4 +1,5 @@
 import subprocess
+import os
 import platform
 import sys
 
@@ -15,7 +16,7 @@ pipes = subprocess.Popen([_make, "docs"], stdout=subprocess.PIPE, stderr=subproc
 std_out, std_err = pipes.communicate()
 
 print(str(std_out, 'utf-8'))
-print("")
+print("Current directory :", os.getcwd())
 if len(std_err) != 0 and " WARNING: " in str(std_err):
     print(str(std_err, 'utf-8'))
     sys.exit(-1)
