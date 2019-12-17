@@ -14,4 +14,6 @@ target_link_libraries(sudoku ga)
 add_dependencies(sudoku ga)
 add_dependencies(main sudoku)
 target_link_libraries(sudoku ga)
+target_link_libraries(sudoku m)
 target_link_libraries(main sudoku)
+
