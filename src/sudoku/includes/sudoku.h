@@ -6,12 +6,12 @@ typedef struct _Sudoku Sudoku;
 extern unsigned int sudoku_get_dim_size(const Sudoku* sudoku);
 
 /**
- * \brief creates the score this sulution got on the sudoku.
+ * \brief Creates the score this solution got on the Sudoku.
  *
- * This function create the score of a solution to the sudoku
+ * This function create the score of a solution to the Sudoku
  * by counting the duplicates inside each row and column,
- * adding the counts together and substracting that to the square of the number
- * of values in the sudoku.
+ * adding the counts together and subtracting that to the square of the number
+ * of values in the Sudoku.
  *
  * \author Group 14
  * \version 0.0.1

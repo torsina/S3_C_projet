@@ -1,32 +1,59 @@
-//
-// Created by Tim on 08/12/2019.
-//
 #include "includes/sudoku.h"
-#include <ga.h>
+
+#include <assert.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
+#include <ga.h>
+
 #include "sudoku.inc"
 
 unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
+  assert(sudoku);
   return sudoku->dim_size;
 }
 
 unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
                                                const Sudoku* sudoku) {
-  size_t size = pow(sudoku_get_dim_size(sudoku), 2);
-  unsigned int* merge = ga_malloc(sizeof(unsigned int) * size);
-  for (unsigned int i = 0; i < size; i++) {
-    if (sudoku->problem[i] != 0)
-      merge[i] = (unsigned int)sudoku->problem[i];
-    else
-      merge[i] = individual[i] + 1;
+  if (!individual) {
+    return NULL;
   }
-  return merge;
+
+  if (!sudoku) {
+    return NULL;
+  }
+
+  // A sudoku is a grid make of n*n squares of n*n tiles (n² tiles per square).
+  unsigned int n = sudoku_get_dim_size(sudoku);
+  // The size of one square.
+  size_t size = n * n;
+
+  unsigned int* merge = ga_malloc(sizeof(unsigned int) * size);
+
+  if (merge) {
+    for (unsigned int i = 0; i < size; i++) {
+      /* If the tile in the sudoku grid (the problem loaded from the file)
+       * contains a number that we need to check against :
+       */
+      if (sudoku->problem[i] != 0) {
+        merge[i] = (unsigned int)sudoku->problem[i];
+      } else {
+        merge[i] = individual[i] + 1;
+      }
+    }
+    return merge;
+  } else {
+    return NULL;
+  }
 }
 
 unsigned int _evaluate_used_numbers_duplicates(unsigned int* used_values,
                                                unsigned int used_size) {
+  assert(used_values);
+  assert(used_size);
+  assert(used_size > 0);
+
   unsigned int unique_values[used_size];
   unsigned int unique_size = 0;
   unsigned int duplicates = 0;
@@ -83,6 +110,9 @@ bool _evaluate_check_column(unsigned int* merge, const Sudoku* sudoku,
 }
 
 unsigned int evaluate(unsigned int* individual, const void* sudoku) {
+  assert(individual);
+  assert(sudoku);
+
   sudoku = (Sudoku*)sudoku;
   unsigned int dim_size = sudoku_get_dim_size(sudoku);
   unsigned int score = pow(dim_size, 2);
@@ -99,5 +129,5 @@ unsigned int evaluate(unsigned int* individual, const void* sudoku) {
   free(merge);
   // afraid that score could be negative if too much duplicates(because an error
   // can be counted multiple times) so squaring score to be sure
-  return pow(score, 2) - duplicates;
+  return score * score - duplicates;
 }
