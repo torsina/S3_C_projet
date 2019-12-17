@@ -58,8 +58,8 @@ unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
  * \return The merged grid or NULL if something goes wrong.
  * \sa _evaluate_merge_problem_solution
  */
-unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
-                                               const Sudoku* sudoku) {
+static unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
+                                                      const Sudoku* sudoku) {
   if (!individual) {
     return NULL;
   }
@@ -104,8 +104,8 @@ unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
   }
 }
 
-unsigned int _evaluate_used_numbers_duplicates(unsigned int* used_values,
-                                               unsigned int used_size) {
+static unsigned int _evaluate_used_numbers_duplicates(unsigned int* used_values,
+                                                      unsigned int used_size) {
   assert(used_values);
   assert(used_size);
   assert(used_size > 0);
@@ -133,8 +133,7 @@ unsigned int _evaluate_used_numbers_duplicates(unsigned int* used_values,
       if (unique_values[j] == used_values[i]) {
         // This boolean indicates that we've just found a duplicate element
         no_duplicates_found = false;
-      }
-      else {
+      } else {
         // The postfix increment operator increments the value after
         unique_values[unique_size++] = used_values[i];
       }
@@ -149,8 +148,9 @@ unsigned int _evaluate_used_numbers_duplicates(unsigned int* used_values,
   return duplicates;
 }
 
-unsigned int _evaluate_check_row(unsigned int* merge, const Sudoku* sudoku,
-                                 unsigned int index) {
+static unsigned int _evaluate_check_row(unsigned int* merge,
+                                        const Sudoku* sudoku,
+                                        unsigned int index) {
   unsigned int dim_size = sudoku_get_dim_size(sudoku);
   unsigned int rowIndex = index / dim_size;
   unsigned int start = rowIndex * dim_size;
@@ -168,8 +168,8 @@ unsigned int _evaluate_check_row(unsigned int* merge, const Sudoku* sudoku,
   return duplicates;
 }
 
-bool _evaluate_check_column(unsigned int* merge, const Sudoku* sudoku,
-                            unsigned int index) {
+static bool _evaluate_check_column(unsigned int* merge, const Sudoku* sudoku,
+                                   unsigned int index) {
   unsigned int dim_size = sudoku_get_dim_size(sudoku);
   unsigned int columnIndex = index % dim_size;
   // max int for a value = dim_size - 1
