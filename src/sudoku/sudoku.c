@@ -6,8 +6,9 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
 #include "sudoku.inc"
+
+
 
 unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
   return sudoku->dim_size;
