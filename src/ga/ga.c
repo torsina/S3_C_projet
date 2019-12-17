@@ -88,13 +88,14 @@ unsigned int genetic_generator_get_size(const GeneticGenerator *generator) {
   return generator->size;
 }
 
-GeneticGenerator *genetic_generator_clone(const GeneticGenerator *generator) {
+GeneticGenerator *genetic_generator_clone(
+    const GeneticGenerator *genetic_generator) {
   // In debug : check if the genetic generator pointer is not null
-  assert(generator);
-  GeneticGenerator *clone = genetic_generator_create(generator->size);
+  assert(genetic_generator);
+  GeneticGenerator *clone = genetic_generator_create(genetic_generator->size);
   if (clone) {
-    memcpy(clone->cardinalities, generator->cardinalities,
-           generator->size * sizeof(unsigned int));
+    memcpy(clone->cardinalities, genetic_generator->cardinalities,
+           genetic_generator->size * sizeof(unsigned int));
     return clone;
   } else {
     return NULL;

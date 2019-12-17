@@ -54,7 +54,7 @@ extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Sudoku *sudoku_create(unsigned int total_size)
+ * \fn Sudoku *sudoku_create(unsigned int dim_size)
  * \param dim_size the tiles in 1 square (usually 9).
  * \return a Sudoku of the specified size with the grid initialized to 0,
  * or NULL if something goes wrong.
