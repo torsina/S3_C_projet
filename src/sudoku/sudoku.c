@@ -91,9 +91,10 @@ unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
         merge[i] = (unsigned int)sudoku->problem[i];
       } else {
         /* Because the GA library works with number starting at 0, we add one
-         * so that we work between 1 and n².
+         * so that we work between 1 and n² and not 0 and n² - 1.
          */
         merge[i] = individual[individual_index] + 1;
+        // We increment the index of the individual
         individual_index++;
       }
     }
@@ -109,21 +110,41 @@ unsigned int _evaluate_used_numbers_duplicates(unsigned int* used_values,
   assert(used_size);
   assert(used_size > 0);
 
+  /* We create and initialize an array with the same size as "used_values"
+   * "used_size" is a maximum size. The real size is "unique_size" declared
+   * below.
+   *
+   * This array holds unique values from "used_values".
+   */
   unsigned int unique_values[used_size];
+  // This is the temporary size of "unique_values"
   unsigned int unique_size = 0;
   unsigned int duplicates = 0;
+
+  // We loop over "used_values"
   for (unsigned int i = 0; i < used_size; i++) {
-    bool result = true;
+    bool no_duplicates_found = true;
     unsigned int j = 0;
-    while (j < unique_size && result) {
-      if (unique_values[j] == used_values[i])
-        result = false;
-      else
-        unique_values[unique_size] = used_values[i];
+    /* We loop over "unique_values" searching if the current number in
+     *"used_values" is already in "unique_values". If that's the case, we can
+     * increment the "duplicates" counter.
+     */
+    while (j < unique_size && no_duplicates_found) {
+      if (unique_values[j] == used_values[i]) {
+        // This boolean indicates that we've just found a duplicate element
+        no_duplicates_found = false;
+      }
+      else {
+        // The postfix increment operator increments the value after
+        unique_values[unique_size++] = used_values[i];
+      }
       j++;
     }
-    if (!result)
+
+    // If we found duplicates
+    if (!no_duplicates_found) {
       duplicates++;
+    }
   }
   return duplicates;
 }
