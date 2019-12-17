@@ -1,11 +1,8 @@
-//
-// Created by Tim on 08/12/2019.
-//
-
 #include <stdlib.h>
-#include <ga.h>
-
+#include "includes/sudoku.h"
+#include "sudoku.inc"
 int main(void) {
-  ga_init();
+  Sudoku* test = malloc(sizeof(Sudoku));
+  sudoku_get_dim_size(test);
   return EXIT_SUCCESS;
 }

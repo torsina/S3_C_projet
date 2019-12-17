@@ -5,3 +5,4 @@ Project APIs
    :maxdepth: 2
 
    Genetic Algorithm <ga>
+   Sudoku <sudoku>
