@@ -119,7 +119,7 @@ int main(void) {
     _display_population(population);
     printf("-------------------------------------\n");
 
-    free(pb.values);
+    ga_free(pb.values);
     ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }

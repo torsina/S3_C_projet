@@ -271,7 +271,7 @@ Individual *ga_population_individual_clone(const Population *pop,
       clone->genes = genes;
       return clone;
     } else {
-      free(clone);
+      ga_free(clone);
       return NULL;
     }
   } else {
@@ -294,7 +294,7 @@ Individual *ga_individual_clone(const Individual *src,
       clone->genes = genes;
       return clone;
     } else {
-      free(clone);
+      ga_free(clone);
       return NULL;
     }
   } else {
@@ -725,7 +725,7 @@ static FortuneWheel *_fortune_wheel(Population *population,
   }
 
   if (wheel) {
-    FortuneWheel *fortune_wheel = malloc(sizeof *fortune_wheel);
+    FortuneWheel *fortune_wheel = ga_malloc(sizeof *fortune_wheel);
     fortune_wheel->size = size;
     fortune_wheel->individuals = wheel;
     return fortune_wheel;
@@ -798,13 +798,13 @@ Population *ga_population_next(Population *population, const float cross_over,
           /* Every time ga_population_next is called, the old population is
             destroyed*/
           ga_population_destroy(population);
-          free(wheel->individuals);
-          free(wheel);
+          ga_free(wheel->individuals);
+          ga_free(wheel);
 
           return next_generation;
         } else {
-          free(wheel->individuals);
-          free(wheel);
+          ga_free(wheel->individuals);
+          ga_free(wheel);
           ga_population_destroy(next_generation);
           return NULL;
         }

@@ -170,8 +170,8 @@ int main(void) {
       printf("%p ", fortunewheel->individuals[i]);
     }
 
-    free(fortunewheel->individuals);
-    free(fortunewheel);
+    ga_free(fortunewheel->individuals);
+    ga_free(fortunewheel);
     ga_population_destroy(population);
     genetic_generator_destroy(generator);
   }

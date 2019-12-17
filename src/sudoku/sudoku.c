@@ -171,7 +171,7 @@ static unsigned int _evaluate_check_row(unsigned int* merge,
   unsigned int start = rowIndex * dim_size;
   unsigned int end = rowIndex * (dim_size + 1);
   // max int for a value = dim_size - 1
-  unsigned int* used_values = malloc(sizeof(unsigned int) * (dim_size - 1));
+  unsigned int* used_values = ga_malloc(sizeof(unsigned int) * (dim_size - 1));
   unsigned int used_size = 0;
   for (unsigned int i = start; i < end; i++) {
     used_values[used_size] = merge[i];
@@ -188,7 +188,7 @@ static bool _evaluate_check_column(unsigned int* merge, const Sudoku* sudoku,
   unsigned int dim_size = sudoku_get_dim_size(sudoku);
   unsigned int columnIndex = index % dim_size;
   // max int for a value = dim_size - 1
-  unsigned int* used_values = malloc(sizeof(unsigned int) * (dim_size - 1));
+  unsigned int* used_values = ga_malloc(sizeof(unsigned int) * (dim_size - 1));
   unsigned int used_size = 0;
   for (unsigned int i = columnIndex; i < pow(dim_size, 2); i += dim_size) {
     used_values[used_size] = merge[i];
