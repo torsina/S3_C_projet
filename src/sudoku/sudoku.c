@@ -9,28 +9,16 @@
 
 #include "sudoku.inc"
 
-/**
- * \brief Returns the number of tiles in one square in the Sudoku grid.
- *
- * If a square has a width (and length) of n tiles, it contains nxn tiles.
- * There are nxn tiles in a Sudoku grid. The total number of tiles is :
- * N=(nxn)x(nxn)
- *
- * dim_size corresponds to nxn.
- * Example : in a "regular" sudoku, squares are made of 3x3 tiles.
- * dim_size = 9.
- *
- * \author Group 14
- * \version 0.0.1
- * \date 2019
- * \fn unsigned int sudoku_get_dim_size(const Sudoku* sudoku)
- * \param sudoku a pointer to the Sudoku to get the size from.
- * \return The number of tiles in one square (nxn).
- * \sa _evaluate_merge_problem_solution
- */
 unsigned int sudoku_get_dim_size(const Sudoku* sudoku) {
   assert(sudoku);
   return sudoku->dim_size;
+}
+
+void sudoku_destroy(Sudoku *sudoku) {
+  if(sudoku) {
+    ga_free(sudoku->problem);
+    ga_free(sudoku);
+  }
 }
 
 /**
@@ -164,7 +152,7 @@ static unsigned int _evaluate_check_row(unsigned int* merge,
   }
   unsigned int duplicates =
       _evaluate_used_numbers_duplicates(used_values, used_size);
-  free(used_values);
+  ga_free(used_values);
   return duplicates;
 }
 
@@ -181,7 +169,7 @@ static bool _evaluate_check_column(unsigned int* merge, const Sudoku* sudoku,
   }
   unsigned int duplicates =
       _evaluate_used_numbers_duplicates(used_values, used_size);
-  free(used_values);
+  ga_free(used_values);
   return duplicates;
 }
 
@@ -202,7 +190,7 @@ unsigned int evaluate(unsigned int* individual, const void* sudoku) {
   for (unsigned int i = 0; i < dim_size; i++) {
     duplicates += _evaluate_check_column(merge, sudoku, i);
   }
-  free(merge);
+  ga_free(merge);
   // afraid that score could be negative if too much duplicates(because an error
   // can be counted multiple times) so squaring score to be sure
   return score * score - duplicates;

@@ -15,5 +15,6 @@
 int main(void) {
   Sudoku* test = malloc(sizeof(Sudoku));
   sudoku_get_dim_size(test);
+  sudoku_destroy(test);
   return EXIT_SUCCESS;
 }
