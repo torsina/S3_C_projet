@@ -98,6 +98,8 @@ double sqrt(double val) {
 - Utiliser la commande `mingw32-make docs`
 
 ## INSTALLATION DE LIBYAML
+
+### Sous windows
 1. Allez sur le github de [libYAML](https://github.com/yaml/libyaml/) et téléchargez le zip du master
 2. Ouvrez dans un IDE (Visual Studio, CLion)
 3. A la ligne 56 du CMakeLists.txt, changez :
@@ -108,3 +110,12 @@ double sqrt(double val) {
 5. Faites un make all (ou CMake > Générer uniquement > Tout (yaml) sur VS)
 6. Faites un make install (ou CMake > Installer > yaml)
 7. Sur Windows, ajouter le dossier d'installation de la DLL (C:/Program Files (x86)/yaml/bin/) au PATH.
+
+### Sous linux
+1. ``git clone https://github.com/yaml/libyaml.git``
+2. ``./bootstrap``
+3. ``./configure ``
+4. ``cmake . ``
+5. ``make ``
+6. ``sudo make install``
+ 

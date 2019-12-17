@@ -1,4 +1,9 @@
-find_package(yaml REQUIRED)
+find_package(yaml)
+
+if(NOT DEFINED ${yaml_FOUND})
+    message("yaml package not found, maybe it isn't installed correctly ?")
+    find_library(yaml REQUIRED)
+endif(NOT DEFINED ${yaml_FOUND})
 
 
 include_directories(${CMAKE_SOURCE_DIR}/src/ga/includes)
