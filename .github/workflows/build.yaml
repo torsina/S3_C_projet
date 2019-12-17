@@ -30,8 +30,17 @@ jobs:
       - name: Run cclint
         run: cclint --recursive --extensions=c,h,inc ./
 
-      - name: Install Valgrind, Doxygen
-        run: sudo apt-get -y install valgrind doxygen
+      - name: Install Valgrind, Doxygen, autoconf, libtool
+        run: sudo apt-get -y install valgrind doxygen autoconf libtool
+
+      - name: Clone libyaml
+        working-directory: ${{runner.workspace}}/..
+        run: git clone https://github.com/yaml/libyaml.git
+
+      - name: Build & install libyaml
+        working-directory: ${{runner.workspace}}/../libyaml
+        run: ./bootstrap ; ./configure ; cmake . ; sudo make ; sudo make install
+
 
       - name: Configure CMake
         # Use a bash shell so we can use the same syntax for environment variable
