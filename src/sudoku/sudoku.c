@@ -1,12 +1,15 @@
 //
 // Created by Tim on 08/12/2019.
 //
-#include "includes/sudoku.h"
 #include <ga.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "sudoku.inc"
+
+typedef struct {
+    unsigned int* problem;
+    unsigned int dim_size;
+} Sudoku;
 
 int main(void) {
 
