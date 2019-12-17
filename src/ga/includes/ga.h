@@ -195,7 +195,7 @@ extern unsigned int genetic_generator_get_size(
     const GeneticGenerator *generator);
 
 /**
- * \brief clones the GeneticGenerator and returns a new GeneticGenerator
+ * \brief Clones the GeneticGenerator and returns a new GeneticGenerator
  * with the same values.
  *
  * This function returns a new GeneticGenerator, a deep copy of the
@@ -209,7 +209,7 @@ extern unsigned int genetic_generator_get_size(
  * \fn GeneticGenerator *genetic_generator_clone(
  * const GeneticGenerator *genetic_generator)
  * \param genetic_generator a pointer to the GeneticGenerator to clone.
- * \return a pointer to a new GeneticGenerator with the same values as
+ * \return A pointer to a new GeneticGenerator with the same values as
  * `genetic_generator` or a NULL pointer if something goes wrong.
  * \sa genetic_generator_copy
  */
@@ -525,7 +525,7 @@ extern Population *ga_population_set_individual_gene(
     unsigned int gene_index, unsigned int gene_value);
 
 /**
- * \brief mutates part of an Individual's genes (only one gene)
+ * \brief Mutates part of an Individual's genes (only one gene)
  * owned by the Population.
  *
  * This function changes one gene of an Individual by another random value
@@ -534,17 +534,19 @@ extern Population *ga_population_set_individual_gene(
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Individual *mutate(Population *population, unsigned int
- * individual_index) \param population a pointer to the Population to deal
- * with. \param individual_index an index to get a specific Individual from
- * the individuals attribute of the Population. \return the individual after
- * the mutation (change of one of his genes). \sa crossover
+ * \fn Individual *mutate(Population *population, unsigned int individual_index)
+ * \param population a pointer to the Population to deal
+ * with.
+ * \param individual_index an index to get a specific Individual from
+ * the individuals attribute of the Population.
+ * \return the individual after the mutation (change of one of his genes).
+ * \sa crossover
  */
 extern Individual *mutate(Population *population,
                           unsigned int individual_index);
 
 /**
- * \brief mixes parts of two Individuals's genes owned by the Population
+ * \brief Mixes parts of two Individuals's genes owned by the Population
  * to make a individual child.
  *
  *
