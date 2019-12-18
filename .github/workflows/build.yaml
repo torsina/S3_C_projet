@@ -31,7 +31,7 @@ jobs:
         run: cclint --recursive --extensions=c,h,inc ./
 
       - name: Install Valgrind, Doxygen, autoconf, libtool
-        run: sudo apt-get -y install valgrind doxygen autoconf libtool
+        run: sudo apt-get -y install valgrind doxygen autoconf libtool tree
 
       - name: Clone libyaml
         working-directory: ${{runner.workspace}}/..
@@ -57,6 +57,9 @@ jobs:
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config $BUILD_TYPE
+
+      - name: mytest
+        run: tree
 
       - name: Test
         working-directory: ${{runner.workspace}}/build
