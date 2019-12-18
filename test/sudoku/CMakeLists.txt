@@ -15,7 +15,7 @@ foreach (FILENAME ${FILES})
             PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/examples
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../../examples)
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../examples)
 
     if (VALGRIND)
         #Rajouter --quiet si besoin
