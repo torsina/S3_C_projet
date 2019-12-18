@@ -287,10 +287,11 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
          secondIterator < base->data.sequence.items.top; secondIterator++) {
       secondNode = yaml_document_get_node(document, *secondIterator);
       if (secondNode->type == YAML_SCALAR_NODE) {
-        if (sudoku_index >= (pow(sudoku->dim_size, 2))) {
+        if (sudoku_index >= (sudoku->dim_size * sudoku->dim_size)) {
           assert(printf("sudoku index above dim_size^2\n"));
           yaml_document_delete(document);
           yaml_parser_delete(parser);
+          return NULL;
         }
         if (!strcmp((char *)secondNode->data.scalar.value, "null")) {
           sudoku->problem[sudoku_index] = 0;
