@@ -8,9 +8,9 @@ foreach (FILENAME ${FILES})
     get_filename_component(TEST ${FILENAME} NAME_WE)
     add_executable(${TEST} "${CMAKE_CURRENT_SOURCE_DIR}/${SRC}")
 
-    #add_dependencies(${TEST} ga)
     add_dependencies(${TEST} sudoku)
     target_link_libraries(${TEST} sudoku)
+
     if (VALGRIND)
         #Rajouter --quiet si besoin
         add_test("${TEST}[valgrind]" ${VALGRIND} --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TEST})

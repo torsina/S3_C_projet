@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include <ga.h>
+#include <yaml.h>
 
 #include "sudoku.inc"
 
@@ -221,4 +222,93 @@ unsigned int evaluate(unsigned int* individual, const void* sudoku) {
   // afraid that score could be negative if too much duplicates(because an error
   // can be counted multiple times) so squaring score to be sure
   return score * score - duplicates;
+}
+
+Sudoku* fill_sudoku(Sudoku* sudoku, FILE* file) {
+    yaml_parser_t* parser = ga_malloc(sizeof(yaml_parser_t));
+    if(!yaml_parser_initialize(parser)) {
+        assert(printf("failed to init yaml parser\n"));
+        yaml_parser_delete(parser);
+        return NULL;
+    }
+    if(!file) {
+        assert(printf("failed to open file\n"));
+        yaml_parser_delete(parser);
+        return NULL;
+    }
+    yaml_parser_set_input_file(parser, file);
+    yaml_document_t* document = ga_malloc(sizeof(yaml_document_t));
+    if(!yaml_parser_load(parser, document)) {
+        assert(printf("end of document reached\n"));
+        yaml_document_delete(document);
+        yaml_parser_delete(parser);
+        return NULL;
+    }
+    yaml_node_t* root = yaml_document_get_root_node(document);
+    if(!root) {
+        assert(printf("document is empty\n"));
+        yaml_document_delete(document);
+        yaml_parser_delete(parser);
+        return NULL;
+    }
+    // if root is not a sequence(array) return
+    if(root->type != YAML_SEQUENCE_NODE) {
+        assert(printf("root node is not a sequence\n"));
+        yaml_document_delete(document);
+        yaml_parser_delete(parser);
+        return NULL;
+    }
+
+    yaml_node_item_t* iterator;
+    printf("entering first array\n");
+    unsigned int sudoku_index = 0;
+    for(iterator = root->data.sequence.items.start; iterator < root->data.sequence.items.top; iterator++) {
+        yaml_node_t* base = yaml_document_get_node(document, *iterator);
+        // if first node is not a sequence of size dim_size
+        if(base->type != YAML_SEQUENCE_NODE) {
+            assert(printf("first node is not a sequence\n"));
+            yaml_document_delete(document);
+            yaml_parser_delete(parser);
+            return NULL;
+        }
+        if(base->data.sequence.items.top - base->data.sequence.items.start != sudoku->dim_size) {
+            assert(printf("first array not of size %u\n", sudoku->dim_size));
+            yaml_document_delete(document);
+            yaml_parser_delete(parser);
+            return NULL;
+        }
+
+        yaml_node_t* secondNode;
+        yaml_node_item_t* secondIterator;
+        assert(printf("entering second array\n"));
+        for (secondIterator = base->data.sequence.items.start; secondIterator < base->data.sequence.items.top; secondIterator++) {
+            secondNode = yaml_document_get_node(document, *secondIterator);
+            if(secondNode->type == YAML_SCALAR_NODE) {
+                if(sudoku_index >= (pow(sudoku->dim_size, 2))) {
+                    assert(printf("sudoku index above dim_size^2\n"));
+                    yaml_document_delete(document);
+                    yaml_parser_delete(parser);
+                }
+                if(!strcmp((char* )secondNode->data.scalar.value, "null")) {
+                    sudoku->problem[sudoku_index] = 0;
+                    assert(printf("value: null\n"));
+                } else {
+                    char* endPtr;
+                    unsigned int value = strtol((char* )secondNode->data.scalar.value, &endPtr, 10);
+                    assert(printf("value: %u\n", value));
+                    sudoku->problem[sudoku_index] = value;
+                }
+                sudoku_index++;
+            } else {
+                assert(printf("second array element is not scalar\n"));
+                yaml_document_delete(document);
+                yaml_parser_delete(parser);
+                return NULL;
+            }
+        }
+    }
+
+    yaml_document_delete(document);
+    yaml_parser_delete(parser);
+    return sudoku;
 }
