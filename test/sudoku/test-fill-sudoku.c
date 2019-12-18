@@ -88,6 +88,7 @@ int main(void) {
     FILE* file;
     printf("path: %s\n", test->path);
     file = fopen(test->path, "r");
+    assert(file != NULL);
     Sudoku* sudoku = sudoku_create(test->dim_size);
     sudoku = fill_sudoku(sudoku, file);
     if (strstr(test->path, "irregular_size_1") ||
