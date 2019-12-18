@@ -59,6 +59,7 @@ jobs:
         run: cmake --build . --config $BUILD_TYPE
 
       - name: mytest
+        working-directory: ${{runner.workspace}}/..
         run: tree
 
       - name: Test
