@@ -34,11 +34,11 @@ typedef struct {
 Test* create_test(char* path, unsigned int* values, unsigned int dim_size) {
   Test* test = malloc(sizeof(Test));
   unsigned int size = dim_size * dim_size;
-  test->path =
-      malloc(((strlen(path) + strlen("../../examples/") + strlen(".yaml")) *
-              sizeof(char)) +
-             1);
-  snprintf(test->path, sizeof(test->path), "../../examples/%s.yaml", path);
+  char str[80] = "../../examples/";
+  strcat(str, path); // NOLINT
+  strcat(str, ".yaml"); // NOLINT
+  test->path = malloc((strlen(str) * sizeof(char)) + 1);
+  strcpy(test->path, str); // NOLINT
   test->values = malloc(sizeof(unsigned int) * size);
   memcpy(test->values, values, size);
   test->dim_size = dim_size;
