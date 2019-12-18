@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #ifndef SRC_SUDOKU_INCLUDES_SUDOKU_H_
 #define SRC_SUDOKU_INCLUDES_SUDOKU_H_
 
@@ -75,4 +77,7 @@ extern Sudoku *sudoku_create(unsigned int dim_size);
  * \param sudoku a pointer to the Sudoku to destroy.
  */
 extern void sudoku_destroy(Sudoku *sudoku);
+
+extern Sudoku* fill_sudoku(Sudoku* sudoku, FILE* file);
+
 #endif  // SRC_SUDOKU_INCLUDES_SUDOKU_H_
