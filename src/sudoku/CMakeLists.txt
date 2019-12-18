@@ -1,6 +1,5 @@
 find_package(yaml REQUIRED)
 
-
 include_directories(${CMAKE_SOURCE_DIR}/src/ga/includes)
 add_executable(main main.c)
 target_link_libraries(main yaml)
