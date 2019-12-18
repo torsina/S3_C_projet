@@ -10,6 +10,12 @@ foreach (FILENAME ${FILES})
 
     add_dependencies(${TEST} sudoku)
     target_link_libraries(${TEST} sudoku)
+    add_custom_command(
+            TARGET ${TEST}
+            PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/examples
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../../examples)
 
     if (VALGRIND)
         #Rajouter --quiet si besoin
