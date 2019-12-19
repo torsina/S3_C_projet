@@ -18,7 +18,6 @@ static bool _check_mutate(const Population* pop, unsigned int index,
   assert(old);
   const GeneticGenerator* gen = ga_population_get_generator(pop);
   assert(gen);
-  printf("AAAAAAAAAA");
   unsigned int i = 0;
   unsigned int size = genetic_generator_get_size(gen);
   while (i < size &&

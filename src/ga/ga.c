@@ -324,6 +324,7 @@ Population *ga_population_create(const GeneticGenerator *generator,
       for (unsigned int i = 0; i < size; i++) {
         population->individuals[i] = genetic_generator_individual(generator);
       }
+      population->best_individual = NULL;
       return population;
     }
     return NULL;
@@ -641,6 +642,16 @@ static Individual *_fortune_wheel_draw(FortuneWheel *wheel) {
   }
 }
 
+static unsigned int _find_max_score(unsigned int *scores, unsigned int size) {
+  unsigned int max_index = 0;
+  for (unsigned int i = 0; i < size; i++) {
+    if (scores[i] > scores[max_index]) {
+      max_index = i;
+    }
+  }
+  return max_index;
+}
+
 /**
  * \brief This function creates a FortuneWheel from a given population, a
  * a function to compute the score of an Individual and the problem to solve.
@@ -686,6 +697,7 @@ static FortuneWheel *_fortune_wheel(Population *population,
     scores[i] = score_int;
   }
 
+  unsigned int max_score_index = _find_max_score(scores, population->size);
   /* This is the fortune wheel (an array of individuals). By default, it is
    * initialised to NULL, but the _array_list_add will allocate memory for
    * it by calling realloc*/
@@ -734,6 +746,43 @@ static FortuneWheel *_fortune_wheel(Population *population,
   }
 }
 
+unsigned int *population_best_individual(Population *population,
+                                    unsigned int (*evaluate)(unsigned int *,
+                                                             const void *),
+                                    const void *problem,
+                                    unsigned int *score_out) {
+  if (!population) {
+    return NULL;
+  }
+  if (!evaluate) {
+    return NULL;
+  }
+
+  /* We create an array of the same size as the population to hold all of
+   the scores of its individuals*/
+  unsigned int scores[population->size];
+
+  // The algorithm iterates the individuals
+  for (unsigned int i = 0; i < ga_population_get_size(population); i++) {
+    unsigned int score_int =
+        evaluate(_ga_population_get_individual(population, i)->genes, problem);
+
+    // We store the score of the current Individual in the array
+    scores[i] = score_int;
+  }
+
+  unsigned int max_score_index = _find_max_score(scores, population->size);
+  if(max_score_index < population->size) {
+    if(score_out) {
+      *score_out = scores[max_score_index];
+    }
+    return population->individuals[max_score_index]->genes;
+  }
+  else {
+    return NULL;
+  }
+}
+
 Population *ga_population_next(Population *population, const float cross_over,
                                const float mutation,
                                unsigned int (*evaluate)(unsigned int *,
@@ -745,6 +794,7 @@ Population *ga_population_next(Population *population, const float cross_over,
         mutation > 1.0f) {
       return NULL;
     } else {
+
       // Generating the fortune wheel for this population.
       FortuneWheel *wheel = _fortune_wheel(population, evaluate, problem);
 

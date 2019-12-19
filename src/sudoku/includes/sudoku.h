@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 #ifndef SRC_SUDOKU_INCLUDES_SUDOKU_H_
 #define SRC_SUDOKU_INCLUDES_SUDOKU_H_
@@ -44,7 +45,6 @@ extern unsigned int sudoku_get_dim_size(const Sudoku* sudoku);
  */
 extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
 
-
 /**
  * \brief Allocates and initialize a new Sudoku struct.
  *
@@ -62,7 +62,7 @@ extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
  * or NULL if something goes wrong.
  * \sa sudoku_destroy
  */
-extern Sudoku *sudoku_create(unsigned int dim_size);
+extern Sudoku* sudoku_create(unsigned int dim_size);
 
 /**
  * \brief Frees the memory used by a Sudoku struct.
@@ -76,8 +76,47 @@ extern Sudoku *sudoku_create(unsigned int dim_size);
  * \fn void sudoku_destroy(Sudoku *sudoku)
  * \param sudoku a pointer to the Sudoku to destroy.
  */
-extern void sudoku_destroy(Sudoku *sudoku);
+extern void sudoku_destroy(Sudoku* sudoku);
 
+
+// TODO(T-MMLR) : remove
 extern Sudoku* fill_sudoku(Sudoku* sudoku, FILE* file);
 
+/**
+ * \brief This function reads a Sudoku from a YAML file. The file must be
+ * opened.
+ *
+ * This function returns NULL if the YAML syntax is invalid.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn Sudoku* read_sudoku(FILE* file)
+ * \param file an opened file handle.
+ * \param verbose wether this function should print informations about its
+ * execution to the standard output.
+ * \return A Sudoku read from the parsed YAML file or NULL if something goes
+ * wrong.
+ */
+extern Sudoku* read_sudoku(FILE* file, bool verbose);
+
+/**
+ * \brief This function returns the size of a potential solution (the number
+ * of empty tiles, with the value 0).
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int sudoku_empty_tiles(const Sudoku *sudoku)
+ * \param sudoku a pointer to the Sudoku to get the number of empty tiles from.
+ * \return The number of empty tiles of the Sudoku grid.
+ */
+extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
+
+
+extern bool is_valid(unsigned int *solution, const Sudoku *sudoku);
+extern bool is_max_score(unsigned int score, const Sudoku *sudoku);
+
+extern void sudoku_print(unsigned int *solution, Sudoku *sudoku);
 #endif  // SRC_SUDOKU_INCLUDES_SUDOKU_H_

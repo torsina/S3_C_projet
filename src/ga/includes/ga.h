@@ -623,4 +623,30 @@ extern Population *ga_population_next(
     unsigned int (*evaluate)(unsigned int *, const void *),
     const void *problem);
 
+/**
+ * \brief This function finds the Individual of a Population which has the
+ * highest score and returns its genes.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn static unsigned int *_population_best_individual(Population *population,
+                                    unsigned int (*evaluate)(unsigned int *,
+                                                             const void *),
+                                    const void *problem,
+                                    unsigned int *scores_out)
+ * \param population a pointer to a Population containing the individuals.
+ * \param evaluate a pointer to a function used to evaluate each Individual
+ * and getting its score relative to the problem.
+ * \param problem a pointer to the problem to solve, passed to evaluate.
+ * \param scores_out a pointer to the value to output the score to.
+ * \return A pointer to an unsigned int array or NULL if something went wrong.
+ * \sa _fortune_wheel
+ */
+extern unsigned int *population_best_individual(
+    Population *population,
+    unsigned int (*evaluate)(unsigned int *, const void *),
+    const void *problem,
+    unsigned int *scores_out);
+
 #endif  // SRC_GA_INCLUDES_GA_H_

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <ga.h>
 #include <yaml.h>
 
 #include "includes/sudoku.h"
@@ -29,6 +30,26 @@ static const char *const ERROR_RANGE_LONG =
 static const char *const ERROR_ZERO_LONG =
     "[ERROR] Integer at position %zu must be strictly positive.\n";
 
+static const char *const ERROR_INVALID_SUDOKU =
+    "[ERROR] The sudoku is invalid.\n";
+
+static const char *const ERROR_EMPTY_SUDOKU = "[ERROR] The sudoku is empty.\n";
+
+static const char *const ERROR_GENERATOR =
+    "[ERROR] The GeneticGenerator could not be created.\n";
+
+static const char *const ERROR_GENERATOR_CARDINALITIES =
+    "[ERROR] The GeneticGenerator's cardinalities could not be created.\n";
+
+static const char *const ERROR_POPULATION =
+    "[ERROR] The Population could not be created.\n";
+
+static const char *const ERROR_POPULATION_EVOLVE =
+    "[ERROR] The Population could not evolve.\n";
+
+static const char *const ERROR_BEST_INDIVIDUAL =
+    "[ERROR] Could not find the best individual.\n";
+
 static const char *const HELP_MESSAGE =
     "Usages :\n"
     "1. sudoku --test : display this message\n"
@@ -43,6 +64,8 @@ static const char *const HELP_MESSAGE =
     "isn't solved and this number of iteration is reached. Positive integer.\n";
 
 static const char *const HELP_PARAM = "--help";
+
+static const char *const VERBOSE_PARAM = "--verbose";
 
 static double read_probability(const char **argv, size_t index) {
   char *end_ptr;
@@ -90,6 +113,8 @@ int main(int argc, const char **argv) {
    * - Number of individuals in the Population
    * - Maximum number of iterations
    */
+  bool verbose = false;
+
   if (argc < 6) {
     if (argc > 1) {
       /* strcmp won't work because HELP_PARAM has a trailing \0.
@@ -125,7 +150,138 @@ int main(int argc, const char **argv) {
 
       uint32_t nb_iter = read_count(argv, 5);
 
+      if (argc >= 7 &&
+          strncmp(argv[6], VERBOSE_PARAM, strlen(VERBOSE_PARAM)) == 0) {
+        verbose = true;
+        printf("Verbose mode is on.\n");
+      }
+
       // LOAD YAML HERE
+      Sudoku *sudoku = read_sudoku(yaml_file, verbose);
+      if (!sudoku) {
+        fprintf(stderr, "%s", ERROR_INVALID_SUDOKU);
+        fclose(yaml_file);
+        return EXIT_FAILURE;
+      }
+
+      // Displaying the Sudoku
+      if (verbose) {
+        printf("Loaded Sudoku grid :\n");
+        for (unsigned int x = 0; x < sudoku->dim_size; x++) {
+          for (unsigned int y = 0; y < sudoku->dim_size; y++) {
+            size_t index = x * sudoku->dim_size + y;
+            printf("%u ", sudoku->problem[index]);
+          }
+          printf("\n");
+        }
+      }
+
+      ga_init();
+      {
+        // The number of empty tiles in the grid, size of 1 solution
+        unsigned int nb_empty_tiles = sudoku_empty_tiles(sudoku);
+        if (nb_empty_tiles == 0) {
+          fprintf(stderr, "%s", ERROR_EMPTY_SUDOKU);
+          fclose(yaml_file);
+          sudoku_destroy(sudoku);
+          return EXIT_FAILURE;
+        }
+
+        GeneticGenerator *generator = genetic_generator_create(nb_empty_tiles);
+        if (!generator) {
+          fprintf(stderr, "%s", ERROR_GENERATOR);
+          fclose(yaml_file);
+          sudoku_destroy(sudoku);
+          return EXIT_FAILURE;
+        }
+
+        for (unsigned int i = 0; i < nb_empty_tiles; i++) {
+          if (!genetic_generator_set_cardinality(generator, i,
+                                                 sudoku->dim_size)) {
+            fprintf(stderr, "%s", ERROR_GENERATOR_CARDINALITIES);
+            fclose(yaml_file);
+            sudoku_destroy(sudoku);
+            genetic_generator_destroy(generator);
+            return EXIT_FAILURE;
+          }
+        }
+
+        Population *population = ga_population_create(generator, nb_ind);
+        if (!population) {
+          fprintf(stderr, "%s", ERROR_POPULATION);
+          fclose(yaml_file);
+          sudoku_destroy(sudoku);
+          genetic_generator_destroy(generator);
+          return EXIT_FAILURE;
+        }
+
+        // TODO(T-MMLR) : print the generation in verbose mode
+        if (verbose) {
+        }
+
+        unsigned int best_score = 0;
+        unsigned int *best = population_best_individual(population, evaluate,
+                                                        sudoku, &best_score);
+        if (!best) {
+          fprintf(stderr, "%s", ERROR_BEST_INDIVIDUAL);
+          fclose(yaml_file);
+          sudoku_destroy(sudoku);
+          genetic_generator_destroy(generator);
+          ga_population_destroy(population);
+          return EXIT_FAILURE;
+        }
+
+        // We already have the first generation
+        unsigned int generation = 1;
+
+        printf("Best solution for generation %u with score %u.\n", generation,
+               best_score);
+        sudoku_print(best, sudoku);
+        printf("------------------------\n");
+        if(is_max_score(best_score, sudoku)) {
+          printf("Found the solution !");
+        }
+
+        while (generation < nb_iter) {
+          if (verbose) {
+            printf("\t--GENERATION %u--\n", generation);
+          }
+
+          Population *next_generation =
+              ga_population_next(population, (const float)crossover_prob,
+                                 (const float)mutation_prob, evaluate, sudoku);
+          if (!next_generation) {
+            fprintf(stderr, "%s", ERROR_POPULATION_EVOLVE);
+            fclose(yaml_file);
+            sudoku_destroy(sudoku);
+            genetic_generator_destroy(generator);
+            ga_population_destroy(population);
+          }
+
+          population = next_generation;
+          generation++;
+
+          best = population_best_individual(population, evaluate,
+                                     sudoku, &best_score);
+          if (!best) {
+            fprintf(stderr, "%s", ERROR_BEST_INDIVIDUAL);
+            fclose(yaml_file);
+            sudoku_destroy(sudoku);
+            genetic_generator_destroy(generator);
+            ga_population_destroy(population);
+            return EXIT_FAILURE;
+          }
+
+          printf("Best solution for generation %u with score %u.\n", generation,
+                 best_score);
+          sudoku_print(best, sudoku);
+          printf("------------------------\n");
+          if(is_max_score(best_score, sudoku)) {
+            printf("Found the solution !");
+          }
+        }
+      }
+      ga_finish();
 
     } else {
       fprintf(stderr, ERROR_FILE_NOT_FOUND);

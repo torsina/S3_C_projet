@@ -19,6 +19,7 @@ struct _Population {
   unsigned int size;
   GeneticGenerator* generator;
   Individual** individuals;
+  Individual* best_individual;
 };
 
 #endif  // SRC_GA_GA_INC_
