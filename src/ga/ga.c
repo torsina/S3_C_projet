@@ -513,6 +513,36 @@ Individual *mutate(Population *population, unsigned int individual_index) {
   }
 }
 
+Individual *mutate_2(Population *population, unsigned int individual_index,
+                     const float prob) {
+  if (population) {
+    GeneticGenerator *generator = ga_population_get_generator(population);
+    if (generator) {
+      unsigned int nb_genes = genetic_generator_get_size(generator);
+      for (unsigned int i = 0; i < nb_genes; i++) {
+        if (_random_double(1.0) < prob) {
+          unsigned int gene_value = (int)_random_double(
+              genetic_generator_get_cardinality(generator, i) - 1);
+
+          Individual *individual =
+              _ga_population_get_individual(population, individual_index);
+          if (ga_population_set_individual_gene(population, individual_index, i,
+                                                gene_value)) {
+            return individual;
+          } else {
+            return NULL;
+          }
+        }
+      }
+
+    } else {
+      return NULL;
+    }
+  } else {
+    return NULL;
+  }
+}
+
 Individual *crossover(const Population *population,
                       unsigned int first_individual_index,
                       unsigned int second_individual_index) {
@@ -626,8 +656,7 @@ Population *crossover_3(const Population *population,
     } else {
       return NULL;
     }
-  }
-  else {
+  } else {
     return NULL;
   }
 }
@@ -903,17 +932,17 @@ Population *ga_population_next(Population *population, const float cross_over,
               if (_random_double(1.0) < cross_over) {
                 // crossover(next_generation, current_size - 2, current_size -
                 // 1);
-                crossover_3(next_generation, current_size - 2,
-                            current_size - 1, cross_over);
+                crossover_3(next_generation, current_size - 2, current_size - 1,
+                            cross_over);
               }
 
               // Random mutation on the 2 individual
               if (_random_double(1.0) < mutation) {
-                mutate(next_generation, current_size - 2);
+                mutate_2(next_generation, current_size - 2, mutation);
               }
 
               if (_random_double(1.0) < mutation) {
-                mutate(next_generation, current_size - 1);
+                mutate_2(next_generation, current_size - 1, mutation);
               }
             } else {
               if (individual1)

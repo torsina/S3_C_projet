@@ -237,13 +237,16 @@ unsigned int evaluate(unsigned int *individual, const void *sudoku) {
   unsigned int score = _potential_max_score(sudoku);
   unsigned int *merge = _evaluate_merge_problem_solution(individual, sudoku);
   unsigned int duplicates = 0;
+  unsigned int test = 0;
   // rows
   for (unsigned int i = 0; i < dim_size * dim_size; i += dim_size) {
     duplicates += _evaluate_check_row(merge, sudoku, i);
+    test += dim_size - _evaluate_check_row(merge, sudoku, i);
   }
   // columns
   for (unsigned int i = 0; i < dim_size; i++) {
     duplicates += _evaluate_check_column(merge, sudoku, i);
+    test += dim_size - _evaluate_check_column(merge, sudoku, i);
   }
   // boxes
   for (unsigned int i = 0; i < box_length; i++) {
@@ -253,16 +256,19 @@ unsigned int evaluate(unsigned int *individual, const void *sudoku) {
       // The index points at the top left corner of the box
       unsigned int index = i * box_length + j * box_length * dim_size;
       duplicates += _evaluate_check_box(merge, sudoku, index);
+      test += dim_size - _evaluate_check_box(merge, sudoku, index);
     }
   }
 
   // duplicates += _evaluate_similarity(merge, sudoku);
   ga_free(merge);
 
-  if(2*duplicates > score) {
+  //return test;
+  // 2 is just a weight here
+  if(duplicates > score) {
     return 0;
   }
-  return score - 2* duplicates;
+  return score - duplicates;
 }
 
 bool is_valid(unsigned int *solution, const Sudoku *sudoku) {
