@@ -260,7 +260,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
   if (!document) {
     assert(printf("The document couln not be created.\n"));
     yaml_parser_delete(parser);
-    fclose(file);
     return NULL;
   }
 
@@ -268,7 +267,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
     assert(printf("End of document reached.\n"));
     yaml_document_delete(document);
     yaml_parser_delete(parser);
-    fclose(file);
     return NULL;
   }
 
@@ -277,7 +275,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
     assert(printf("Document is empty.\n"));
     yaml_document_delete(document);
     yaml_parser_delete(parser);
-    fclose(file);
     return NULL;
   }
 
@@ -286,7 +283,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
     assert(printf("Root node is not a sequence.\n"));
     yaml_document_delete(document);
     yaml_parser_delete(parser);
-    fclose(file);
     return NULL;
   }
 
@@ -304,7 +300,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
       assert(printf("First node is not a sequence.\n"));
       yaml_document_delete(document);
       yaml_parser_delete(parser);
-      fclose(file);
       return NULL;
     }
 
@@ -314,7 +309,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
       assert(printf("First array not of size %u.\n", sudoku->dim_size));
       yaml_document_delete(document);
       yaml_parser_delete(parser);
-      fclose(file);
       return NULL;
     }
 
@@ -335,7 +329,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
           assert(printf("Sudoku index above dim_size^2.\n"));
           yaml_document_delete(document);
           yaml_parser_delete(parser);
-          fclose(file);
           return NULL;
         }
 
@@ -355,7 +348,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
                           (char *)second_node->data.scalar.value));
             yaml_document_delete(document);
             yaml_parser_delete(parser);
-            fclose(file);
             return NULL;
           }
           assert(printf("Value: %u.\n", value));
@@ -367,7 +359,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
         assert(printf("Second array element is not scalar.\n"));
         yaml_document_delete(document);
         yaml_parser_delete(parser);
-        fclose(file);
         return NULL;
       }
     }
@@ -375,6 +366,5 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
 
   yaml_document_delete(document);
   yaml_parser_delete(parser);
-  fclose(file);
   return sudoku;
 }
