@@ -57,7 +57,7 @@ GeneticGenerator *genetic_generator_create(const unsigned int size) {
 
 void genetic_generator_destroy(GeneticGenerator *generator) {
   assert(generator);
-  if(generator) {
+  if (generator) {
     ga_free(generator->cardinalities);
     ga_free(generator);
   }
@@ -336,7 +336,7 @@ Population *ga_population_create(const GeneticGenerator *generator,
 void ga_population_destroy(Population *population) {
   // In debug : check if the population pointer is not null
   assert(population);
-  if(population) {
+  if (population) {
     for (unsigned int i = 0; i < population->size; i++) {
       // In debug : check if the individual pointer is not NULL
       assert(population->individuals[i]);
