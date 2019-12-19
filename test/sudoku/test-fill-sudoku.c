@@ -114,6 +114,7 @@ int main(void) {
       sudoku_destroy(sudoku);
       sudoku = NULL;
       assert(temp == NULL);
+      free(temp); // Not sure
     } else if (strstr(test->path, "three_by_three") ||
                strstr(test->path, "null") || strstr(test->path, "full")) {
       assert(problem_equal(temp->problem, test->values,
