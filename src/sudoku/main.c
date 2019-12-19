@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -36,7 +37,7 @@ static const char *const HELP_MESSAGE =
     "\t|<crossover> : crossover probability. English notation (dot), [0, 1].\n"
     "\t|<mutation>  : mutation probability. English notation (dot), [0, 1].\n"
     "\t|<nb ind>    : number of individuals per population/generation. Positive"
-    " integer.\n"
+    " integer >0.\n"
     "\t|<max it>    : max iterations count. The program will stop if the "
     "problem"
     "isn't solved and this number of iteration is reached. Positive integer.\n";
@@ -61,9 +62,9 @@ static double read_probability(const char **argv, size_t index) {
   return prob;
 }
 
-static unsigned long int read_count(const char **argv, size_t index) {
+static uint32_t read_count(const char **argv, size_t index) {
   char *end_ptr;
-  long int count = strtol(argv[index], &end_ptr, 10);
+  int32_t count = strtol(argv[index], &end_ptr, 10);
 
   /* end_ptr can be NULL, in which case it indicates that the algorithm
     successfully read the long but no other character was present after.*/
@@ -76,7 +77,7 @@ static unsigned long int read_count(const char **argv, size_t index) {
     fprintf(stderr, ERROR_RANGE_LONG, index, argv[index]);
     exit(EXIT_FAILURE);
   }
-  return (unsigned long int)count;
+  return (uint32_t)count;
 }
 
 int main(int argc, const char **argv) {
@@ -95,14 +96,14 @@ int main(int argc, const char **argv) {
        * Here, by using strncmp we only compare the characters before the \0.
        */
       if (strncmp(argv[1], HELP_PARAM, strlen(HELP_PARAM)) == 0) {
-        printf(HELP_MESSAGE);
+        printf("%s", HELP_MESSAGE);
         return EXIT_FAILURE;
       } else {
-        fprintf(stderr, ERROR_MESSAGE);
+        fprintf(stderr, "%s", ERROR_MESSAGE);
         return EXIT_FAILURE;
       }
     } else {
-      fprintf(stderr, ERROR_MESSAGE);
+      fprintf(stderr, "%s", ERROR_MESSAGE);
       return EXIT_FAILURE;
     }
   } else {
@@ -115,14 +116,14 @@ int main(int argc, const char **argv) {
 
       double mutation_prob = read_probability(argv, 3);
 
-      unsigned long int nb_ind = read_count(argv, 4);
+      uint32_t nb_ind = read_count(argv, 4);
 
       if (nb_ind <= 0) {
         fprintf(stderr, ERROR_ZERO_LONG, 4);
         return EXIT_FAILURE;
       }
 
-      unsigned long int nb_iter = read_count(argv, 5);
+      uint32_t nb_iter = read_count(argv, 5);
 
       // LOAD YAML HERE
 
