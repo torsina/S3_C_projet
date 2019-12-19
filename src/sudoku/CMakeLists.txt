@@ -24,3 +24,10 @@ target_link_libraries(sudoku m)
 target_link_libraries(main sudoku)
 
 
+if (VALGRIND)
+    add_test("main[valgrind]" ${VALGRIND} --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/main ../../examples/teacher.yaml 0.2 .05 100 100)
+    add_test("main[normal]" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/main ../../examples/teacher.yaml 0.2 .05 100 100)
+else ()
+
+    add_test("main[normal]" ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/main ../../examples/teacher.yaml 0.2 .05 100 100)
+endif ()
