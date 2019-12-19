@@ -1,7 +1,3 @@
-//
-// Created by Aelis on 17/12/2019.
-//
-
 #include <stdlib.h>
 
 #ifdef NDEBUG
@@ -13,6 +9,7 @@
 #include <string.h>
 
 #include "../../src/sudoku/includes/sudoku.h"
+
 #include "../../src/sudoku/sudoku.inc"
 
 bool problem_equal(unsigned int* first, unsigned int* second,
@@ -33,13 +30,16 @@ typedef struct {
 
 Test* create_test(char* path, unsigned int* values, unsigned int dim_size) {
   Test* test = malloc(sizeof(Test));
+  assert(test);
   unsigned int size = dim_size * dim_size;
   char str[80] = "../../examples/";
   strcat(str, path); // NOLINT
   strcat(str, ".yaml"); // NOLINT
   test->path = malloc((strlen(str) * sizeof(char)) + 1);
+  assert(test->path);
   strcpy(test->path, str); // NOLINT
   test->values = malloc(sizeof(unsigned int) * size);
+  assert(test->values);
   memcpy(test->values, values, size);
   test->dim_size = dim_size;
   return test;
@@ -47,7 +47,9 @@ Test* create_test(char* path, unsigned int* values, unsigned int dim_size) {
 
 Tests* create_tests(unsigned int size) {
   Tests* tests = malloc(sizeof(Tests));
+  assert(tests);
   tests->tests = malloc(sizeof(Test) * size);
+  assert(tests->tests);
   tests->size = 0;
 }
 
