@@ -23,7 +23,7 @@ typedef struct _Sudoku Sudoku;
  * \fn unsigned int sudoku_get_dim_size(const Sudoku* sudoku)
  * \param sudoku a pointer to the Sudoku to get the size from.
  * \return The number of tiles in one square (nxn).
- * \sa _evaluate_merge_problem_solution
+ * \sa evaluate_merge_problem_solution
  */
 extern unsigned int sudoku_get_dim_size(const Sudoku* sudoku);
 
@@ -44,6 +44,34 @@ extern unsigned int sudoku_get_dim_size(const Sudoku* sudoku);
  * \sa ga_population_next
  */
 extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
+
+/**
+ * \brief This fu
+ *
+ * An Individual is a sparse array. When the Sudoku is loaded from a file,
+ * some of its tiles already contain numbers ("constraints"). The
+ * genetic algorithm has to guess the correct combination for the "empty" tiles
+ * (filled with zeroes).
+ *
+ * The individuals used by the genetic algorithm do not represent the complete
+ * grid, only the empty tiles, with values between 0 and dim_size-1 (n²-1).
+ *
+ * This function rebuilds the complete grid for one individual by adding the
+ * values of the individual where they should be, in between the "static"
+ * constraints of the Sudoku.
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int* evaluate_merge_problem_solution(unsigned int* individual,
+                                               const Sudoku* sudoku)
+ * \param individual a pointer to the genes of an Individual.
+ * \param sudoku a pointer to the Sudoku to solve.
+ * \return The merged grid or NULL if something goes wrong.
+ * \sa evaluate_merge_problem_solution
+ */
+extern unsigned int *evaluate_merge_problem_solution(unsigned int *individual,
+                                              const Sudoku *sudoku);
 
 /**
  * \brief Allocates and initialize a new Sudoku struct.
@@ -113,6 +141,20 @@ extern Sudoku* read_sudoku(FILE* file, bool verbose);
  * \return The number of empty tiles of the Sudoku grid.
  */
 extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
+
+/**
+ * \brief This function saves the sudoku to a file with yaml formating
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn bool save_sudoku(const Sudoku *sudoku, FILE *file)
+ * \param sudoku a pointer to the Sudoku to get the data to save from.
+ * \param file a file handler to the file we want the sudoku to be saved at
+ * \return 0 if the save failed, 1 if it succeed
+ */
+extern bool save_sudoku(const Sudoku *sudoku, FILE *file);
 
 
 extern bool is_valid(unsigned int *solution, const Sudoku *sudoku);

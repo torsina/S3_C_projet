@@ -11,7 +11,7 @@
 
 #include "sudoku.inc"
 
-#define PRINT_VERBOSE(verbose, str) ((verbose) ? printf(str) : (void)0);
+#define PRINT_VERBOSE(verbose, str) ((verbose) ? printf("%s", str) : (void)0);
 
 unsigned int sudoku_get_dim_size(const Sudoku *sudoku) {
   assert(sudoku);
@@ -52,33 +52,8 @@ void sudoku_destroy(Sudoku *sudoku) {
   }
 }
 
-/**
- * \brief This fu
- *
- * An Individual is a sparse array. When the Sudoku is loaded from a file,
- * some of its tiles already contain numbers ("constraints"). The
- * genetic algorithm has to guess the correct combination for the "empty" tiles
- * (filled with zeroes).
- *
- * The individuals used by the genetic algorithm do not represent the complete
- * grid, only the empty tiles, with values between 0 and dim_size-1 (n²-1).
- *
- * This function rebuilds the complete grid for one individual by adding the
- * values of the individual where they should be, in between the "static"
- * constraints of the Sudoku.
- *
- * \author Group 14
- * \version 0.0.1
- * \date 2019
- * \fn unsigned int* _evaluate_merge_problem_solution(unsigned int* individual,
-                                               const Sudoku* sudoku)
- * \param individual a pointer to the genes of an Individual.
- * \param sudoku a pointer to the Sudoku to solve.
- * \return The merged grid or NULL if something goes wrong.
- * \sa _evaluate_merge_problem_solution
- */
-static unsigned int *_evaluate_merge_problem_solution(unsigned int *individual,
-                                                      const Sudoku *sudoku) {
+unsigned int *evaluate_merge_problem_solution(unsigned int *individual,
+                                              const Sudoku *sudoku) {
   if (!individual) {
     return NULL;
   }
@@ -216,14 +191,15 @@ static bool _evaluate_check_box(unsigned int *merge, const Sudoku *sudoku,
 unsigned int _evaluate_similarity(unsigned int *merge, const Sudoku *sudoku) {
   unsigned int dim_size = sudoku_get_dim_size(sudoku);
   unsigned int score = 0;
-  for(unsigned int i = 0; i < dim_size*dim_size; i++) {
-    score += abs((int) merge[i] - (int) sudoku->problem[i]);
+  for (unsigned int i = 0; i < dim_size * dim_size; i++) {
+    score += abs((int)merge[i] - (int)sudoku->problem[i]);
   }
   return score;
 }
 
 unsigned int _potential_max_score(const Sudoku *sudoku) {
-  return (unsigned int)pow(sudoku->dim_size, 2) * 3/* + (sudoku->dim_size - 1) * sudoku->dim_size * sudoku->dim_size*/;
+  return (unsigned int)pow(sudoku->dim_size, 2) *
+         3 /* + (sudoku->dim_size - 1) * sudoku->dim_size * sudoku->dim_size*/;
 }
 
 unsigned int evaluate(unsigned int *individual, const void *sudoku) {
@@ -235,7 +211,7 @@ unsigned int evaluate(unsigned int *individual, const void *sudoku) {
   unsigned int box_length = (unsigned int)sqrt(dim_size);
   // unsigned int score = (unsigned int)pow(dim_size, 2) * 3;
   unsigned int score = _potential_max_score(sudoku);
-  unsigned int *merge = _evaluate_merge_problem_solution(individual, sudoku);
+  unsigned int *merge = evaluate_merge_problem_solution(individual, sudoku);
   unsigned int duplicates = 0;
   unsigned int test = 0;
   // rows
@@ -263,9 +239,9 @@ unsigned int evaluate(unsigned int *individual, const void *sudoku) {
   // duplicates += _evaluate_similarity(merge, sudoku);
   ga_free(merge);
 
-  //return test;
+  // return test;
   // 2 is just a weight here
-  if(duplicates > score) {
+  if (duplicates > score) {
     return 0;
   }
   return score - duplicates;
@@ -648,7 +624,7 @@ unsigned int sudoku_empty_tiles(const Sudoku *sudoku) {
 
 void sudoku_print(unsigned int *solution, Sudoku *sudoku) {
   if (solution && sudoku) {
-    unsigned int *array = _evaluate_merge_problem_solution(solution, sudoku);
+    unsigned int *array = evaluate_merge_problem_solution(solution, sudoku);
 
     if (!array) {
       return;
@@ -662,5 +638,28 @@ void sudoku_print(unsigned int *solution, Sudoku *sudoku) {
       printf("\n");
     }
     free(array);
+  }
+}
+
+bool save_sudoku(const Sudoku *sudoku, FILE *file) {
+  if (!file) {
+    assert(printf("No file provided"));
+    return false;
+  }
+  if (!sudoku || !sudoku->dim_size || !sudoku->problem) {
+    assert(printf("No sudoku provided"));
+    return false;
+  }
+  for (unsigned int x = 0; x < sudoku->dim_size; x++) {
+    fprintf(file, "- [");
+    for (unsigned int y = 0; y < sudoku->dim_size; y++) {
+      size_t index = x * sudoku->dim_size + y;
+      if (y == sudoku->dim_size - 1) {
+        fprintf(file, " %u", sudoku->problem[index]);
+      } else {
+        fprintf(file, " %u,", sudoku->problem[index]);
+      }
+    }
+    fprintf(file, "]\n");
   }
 }

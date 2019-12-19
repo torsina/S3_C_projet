@@ -216,8 +216,8 @@ int main(int argc, const char **argv) {
         }
 
         // TODO(T-MMLR) : print the generation in verbose mode
-        if (verbose) {
-        }
+        // if (verbose) {
+        // }
 
         unsigned int best_score = 0;
         unsigned int *best = population_best_individual(population, evaluate,
@@ -238,7 +238,7 @@ int main(int argc, const char **argv) {
                best_score);
         sudoku_print(best, sudoku);
         printf("------------------------\n");
-        if(is_max_score(best_score, sudoku)) {
+        if (is_max_score(best_score, sudoku)) {
           printf("Found the solution !");
         }
 
@@ -261,8 +261,20 @@ int main(int argc, const char **argv) {
           population = next_generation;
           generation++;
 
-          best = population_best_individual(population, evaluate,
-                                     sudoku, &best_score);
+          best = population_best_individual(population, evaluate, sudoku,
+                                            &best_score);
+          // save best individual to solution.yaml
+          if (generation == nb_iter) {
+            FILE *save = fopen("./solution.yaml", "w");
+            unsigned int *finished_sudoku =
+                evaluate_merge_problem_solution(best, sudoku);
+            Sudoku *sudoku_merged = sudoku_create(sudoku->dim_size);
+            sudoku_merged->problem = finished_sudoku;
+            save_sudoku(sudoku_merged, save);
+            fclose(save);
+            sudoku_destroy(sudoku_merged);
+          }
+
           if (!best) {
             fprintf(stderr, "%s", ERROR_BEST_INDIVIDUAL);
             fclose(yaml_file);
@@ -276,7 +288,7 @@ int main(int argc, const char **argv) {
                  best_score);
           sudoku_print(best, sudoku);
           printf("------------------------\n");
-          if(is_max_score(best_score, sudoku)) {
+          if (is_max_score(best_score, sudoku)) {
             printf("Found the solution !");
           }
         }
