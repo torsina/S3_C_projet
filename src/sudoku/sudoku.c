@@ -242,7 +242,11 @@ unsigned int evaluate(unsigned int *individual, const void *sudoku) {
     }
   }
   ga_free(merge);
-  return score - duplicates;
+
+  if(2*duplicates > score) {
+    return 0;
+  }
+  return score - 2* duplicates;
 }
 
 bool is_valid(unsigned int *solution, const Sudoku *sudoku) {
