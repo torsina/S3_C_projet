@@ -19,12 +19,13 @@ bool problem_equal(unsigned int* first, unsigned int* second,
 
 typedef struct {
   char* path;
-  unsigned int* values;
   unsigned int dim_size;
+  unsigned int* values;
 } Test;
 
 typedef struct {
   Test** tests;
+  unsigned int index;
   unsigned int size;
 } Tests;
 
@@ -32,13 +33,19 @@ Test* create_test(char* path, unsigned int* values, unsigned int dim_size) {
   Test* test = malloc(sizeof(Test));
   assert(test);
   unsigned int size = dim_size * dim_size;
+  // size > 0
+  assert(size);
+  assert(printf("Creating a test (%s) with size %u.\n", path, size));
   char str[80] = "../../examples/";
-  strcat(str, path); // NOLINT
-  strcat(str, ".yaml"); // NOLINT
-  test->path = malloc((strlen(str) * sizeof(char)) + 1);
+
+  strncat(str, path, strlen(path));
+  strncat(str, ".yaml", 6);
+  test->path = calloc(strlen(str) + 1, sizeof(char));
   assert(test->path);
-  strcpy(test->path, str); // NOLINT
-  test->values = malloc(sizeof(unsigned int) * size);
+  strncpy(test->path, str, strlen(str));
+  unsigned int* array = calloc(size, sizeof(unsigned int));
+  assert(array);
+  test->values = array;
   assert(test->values);
   memcpy(test->values, values, size);
   test->dim_size = dim_size;
@@ -48,9 +55,11 @@ Test* create_test(char* path, unsigned int* values, unsigned int dim_size) {
 Tests* create_tests(unsigned int size) {
   Tests* tests = malloc(sizeof(Tests));
   assert(tests);
-  tests->tests = malloc(sizeof(Test) * size);
+  tests->tests = calloc(size, sizeof(Test));
   assert(tests->tests);
-  tests->size = 0;
+  tests->index = 0;
+  tests->size = size;
+  return tests;
 }
 
 void destroy_tests(Tests* tests) {
@@ -64,14 +73,18 @@ void destroy_tests(Tests* tests) {
 }
 
 Tests* add_test(Tests* tests, Test* test) {
-  tests->tests[tests->size] = test;
-  tests->size++;
-  return tests;
+  if (tests->index < tests->size) {
+    tests->tests[tests->index++] = test;
+    return tests;
+  } else {
+    return NULL;
+  }
 }
 
 int main(void) {
   unsigned int NUMBER_OF_TESTS = 5;
   Tests* tests = create_tests(NUMBER_OF_TESTS);
+  assert(tests);
   // create tests
   add_test(tests, create_test("three_by_three",
                               (unsigned int[]){2, 0, 0, 0, 0, 0, 0, 1, 0}, 3));
@@ -84,14 +97,16 @@ int main(void) {
            create_test("full", (unsigned int[]){1, 2, 3, 4, 5, 6, 7, 8, 9}, 3));
 
   for (unsigned int i = 0; i < tests->size; i++) {
-    printf("--------START------\n");
+    printf("--------START[%u]------\n", i);
     Test* test = tests->tests[i];
 
     FILE* file;
-    printf("path: %s\n", test->path);
+    printf("Path: %s\n", test->path);
     file = fopen(test->path, "r");
-    assert(file != NULL);
+    assert(file);
+    assert(printf("Creating sudoku for %s.\n", test->path));
     Sudoku* sudoku = sudoku_create(test->dim_size);
+    assert(sudoku);
     sudoku = fill_sudoku(sudoku, file);
     if (strstr(test->path, "irregular_size_1") ||
         strstr(test->path, "irregular_size_2")) {
@@ -101,7 +116,7 @@ int main(void) {
       assert(problem_equal(sudoku->problem, test->values,
                            test->dim_size * test->dim_size));
     } else {
-      assert(printf("invalid case: %s\n", test->path));
+      assert(printf("Invalid case: %s\n", test->path));
     }
     fclose(file);
     sudoku_destroy(sudoku);
