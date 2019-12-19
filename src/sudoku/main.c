@@ -269,6 +269,7 @@ int main(int argc, const char **argv) {
             unsigned int *finished_sudoku =
                 evaluate_merge_problem_solution(best, sudoku);
             Sudoku *sudoku_merged = sudoku_create(sudoku->dim_size);
+            free(sudoku_merged->problem);
             sudoku_merged->problem = finished_sudoku;
             save_sudoku(sudoku_merged, save);
             fclose(save);
