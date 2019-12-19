@@ -69,6 +69,7 @@ void destroy_tests(Tests* tests) {
     free(test->values);
     free(tests->tests[i]);
   }
+  free(tests->tests);
   free(tests);
 }
 
