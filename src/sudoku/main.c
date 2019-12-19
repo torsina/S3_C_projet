@@ -292,7 +292,12 @@ int main(int argc, const char **argv) {
             printf("Found the solution !");
           }
         }
+        fclose(yaml_file);
+        sudoku_destroy(sudoku);
+        genetic_generator_destroy(generator);
+        ga_population_destroy(population);
       }
+
       ga_finish();
 
     } else {

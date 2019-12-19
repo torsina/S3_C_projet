@@ -56,10 +56,11 @@ GeneticGenerator *genetic_generator_create(const unsigned int size) {
 }
 
 void genetic_generator_destroy(GeneticGenerator *generator) {
-  // In debug : check if the genetic generator pointer is not null
   assert(generator);
-  ga_free(generator->cardinalities);
-  ga_free(generator);
+  if(generator) {
+    ga_free(generator->cardinalities);
+    ga_free(generator);
+  }
 }
 
 GeneticGenerator *genetic_generator_set_cardinality(
@@ -335,13 +336,15 @@ Population *ga_population_create(const GeneticGenerator *generator,
 void ga_population_destroy(Population *population) {
   // In debug : check if the population pointer is not null
   assert(population);
-  for (unsigned int i = 0; i < population->size; i++) {
-    // In debug : check if the individual pointer is not NULL
-    assert(population->individuals[i]);
-    ga_individual_destroy(population->individuals[i]);
+  if(population) {
+    for (unsigned int i = 0; i < population->size; i++) {
+      // In debug : check if the individual pointer is not NULL
+      assert(population->individuals[i]);
+      ga_individual_destroy(population->individuals[i]);
+    }
+    ga_free(population->individuals);
+    ga_free(population);
   }
-  ga_free(population->individuals);
-  ga_free(population);
 }
 
 unsigned int ga_population_get_size(const Population *population) {
