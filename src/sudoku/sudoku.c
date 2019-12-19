@@ -234,7 +234,9 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
     return NULL;
   }
 
-  yaml_parser_t *parser = ga_malloc(sizeof(yaml_parser_t));
+  yaml_parser_t _parser;
+  // yaml_parser_t *parser = ga_malloc(sizeof(yaml_parser_t));
+  yaml_parser_t *parser = &_parser;
 
   if (!parser) {
     return NULL;
