@@ -164,6 +164,7 @@ int main(int argc, const char **argv) {
         return EXIT_FAILURE;
       }
 
+      const unsigned int MAX_SCORE = potential_max_score(sudoku);
       // Displaying the Sudoku
       if (verbose) {
         printf("Loaded Sudoku grid :\n");
@@ -174,6 +175,7 @@ int main(int argc, const char **argv) {
           }
           printf("\n");
         }
+        printf("Max reachable score : %u.\n", MAX_SCORE);
       }
 
       ga_init();
@@ -215,7 +217,6 @@ int main(int argc, const char **argv) {
           return EXIT_FAILURE;
         }
 
-
         unsigned int best_score = 0;
         unsigned int *best = population_best_individual(population, evaluate,
                                                         sudoku, &best_score);
@@ -240,9 +241,6 @@ int main(int argc, const char **argv) {
         }
 
         while (generation < nb_iter) {
-          if (verbose) {
-            printf("\t--GENERATION %u--\n", generation);
-          }
 
           Population *next_generation =
               ga_population_next(population, (const float)crossover_prob,
@@ -257,10 +255,13 @@ int main(int argc, const char **argv) {
 
           population = next_generation;
           generation++;
+          if (verbose) {
+            printf("----GENERATION %u----\n", generation);
+          }
 
           best = population_best_individual(population, evaluate, sudoku,
                                             &best_score);
-          // save best individual to solution.yaml
+          // Save best individual to solution.yaml
           if (generation == nb_iter) {
             FILE *save = fopen("./solution.yaml", "w");
             unsigned int *finished_sudoku =
@@ -282,12 +283,23 @@ int main(int argc, const char **argv) {
             return EXIT_FAILURE;
           }
 
-          printf("Best solution for generation %u with score %u.\n", generation,
-                 best_score);
+          double score_percentage = (double)best_score / MAX_SCORE * 100;
+          printf("Best solution for generation %u with score %u/%u (%g %%).\n",
+                 generation, best_score, MAX_SCORE, score_percentage);
           sudoku_print(best, sudoku);
-          printf("------------------------\n");
+          printf("---------------------\n");
           if (is_max_score(best_score, sudoku)) {
             printf("Found the solution !");
+
+            FILE *save = fopen("./solution.yaml", "w");
+            unsigned int *finished_sudoku =
+                evaluate_merge_problem_solution(best, sudoku);
+            Sudoku *sudoku_merged = sudoku_create(sudoku->dim_size);
+            free(sudoku_merged->problem);
+            sudoku_merged->problem = finished_sudoku;
+            save_sudoku(sudoku_merged, save);
+            fclose(save);
+            sudoku_destroy(sudoku_merged);
           }
         }
         genetic_generator_destroy(generator);
