@@ -2,6 +2,8 @@
 
 Groupe 14 : Sagot Aelis, Vidal Mathéo, Raimbault Diane, Cutaia Evan, Godreuil Tim
 
+Github repo: https://github.com/torsina/S3_C_projet
+
 _Exigences_ :
 - Coder en anglais
 
