@@ -241,7 +241,6 @@ int main(int argc, const char **argv) {
         }
 
         while (generation < nb_iter) {
-
           Population *next_generation =
               ga_population_next(population, (const float)crossover_prob,
                                  (const float)mutation_prob, evaluate, sudoku);
