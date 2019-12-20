@@ -525,76 +525,55 @@ extern Population *ga_population_set_individual_gene(
     unsigned int gene_index, unsigned int gene_value);
 
 /**
- * \brief Mutates part of an Individual's genes (only one gene)
- * owned by the Population.
+ * \brief Mutates part of an Individual's genes owned by the Population.
  *
- * This function changes one gene of an Individual by another random value
+ * This function changes some gene of an Individual by another random value
  * between 0 and the size of the Generator owned by the Population.
  *
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Individual *mutate(Population *population, unsigned int individual_index)
+ * \fn Individual *mutate(Population *population, unsigned int individual_index,
+                     const float prob)
  * \param population a pointer to the Population to deal
  * with.
  * \param individual_index an index to get a specific Individual from
  * the individuals attribute of the Population.
- * \return the individual after the mutation (change of one of his genes).
+ * \param the probability that one gene mutates.
+ * \return The Individual after the mutation (change of some of his genes).
  * \sa crossover
  */
-extern Individual *mutate(Population *population,
-                          unsigned int individual_index);
+extern Individual *mutate(Population *population, unsigned int individual_index,
+                          float prob);
 
 /**
- * \brief Mixes parts of two Individuals's genes owned by the Population
- * to make a individual child.
+ * \brief Swaps some genes of the two individuals.
  *
  *
- * This function mixes parts of two Individuals's genes with a pivot to take
- * more or less of each parent's genes to make a new individual child.
+ * This function exchanges a randomly a bunch of chosen genes of two
+ * individuals's genes and returns the modified Population.
  *
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn Individual *crossover(const Population *population,
-                             unsigned int first_individual_index,
-                             unsigned int second_individual_index)
+ * \fn Population *crossover(const Population *population,
+                        unsigned int first_individual_index,
+                        unsigned int second_individual_index,
+                        float prob)
  * \param population a pointer to the Population to deal with.
  * \param first_individual_index an index to get the 1st Individual from the
  * individuals attribute of the Population.
  * \param second_individual_index an index to get the 2nd Individual from the
  * individuals attribute of the Population.
- * \return an individual child who is a mix of the 2 parents.
+ * \param prob the probability that one gene gets exchanged between the two
+ * individuals.
+ * \return a pointer to the initial Population or NULL if something goes wrong.
  * \sa mutate
  */
-extern Individual *crossover(const Population *population,
-                             unsigned int first_individual_index,
-                             unsigned int second_individual_index);
-
-/**
- * \brief Swaps one gene of the two individuals.
- *
- *
- * This function exchanges a randomly chosen gene of two Individuals's genes
- * and returns the Population.
- *
- * \author Group 14
- * \version 0.0.1
- * \date 2019
- * \fn Population *crossover_2(const Population *population,
+extern Population *crossover(const Population *population,
                         unsigned int first_individual_index,
-                        unsigned int second_individual_index)
- * \param population a pointer to the Population to deal with.
- * \param first_individual_index an index to get the 1st Individual from the
- * individuals attribute of the Population.
- * \param second_individual_index an index to get the 2nd Individual from the
- * individuals attribute of the Population.
- * \return a pointer to the initial Population or NULL if something goes wrong.
- * \sa crossover
- */
-extern Population *crossover_2(const Population *population,
-                               unsigned int first_individual_index,
-                               unsigned int second_individual_index);
+                        unsigned int second_individual_index,
+                        float prob);
 /**
  * \brief Evolves a generation.
  *
