@@ -106,18 +106,17 @@ int main(void) {
     file = fopen(test->path, "r");
     assert(file);
     assert(printf("Creating sudoku for %s.\n", test->path));
-    Sudoku* sudoku = sudoku_create(test->dim_size);
-    assert(sudoku);
-    Sudoku* temp = fill_sudoku(sudoku, file);
+
+
+    Sudoku* sudoku = read_sudoku(file, false);
     if (strstr(test->path, "irregular_size_1") ||
         strstr(test->path, "irregular_size_2")) {
       sudoku_destroy(sudoku);
       sudoku = NULL;
-      assert(temp == NULL);
-      free(temp);  // Not sure
+      assert(sudoku == NULL);
     } else if (strstr(test->path, "three_by_three") ||
                strstr(test->path, "null") || strstr(test->path, "full")) {
-      assert(problem_equal(temp->problem, test->values,
+      assert(problem_equal(sudoku->problem, test->values,
                            test->dim_size * test->dim_size));
       sudoku_destroy(sudoku);
       sudoku = NULL;
