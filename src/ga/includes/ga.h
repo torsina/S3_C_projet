@@ -539,7 +539,7 @@ extern Population *ga_population_set_individual_gene(
  * with.
  * \param individual_index an index to get a specific Individual from
  * the individuals attribute of the Population.
- * \param the probability that one gene mutates.
+ * \param prob the probability that one gene mutates.
  * \return The Individual after the mutation (change of some of his genes).
  * \sa crossover
  */
