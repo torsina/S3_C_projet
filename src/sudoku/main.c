@@ -240,8 +240,9 @@ int main(int argc, const char **argv) {
           printf("Found the solution !");
         }
 
-        while (generation < nb_iter) {
+        bool found_solution = false;
 
+        while (generation < nb_iter) {
           Population *next_generation =
               ga_population_next(population, (const float)crossover_prob,
                                  (const float)mutation_prob, evaluate, sudoku);
@@ -300,8 +301,17 @@ int main(int argc, const char **argv) {
             save_sudoku(sudoku_merged, save);
             fclose(save);
             sudoku_destroy(sudoku_merged);
+            found_solution = true;
           }
         }
+
+        if (!found_solution) {
+          if (verbose) {
+            printf("No solution found, stopping after %u generations.\n",
+                   generation);
+          }
+        }
+
         genetic_generator_destroy(generator);
         ga_population_destroy(population);
       }
