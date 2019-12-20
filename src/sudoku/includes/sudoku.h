@@ -138,7 +138,7 @@ extern Sudoku* read_sudoku(FILE* file, bool verbose);
 extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
 
 /**
- * \brief This function saves the sudoku to a file with yaml formating
+ * \brief This function saves the sudoku to a file with YAML formatting.
  *
  *
  * \author Group 14
@@ -146,16 +146,74 @@ extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
  * \date 2019
  * \fn bool save_sudoku(const Sudoku *sudoku, FILE *file)
  * \param sudoku a pointer to the Sudoku to get the data to save from.
- * \param file a file handler to the file we want the sudoku to be saved at
- * \return 0 if the save failed, 1 if it succeed
+ * \param file a file handle to the file we want the sudoku to be saved at
+ * \return false if the save failed, true if it succeed
  */
 extern bool save_sudoku(const Sudoku *sudoku, FILE *file);
 
 
+/**
+ * \brief This function checks if the solution solves the Sudoku.
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn bool is_valid(unsigned int *solution, const Sudoku *sudoku)
+ * \param solution an array of unsigned int representing the solution (values
+ * for the empty tiles).
+ * \param sudoku a pointer to the Sudoku to get the data from.
+ * \return true if the solution is valid, false otherwise.
+ */
 extern bool is_valid(unsigned int *solution, const Sudoku *sudoku);
+
+/**
+ * \brief This function checks if the given score is the maximum reachable
+ * score for this sudoku.
+ *
+ * The score is computed by the evaluate function.
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn bool is_max_score(unsigned int score, const Sudoku *sudoku)
+ * \param score the score to test.
+ * \param sudoku a pointer to the Sudoku to get the data from.
+ * \return true if the score is equal to the maximum is valid, false otherwise.
+ * \sa potential_max_score
+ */
 extern bool is_max_score(unsigned int score, const Sudoku *sudoku);
 
+/**
+ * \brief This function prints the given Sudoku to the standard output.
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn void sudoku_print(unsigned int *solution, Sudoku *sudoku)
+ * \param solution an array of unsigned int representing the solution (values
+ * for the empty tiles).
+ * \param sudoku a pointer to the Sudoku to get the data from.
+ * \sa potential_max_score
+ */
 extern void sudoku_print(unsigned int *solution, Sudoku *sudoku);
 
+/**
+ * \brief This function returns the maximum reachable
+ * score for this sudoku.
+ *
+ * The score is computed by the evaluate function.
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn unsigned int potential_max_score(const Sudoku *sudoku)
+ * \param sudoku a pointer to the Sudoku to get the data from.
+ * \return The potential maximum reachable score for a solution.
+ * \sa is_max_score
+ */
 extern unsigned int potential_max_score(const Sudoku *sudoku);
 #endif  // SRC_SUDOKU_INCLUDES_SUDOKU_H_
