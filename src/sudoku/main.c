@@ -53,7 +53,8 @@ static const char *const ERROR_BEST_INDIVIDUAL =
 static const char *const HELP_MESSAGE =
     "Usages :\n"
     "1. sudoku --test : display this message\n"
-    "2. sudoku <YAML file> <crossover> <mutation> <nb ind> <max it> <opt : --verbose>\n"
+    "2. sudoku <YAML file> <crossover> <mutation> <nb ind> <max it> <opt : "
+    "--verbose>\n"
     "\t|<YAML file> : path to the YAML file to load the sudoku from.\n"
     "\t|<crossover> : crossover probability. English notation (dot), [0, 1].\n"
     "\t|<mutation>  : mutation probability. English notation (dot), [0, 1].\n"
