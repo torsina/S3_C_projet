@@ -264,6 +264,261 @@ bool is_max_score(unsigned int score, const Sudoku *sudoku) {
     return score >= max_score;
   }
 }
+
+
+static unsigned int **_array_list_add(unsigned int **array, unsigned int *size,
+                                      const unsigned int *val) {
+  unsigned int **new_array = realloc(array, (*size + 1) * sizeof(*new_array));
+  if (new_array) {
+    new_array[*size] = (unsigned int *)val;
+    (*size)++;
+    return new_array;
+  } else {
+    *size = 0;
+    return NULL;
+  }
+}
+
+Sudoku *read_sudoku(FILE *file, bool verbose) {
+  if (!file) {
+    PRINT_VERBOSE(verbose, "Failed to open file.\n");
+    return NULL;
+  }
+
+  // Holds the lines, in a linear layout
+  unsigned int *problem = NULL;
+  // Number of values per line.
+  unsigned int dim_size = 0;
+
+  yaml_parser_t _parser;
+  yaml_parser_t *parser = &_parser;
+
+  if (!parser) {
+    return NULL;
+  }
+
+  if (!yaml_parser_initialize(parser)) {
+    PRINT_VERBOSE(verbose, "Failed to init YAML parser.\n");
+    yaml_parser_delete(parser);
+    return NULL;
+  }
+
+  // Binding the YAML parser to the file.
+  yaml_parser_set_input_file(parser, file);
+
+  // Creating a YAML document for reading
+  yaml_document_t _doc;
+  yaml_document_t *document = &_doc;
+  if (!document) {
+    PRINT_VERBOSE(verbose, "The document could not be created.\n");
+    yaml_parser_delete(parser);
+    return NULL;
+  }
+
+  if (!yaml_parser_load(parser, document)) {
+    PRINT_VERBOSE(verbose, "End of document reached.\n");
+    yaml_document_delete(document);
+    yaml_parser_delete(parser);
+    return NULL;
+  }
+
+  yaml_node_t *root = yaml_document_get_root_node(document);
+  if (!root) {
+    PRINT_VERBOSE(verbose, "Document is empty.\n");
+    yaml_document_delete(document);
+    yaml_parser_delete(parser);
+    return NULL;
+  }
+
+  // If root is not a sequence(array) return
+  if (root->type != YAML_SEQUENCE_NODE) {
+    PRINT_VERBOSE(verbose, "Root node is not a sequence.\n");
+    yaml_document_delete(document);
+    yaml_parser_delete(parser);
+    return NULL;
+  }
+
+  yaml_node_item_t *iterator;
+  // PRINT_VERBOSE(verbose, "Entering first array.\n");
+  unsigned int sudoku_index = 0;
+
+  dim_size = root->data.sequence.items.top - root->data.sequence.items.start;
+
+  // Array initialization
+  problem = calloc(dim_size * dim_size, sizeof(*problem));
+
+  /*if (verbose) {
+    printf("Found dim_size : %u\n", dim_size);
+  }*/
+
+  // Iterating over the root node's children (every line)
+  for (iterator = root->data.sequence.items.start;
+       iterator < root->data.sequence.items.top; iterator++) {
+    yaml_node_t *base = yaml_document_get_node(document, *iterator);
+
+    // If the node is not a sequence(array) return
+    if (base->type != YAML_SEQUENCE_NODE) {
+      PRINT_VERBOSE(verbose, "First node is not a sequence.\n");
+      yaml_document_delete(document);
+      yaml_parser_delete(parser);
+      ga_free(problem);
+      return NULL;
+    }
+
+    // Length of the line
+    unsigned int node_line_length =
+        base->data.sequence.items.top - base->data.sequence.items.start;
+
+    // If first node is not a sequence of size dim_size
+    if (node_line_length != dim_size) {
+      if (verbose) {
+        printf("First array not of size %u.\n", dim_size);
+      }
+      yaml_document_delete(document);
+      yaml_parser_delete(parser);
+      ga_free(problem);
+      return NULL;
+    }
+
+    // Temp variable for storing the current scalar node
+    yaml_node_t *second_node;
+    yaml_node_item_t *second_iterator;
+    // PRINT_VERBOSE(verbose, "Entering second array.\n");
+    // This iterator is used for iterating over the child nodes (a line).
+    for (second_iterator = base->data.sequence.items.start;
+         second_iterator < base->data.sequence.items.top; second_iterator++) {
+      // We get the current node in the line.
+      second_node = yaml_document_get_node(document, *second_iterator);
+      // The node must be a scalar node
+      if (second_node->type == YAML_SCALAR_NODE) {
+        /* We make sure that the index is not too big (that the line is not too
+         long).*/
+        if (sudoku_index >= (dim_size * dim_size)) {
+          PRINT_VERBOSE(verbose, "Sudoku index above dim_size^2.\n");
+          yaml_document_delete(document);
+          yaml_parser_delete(parser);
+          ga_free(problem);
+          return NULL;
+        }
+
+        // If the node contains the literal text "null"
+        if (!strcmp((char *)second_node->data.scalar.value, "null")) {
+          // We insert the value 0 at the index
+          problem[sudoku_index] = 0;
+          // sudoku->problem[sudoku_index] = 0;
+          // PRINT_VERBOSE(verbose, "Value : null.\n");
+        } else {
+          char *end_ptr;
+          // We convert the value to an integer value
+          unsigned int value =
+              strtol((char *)second_node->data.scalar.value, &end_ptr, 10);
+          if (end_ptr &&
+              strcmp((char *)second_node->data.scalar.value, end_ptr) == 0) {
+            if (verbose) {
+              printf("Invalid integer value %s.\n",
+                     (char *)second_node->data.scalar.value);
+            }
+
+            yaml_document_delete(document);
+            yaml_parser_delete(parser);
+            ga_free(problem);
+            return NULL;
+          }
+          /*if (verbose) {
+            printf("Value: %u.\n", value);
+          }*/
+
+          if (value > dim_size) {
+            if (verbose) {
+              printf("Integer value too big (%u > %u).\n", value, dim_size);
+            }
+            yaml_document_delete(document);
+            yaml_parser_delete(parser);
+            ga_free(problem);
+            return NULL;
+          }
+
+          problem[sudoku_index] = value;
+        }
+        // We increment the index in the Sudoku struct.
+        sudoku_index++;
+      } else {
+        PRINT_VERBOSE(verbose, "Second array element is not scalar.\n");
+        yaml_document_delete(document);
+        yaml_parser_delete(parser);
+        ga_free(problem);
+        return NULL;
+      }
+    }
+  }
+
+  // This sudoku is empty for now
+  Sudoku *sudoku = sudoku_create(0);
+  sudoku->problem = problem;
+  sudoku->dim_size = dim_size;
+
+  yaml_document_delete(document);
+  yaml_parser_delete(parser);
+  return sudoku;
+}
+
+unsigned int sudoku_empty_tiles(const Sudoku *sudoku) {
+  assert(sudoku);
+  assert(sudoku->problem);
+  unsigned int total_size = sudoku->dim_size * sudoku->dim_size;
+  unsigned int counter = 0;
+  for (unsigned int i = 0; i < total_size; i++) {
+    // If the value is 0
+    if (!sudoku->problem[i]) {
+      counter++;
+    }
+  }
+  return counter;
+}
+
+void sudoku_print(unsigned int *solution, Sudoku *sudoku) {
+  if (solution && sudoku) {
+    unsigned int *array = evaluate_merge_problem_solution(solution, sudoku);
+
+    if (!array) {
+      return;
+    }
+
+    for (unsigned int x = 0; x < sudoku->dim_size; x++) {
+      for (unsigned int y = 0; y < sudoku->dim_size; y++) {
+        size_t index = x * sudoku->dim_size + y;
+        printf("%u ", array[index]);
+      }
+      printf("\n");
+    }
+    free(array);
+  }
+}
+
+bool save_sudoku(const Sudoku *sudoku, FILE *file) {
+  if (!file) {
+    assert(printf("No file provided"));
+    return false;
+  }
+  if (!sudoku || !sudoku->dim_size || !sudoku->problem) {
+    assert(printf("No sudoku provided"));
+    return false;
+  }
+  for (unsigned int x = 0; x < sudoku->dim_size; x++) {
+    fprintf(file, "- [");
+    for (unsigned int y = 0; y < sudoku->dim_size; y++) {
+      size_t index = x * sudoku->dim_size + y;
+      if (y == sudoku->dim_size - 1) {
+        fprintf(file, " %u", sudoku->problem[index]);
+      } else {
+        fprintf(file, " %u,", sudoku->problem[index]);
+      }
+    }
+    fprintf(file, "]\n");
+  }
+  return true;
+}
+
 /**
 Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
   if (!file) {
@@ -275,9 +530,9 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
     return NULL;
   }
 
-  yaml_parser_t _parser;
+  yaml_parser_t yaml_parser;
   // yaml_parser_t *parser = ga_malloc(sizeof(yaml_parser_t));
-  yaml_parser_t *parser = &_parser;
+  yaml_parser_t *parser = &yaml_parser;
 
   if (!parser) {
     return NULL;
@@ -406,255 +661,3 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
   return sudoku;
 }
 */
-
-static unsigned int **_array_list_add(unsigned int **array, unsigned int *size,
-                                      const unsigned int *val) {
-  unsigned int **new_array = realloc(array, (*size + 1) * sizeof(*new_array));
-  if (new_array) {
-    new_array[*size] = (unsigned int *)val;
-    (*size)++;
-    return new_array;
-  } else {
-    *size = 0;
-    return NULL;
-  }
-}
-
-Sudoku *read_sudoku(FILE *file, bool verbose) {
-  if (!file) {
-    PRINT_VERBOSE(verbose, "Failed to open file.\n");
-    return NULL;
-  }
-
-  // Holds the lines, in a linear layout
-  unsigned int *problem = NULL;
-  // Number of values per line.
-  unsigned int dim_size = 0;
-
-  yaml_parser_t _parser;
-  yaml_parser_t *parser = &_parser;
-
-  if (!parser) {
-    return NULL;
-  }
-
-  if (!yaml_parser_initialize(parser)) {
-    PRINT_VERBOSE(verbose, "Failed to init YAML parser.\n");
-    yaml_parser_delete(parser);
-    return NULL;
-  }
-
-  // Binding the YAML parser to the file.
-  yaml_parser_set_input_file(parser, file);
-
-  // Creating a YAML document for reading
-  yaml_document_t _doc;
-  yaml_document_t *document = &_doc;
-  if (!document) {
-    PRINT_VERBOSE(verbose, "The document could not be created.\n");
-    yaml_parser_delete(parser);
-    return NULL;
-  }
-
-  if (!yaml_parser_load(parser, document)) {
-    PRINT_VERBOSE(verbose, "End of document reached.\n");
-    yaml_document_delete(document);
-    yaml_parser_delete(parser);
-    return NULL;
-  }
-
-  yaml_node_t *root = yaml_document_get_root_node(document);
-  if (!root) {
-    PRINT_VERBOSE(verbose, "Document is empty.\n");
-    yaml_document_delete(document);
-    yaml_parser_delete(parser);
-    return NULL;
-  }
-
-  // If root is not a sequence(array) return
-  if (root->type != YAML_SEQUENCE_NODE) {
-    PRINT_VERBOSE(verbose, "Root node is not a sequence.\n");
-    yaml_document_delete(document);
-    yaml_parser_delete(parser);
-    return NULL;
-  }
-
-  yaml_node_item_t *iterator;
-  PRINT_VERBOSE(verbose, "Entering first array.\n");
-  unsigned int sudoku_index = 0;
-
-  dim_size = root->data.sequence.items.top - root->data.sequence.items.start;
-
-  // Array initialization
-  problem = calloc(dim_size * dim_size, sizeof(*problem));
-
-  if (verbose) {
-    printf("Found dim_size : %u\n", dim_size);
-  }
-
-  // Iterating over the root node's children (every line)
-  for (iterator = root->data.sequence.items.start;
-       iterator < root->data.sequence.items.top; iterator++) {
-    yaml_node_t *base = yaml_document_get_node(document, *iterator);
-
-    // If the node is not a sequence(array) return
-    if (base->type != YAML_SEQUENCE_NODE) {
-      PRINT_VERBOSE(verbose, "First node is not a sequence.\n");
-      yaml_document_delete(document);
-      yaml_parser_delete(parser);
-      ga_free(problem);
-      return NULL;
-    }
-
-    // Length of the line
-    unsigned int node_line_length =
-        base->data.sequence.items.top - base->data.sequence.items.start;
-
-    // If first node is not a sequence of size dim_size
-    if (node_line_length != dim_size) {
-      if (verbose) {
-        printf("First array not of size %u.\n", dim_size);
-      }
-      yaml_document_delete(document);
-      yaml_parser_delete(parser);
-      ga_free(problem);
-      return NULL;
-    }
-
-    // Temp variable for storing the current scalar node
-    yaml_node_t *second_node;
-    yaml_node_item_t *second_iterator;
-    PRINT_VERBOSE(verbose, "Entering second array.\n");
-    // This iterator is used for iterating over the child nodes (a line).
-    for (second_iterator = base->data.sequence.items.start;
-         second_iterator < base->data.sequence.items.top; second_iterator++) {
-      // We get the current node in the line.
-      second_node = yaml_document_get_node(document, *second_iterator);
-      // The node must be a scalar node
-      if (second_node->type == YAML_SCALAR_NODE) {
-        /* We make sure that the index is not too big (that the line is not too
-         long).*/
-        if (sudoku_index >= (dim_size * dim_size)) {
-          PRINT_VERBOSE(verbose, "Sudoku index above dim_size^2.\n");
-          yaml_document_delete(document);
-          yaml_parser_delete(parser);
-          ga_free(problem);
-          return NULL;
-        }
-
-        // If the node contains the literal text "null"
-        if (!strcmp((char *)second_node->data.scalar.value, "null")) {
-          // We insert the value 0 at the index
-          problem[sudoku_index] = 0;
-          // sudoku->problem[sudoku_index] = 0;
-          PRINT_VERBOSE(verbose, "Value : null.\n");
-        } else {
-          char *end_ptr;
-          // We convert the value to an integer value
-          unsigned int value =
-              strtol((char *)second_node->data.scalar.value, &end_ptr, 10);
-          if (end_ptr &&
-              strcmp((char *)second_node->data.scalar.value, end_ptr) == 0) {
-            if (verbose) {
-              printf("Invalid integer value %s.\n",
-                     (char *)second_node->data.scalar.value);
-            }
-
-            yaml_document_delete(document);
-            yaml_parser_delete(parser);
-            ga_free(problem);
-            return NULL;
-          }
-          if (verbose) {
-            printf("Value: %u.\n", value);
-          }
-
-          if (value > dim_size) {
-            if (verbose) {
-              printf("Integer value too big (%u > %u).\n", value, dim_size);
-            }
-            yaml_document_delete(document);
-            yaml_parser_delete(parser);
-            ga_free(problem);
-            return NULL;
-          }
-
-          problem[sudoku_index] = value;
-        }
-        // We increment the index in the Sudoku struct.
-        sudoku_index++;
-      } else {
-        PRINT_VERBOSE(verbose, "Second array element is not scalar.\n");
-        yaml_document_delete(document);
-        yaml_parser_delete(parser);
-        ga_free(problem);
-        return NULL;
-      }
-    }
-  }
-
-  // This sudoku is empty for now
-  Sudoku *sudoku = sudoku_create(0);
-  sudoku->problem = problem;
-  sudoku->dim_size = dim_size;
-
-  yaml_document_delete(document);
-  yaml_parser_delete(parser);
-  return sudoku;
-}
-
-unsigned int sudoku_empty_tiles(const Sudoku *sudoku) {
-  assert(sudoku);
-  assert(sudoku->problem);
-  unsigned int total_size = sudoku->dim_size * sudoku->dim_size;
-  unsigned int counter = 0;
-  for (unsigned int i = 0; i < total_size; i++) {
-    // If the value is 0
-    if (!sudoku->problem[i]) {
-      counter++;
-    }
-  }
-  return counter;
-}
-
-void sudoku_print(unsigned int *solution, Sudoku *sudoku) {
-  if (solution && sudoku) {
-    unsigned int *array = evaluate_merge_problem_solution(solution, sudoku);
-
-    if (!array) {
-      return;
-    }
-
-    for (unsigned int x = 0; x < sudoku->dim_size; x++) {
-      for (unsigned int y = 0; y < sudoku->dim_size; y++) {
-        size_t index = x * sudoku->dim_size + y;
-        printf("%u ", array[index]);
-      }
-      printf("\n");
-    }
-    free(array);
-  }
-}
-
-bool save_sudoku(const Sudoku *sudoku, FILE *file) {
-  if (!file) {
-    assert(printf("No file provided"));
-    return false;
-  }
-  if (!sudoku || !sudoku->dim_size || !sudoku->problem) {
-    assert(printf("No sudoku provided"));
-    return false;
-  }
-  for (unsigned int x = 0; x < sudoku->dim_size; x++) {
-    fprintf(file, "- [");
-    for (unsigned int y = 0; y < sudoku->dim_size; y++) {
-      size_t index = x * sudoku->dim_size + y;
-      if (y == sudoku->dim_size - 1) {
-        fprintf(file, " %u", sudoku->problem[index]);
-      } else {
-        fprintf(file, " %u,", sudoku->problem[index]);
-      }
-    }
-    fprintf(file, "]\n");
-  }
-}

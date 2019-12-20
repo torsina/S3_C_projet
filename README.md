@@ -1,4 +1,7 @@
 # S3_C_projet
+
+Groupe 14 : Aelis, Mathéo, Diane, Evan, Tim
+
 _Exigences_ :
 - Coder en anglais
 

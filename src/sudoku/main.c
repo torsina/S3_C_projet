@@ -53,7 +53,7 @@ static const char *const ERROR_BEST_INDIVIDUAL =
 static const char *const HELP_MESSAGE =
     "Usages :\n"
     "1. sudoku --test : display this message\n"
-    "2. sudoku <YAML file> <crossover> <mutation> <nb ind> <max it>\n"
+    "2. sudoku <YAML file> <crossover> <mutation> <nb ind> <max it> <opt : --verbose>\n"
     "\t|<YAML file> : path to the YAML file to load the sudoku from.\n"
     "\t|<crossover> : crossover probability. English notation (dot), [0, 1].\n"
     "\t|<mutation>  : mutation probability. English notation (dot), [0, 1].\n"
@@ -61,7 +61,8 @@ static const char *const HELP_MESSAGE =
     " integer >0.\n"
     "\t|<max it>    : max iterations count. The program will stop if the "
     "problem"
-    "isn't solved and this number of iteration is reached. Positive integer.\n";
+    "isn't solved and this number of iteration is reached. Positive integer.\n"
+    "|--verbose     : (optional) turns on verbose mode.";
 
 static const char *const HELP_PARAM = "--help";
 
@@ -112,6 +113,7 @@ int main(int argc, const char **argv) {
    * - Mutation probability
    * - Number of individuals in the Population
    * - Maximum number of iterations
+   * - --verbose
    */
   bool verbose = false;
 
@@ -208,6 +210,7 @@ int main(int argc, const char **argv) {
           }
         }
 
+        // Generating the initial population
         Population *population = ga_population_create(generator, nb_ind);
         if (!population) {
           fprintf(stderr, "%s", ERROR_POPULATION);
@@ -217,6 +220,7 @@ int main(int argc, const char **argv) {
           return EXIT_FAILURE;
         }
 
+        // The best score gets assigned by reference
         unsigned int best_score = 0;
         unsigned int *best = population_best_individual(population, evaluate,
                                                         sudoku, &best_score);
@@ -238,10 +242,24 @@ int main(int argc, const char **argv) {
         printf("------------------------\n");
         if (is_max_score(best_score, sudoku)) {
           printf("Found the solution !");
+          FILE *save = fopen("./solution.yaml", "w");
+          unsigned int *finished_sudoku =
+              evaluate_merge_problem_solution(best, sudoku);
+          Sudoku *sudoku_merged = sudoku_create(sudoku->dim_size);
+          free(sudoku_merged->problem);
+          sudoku_merged->problem = finished_sudoku;
+          save_sudoku(sudoku_merged, save);
+          fclose(save);
+          sudoku_destroy(sudoku_merged);
+          fclose(yaml_file);
+          sudoku_destroy(sudoku);
+          ga_finish();
+          return EXIT_SUCCESS;
         }
 
         bool found_solution = false;
 
+        // Looping over the generations
         while (generation < nb_iter) {
           Population *next_generation =
               ga_population_next(population, (const float)crossover_prob,
