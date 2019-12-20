@@ -215,9 +215,6 @@ int main(int argc, const char **argv) {
           return EXIT_FAILURE;
         }
 
-        // TODO(T-MMLR) : print the generation in verbose mode
-        // if (verbose) {
-        // }
 
         unsigned int best_score = 0;
         unsigned int *best = population_best_individual(population, evaluate,

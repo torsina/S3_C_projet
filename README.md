@@ -1,9 +1,9 @@
 # S3_C_projet
-
+_Exigences_ :
 - Coder en anglais
 
 - Noms de fichiers en minuscules, séparés par des tirets "-"
-- Extensions .c .h .inc
+- Extensions .c, .h, .inc
 
 - Noms de type en CamelCase sans tirets. Pour les struct/enum/union, utiliser un underscore devant "_"
   Ex : typedef struct _Polygon Polygon;
@@ -23,13 +23,13 @@
 
 - Générer la documentation avec sphinx en respectant la norme doxygen
 
-- Tests unitaires + valgrind + cclint. Créer un dossier "**test**"
+- Tests unitaires + valgrind + cclint. Dans un dossier "**test**"
 
-## OUTILS IMPOSÉS :
+## OUTILS UTILISÉS :
 - CLion avec mingw32 (gcc, g++, make)
 - CMake
 
-## CONFIGURER CLANG-FORMAT EN LOCAL :
+## CONFIGURER CLANG-FORMAT EN LOCAL SUR CLION :
 Aller dans Settings > Editor > Code Style.
 - Changer Scheme de "Default" à "Project"
 - Cliquer sur "Enable ClangFormat with clangd server"

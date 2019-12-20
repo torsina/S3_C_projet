@@ -46,8 +46,6 @@ extern unsigned int sudoku_get_dim_size(const Sudoku* sudoku);
 extern unsigned int evaluate(unsigned int* individual, const void* sudoku);
 
 /**
- * \brief This fu
- *
  * An Individual is a sparse array. When the Sudoku is loaded from a file,
  * some of its tiles already contain numbers ("constraints"). The
  * genetic algorithm has to guess the correct combination for the "empty" tiles
@@ -143,7 +141,7 @@ extern Sudoku* read_sudoku(FILE* file, bool verbose);
 extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
 
 /**
- * \brief This function saves the sudoku to a file with yaml formating
+ * \brief This function saves the sudoku to a file with YAML formating.
  *
  *
  * \author Group 14
@@ -151,8 +149,8 @@ extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
  * \date 2019
  * \fn bool save_sudoku(const Sudoku *sudoku, FILE *file)
  * \param sudoku a pointer to the Sudoku to get the data to save from.
- * \param file a file handler to the file we want the sudoku to be saved at
- * \return 0 if the save failed, 1 if it succeed
+ * \param file a file handle to the file we want the sudoku to be saved at.
+ * \return false if the save failed, true if it succeeded.
  */
 extern bool save_sudoku(const Sudoku *sudoku, FILE *file);
 

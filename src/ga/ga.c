@@ -856,7 +856,7 @@ static FortuneWheel *_fortune_wheel(Population *population,
 unsigned int *population_best_individual(
     Population *population,
     unsigned int (*evaluate)(unsigned int *, const void *), const void *problem,
-    unsigned int *score_out) {
+    unsigned int *scores_out) {
   if (!population) {
     return NULL;
   }
@@ -879,8 +879,8 @@ unsigned int *population_best_individual(
 
   unsigned int max_score_index = _find_max_score(scores, population->size);
   if (max_score_index < population->size) {
-    if (score_out) {
-      *score_out = scores[max_score_index];
+    if (scores_out) {
+      *scores_out = scores[max_score_index];
     }
     return population->individuals[max_score_index]->genes;
   } else {

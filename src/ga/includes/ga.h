@@ -630,11 +630,11 @@ extern Population *ga_population_next(
  * \author Group 14
  * \version 0.0.1
  * \date 2019
- * \fn static unsigned int *_population_best_individual(Population *population,
-                                    unsigned int (*evaluate)(unsigned int *,
-                                                             const void *),
-                                    const void *problem,
-                                    unsigned int *scores_out)
+ * \fn unsigned int *population_best_individual(
+    Population *population,
+    unsigned int (*evaluate)(unsigned int *, const void *),
+    const void *problem,
+    unsigned int *scores_out)
  * \param population a pointer to a Population containing the individuals.
  * \param evaluate a pointer to a function used to evaluate each Individual
  * and getting its score relative to the problem.
@@ -645,8 +645,7 @@ extern Population *ga_population_next(
  */
 extern unsigned int *population_best_individual(
     Population *population,
-    unsigned int (*evaluate)(unsigned int *, const void *),
-    const void *problem,
+    unsigned int (*evaluate)(unsigned int *, const void *), const void *problem,
     unsigned int *scores_out);
 
 #endif  // SRC_GA_INCLUDES_GA_H_
