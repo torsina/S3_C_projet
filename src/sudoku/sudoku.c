@@ -197,7 +197,7 @@ unsigned int _evaluate_similarity(unsigned int *merge, const Sudoku *sudoku) {
   return score;
 }
 
-unsigned int _potential_max_score(const Sudoku *sudoku) {
+unsigned int potential_max_score(const Sudoku *sudoku) {
   return (unsigned int)pow(sudoku->dim_size, 2) *
          3 /* + (sudoku->dim_size - 1) * sudoku->dim_size * sudoku->dim_size*/;
 }
@@ -210,7 +210,7 @@ unsigned int evaluate(unsigned int *individual, const void *sudoku) {
   unsigned int dim_size = sudoku_get_dim_size(sudoku);
   unsigned int box_length = (unsigned int)sqrt(dim_size);
   // unsigned int score = (unsigned int)pow(dim_size, 2) * 3;
-  unsigned int score = _potential_max_score(sudoku);
+  unsigned int score = potential_max_score(sudoku);
   unsigned int *merge = evaluate_merge_problem_solution(individual, sudoku);
   unsigned int duplicates = 0;
   unsigned int test = 0;
@@ -260,7 +260,7 @@ bool is_max_score(unsigned int score, const Sudoku *sudoku) {
   if (!sudoku) {
     return false;
   } else {
-    unsigned int max_score = _potential_max_score(sudoku);
+    unsigned int max_score = potential_max_score(sudoku);
     return score >= max_score;
   }
 }

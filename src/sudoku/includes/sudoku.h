@@ -156,4 +156,6 @@ extern bool is_valid(unsigned int *solution, const Sudoku *sudoku);
 extern bool is_max_score(unsigned int score, const Sudoku *sudoku);
 
 extern void sudoku_print(unsigned int *solution, Sudoku *sudoku);
+
+extern unsigned int potential_max_score(const Sudoku *sudoku);
 #endif  // SRC_SUDOKU_INCLUDES_SUDOKU_H_
