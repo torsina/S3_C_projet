@@ -4,7 +4,7 @@ import os
 
 #DISABLED html_theme_path = ['@SPHINX_THEME_DIR@']
 
-htmlhelp_basename = 'YOUR_PROJECT_NAMEdoc'
+htmlhelp_basename = 'group14-ga-doc'
 
 master_doc = 'docs/index'
 
@@ -62,8 +62,8 @@ needs_sphinx = '2.2'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-breathe_projects = { "myproject": os.getenv('DOXYGEN_OUTPUT_DIR') + "/xml/" }
-breathe_default_project = "myproject"
+breathe_projects = { "group14-ga": os.getenv('DOXYGEN_OUTPUT_DIR') + "/xml/" }
+breathe_default_project = "group14-ga"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -78,7 +78,7 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = 'c-test'
+project = 'group14-ga'
 copyright = '2019-2020, Group 14'
 author = 'Group 14'
 
@@ -135,7 +135,7 @@ todo_include_todos = False
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'c-testdoc'
+htmlhelp_basename = 'group14-ga'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -162,8 +162,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'c-test.tex', 'c-test Documentation',
-     'Christophe Demko', 'manual'),
+    (master_doc, 'group14-ga.tex', 'group14-ga Documentation',
+     'Group 14', 'manual'),
 ]
 
 
@@ -172,7 +172,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'c-test', 'c-test Documentation',
+    (master_doc, 'group14-ga', 'group14-ga Documentation',
      [author], 1)
 ]
 
@@ -183,8 +183,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'c-test', 'c-test Documentation',
-     author, 'c-test', 'One line description of project.',
+    (master_doc, 'group14-ga', 'group14-ga Documentation',
+     author, 'group14-ga', 'One line description of project.',
      'Miscellaneous'),
 ]
 

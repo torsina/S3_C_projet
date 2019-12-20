@@ -1,4 +1,4 @@
-Welcome to S3 Projet C's documentation!
+Welcome to group14-ga's documentation!
 =======================================
 
 The goal of this project is to provide a library for solving a problem with genetic algorithms :
