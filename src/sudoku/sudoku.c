@@ -264,7 +264,7 @@ bool is_max_score(unsigned int score, const Sudoku *sudoku) {
     return score >= max_score;
   }
 }
-
+/**
 Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
   if (!file) {
     assert(printf("Failed to open file.\n"));
@@ -288,11 +288,6 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
     yaml_parser_delete(parser);
     return NULL;
   }
-  /*if (!file) {
-    assert(printf("failed to open file\n"));
-    yaml_parser_delete(parser);
-    return NULL;
-  }*/
   // Binding the YAML parser to the file.
   yaml_parser_set_input_file(parser, file);
   // Creating a YAML document for reading
@@ -366,8 +361,7 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
       second_node = yaml_document_get_node(document, *second_iterator);
       // The node must be a scalar node
       if (second_node->type == YAML_SCALAR_NODE) {
-        /* We make sure that the index is not too big (that the line is not too
-         long).*/
+        We make sure that the index is not too big (that the line is not too long).
         if (sudoku_index >= (sudoku->dim_size * sudoku->dim_size)) {
           assert(printf("Sudoku index above dim_size^2.\n"));
           yaml_document_delete(document);
@@ -411,6 +405,7 @@ Sudoku *fill_sudoku(Sudoku *sudoku, FILE *file) {
   yaml_parser_delete(parser);
   return sudoku;
 }
+*/
 
 static unsigned int **_array_list_add(unsigned int **array, unsigned int *size,
                                       const unsigned int *val) {

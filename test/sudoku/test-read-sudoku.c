@@ -88,14 +88,14 @@ int main(void) {
   assert(tests);
   // create tests
   add_test(tests, create_test("three_by_three",
-                              (unsigned int[]){2, 0, 0, 0, 0, 0, 0, 1, 0}, 3));
-  add_test(tests, create_test("null", (unsigned int[]){0, 0, 0, 0}, 2));
+                              (unsigned int[]){2, 0, 0, 0, 0, 0, 0, 1, 0}, 9));
+  add_test(tests, create_test("null", (unsigned int[]){0, 0, 0, 0}, 4));
   add_test(tests,
-           create_test("irregular_size_1", (unsigned int[]){1, 2, 1, 2, 3}, 2));
+           create_test("irregular_size_1", (unsigned int[]){1, 2, 1, 2, 3}, 4));
   add_test(tests, create_test("irregular_size_2",
-                              (unsigned int[]){1, 2, 3, 4, 0, 5}, 2));
-  add_test(tests,
-           create_test("full", (unsigned int[]){1, 2, 3, 4, 5, 6, 7, 8, 9}, 3));
+                              (unsigned int[]){1, 2, 3, 4, 0, 5}, 4));
+  add_test(tests, create_test("oversize",
+                              (unsigned int[]){1, 2, 3, 4, 5, 6, 7, 8, 9}, 9));
 
   for (unsigned int i = 0; i < tests->size; i++) {
     printf("--------START[%u]------\n", i);
@@ -108,12 +108,12 @@ int main(void) {
     assert(printf("Creating sudoku for %s.\n", test->path));
     Sudoku* sudoku = read_sudoku(file, false);
     if (strstr(test->path, "irregular_size_1") ||
-        strstr(test->path, "irregular_size_2")) {
+        strstr(test->path, "irregular_size_2") ||
+        strstr(test->path, "oversize")) {
       assert(sudoku == NULL);
     } else if (strstr(test->path, "three_by_three") ||
-               strstr(test->path, "null") || strstr(test->path, "full")) {
-      assert(problem_equal(sudoku->problem, test->values,
-                           test->dim_size * test->dim_size));
+               strstr(test->path, "null")) {
+      assert(problem_equal(sudoku->problem, test->values, test->dim_size));
     } else {
       assert(printf("Invalid case: %s\n", test->path));
     }
