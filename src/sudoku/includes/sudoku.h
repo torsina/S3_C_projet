@@ -105,9 +105,6 @@ extern Sudoku* sudoku_create(unsigned int dim_size);
 extern void sudoku_destroy(Sudoku* sudoku);
 
 
-// TODO(T-MMLR) : remove
-extern Sudoku* fill_sudoku(Sudoku* sudoku, FILE* file);
-
 /**
  * \brief This function reads a Sudoku from a YAML file. The file must be
  * opened.
@@ -139,6 +136,21 @@ extern Sudoku* read_sudoku(FILE* file, bool verbose);
  * \return The number of empty tiles of the Sudoku grid.
  */
 extern unsigned int sudoku_empty_tiles(const Sudoku* sudoku);
+
+/**
+ * \brief This function saves the sudoku to a file with yaml formating
+ *
+ *
+ * \author Group 14
+ * \version 0.0.1
+ * \date 2019
+ * \fn bool save_sudoku(const Sudoku *sudoku, FILE *file)
+ * \param sudoku a pointer to the Sudoku to get the data to save from.
+ * \param file a file handler to the file we want the sudoku to be saved at
+ * \return 0 if the save failed, 1 if it succeed
+ */
+extern bool save_sudoku(const Sudoku *sudoku, FILE *file);
+
 
 extern bool is_valid(unsigned int *solution, const Sudoku *sudoku);
 extern bool is_max_score(unsigned int score, const Sudoku *sudoku);
