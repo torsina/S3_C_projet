@@ -60,17 +60,17 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-      steps:
-          - uses: actions/checkout@v1
+    steps:
+      - uses: actions/checkout@v1
 
-          - name: Create Build Environment
-            run: cmake -E make_directory ${{runner.workspace}}/build
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
 
-          - name: Update stuff
-            run: sudo apt-get -y update
+      - name: Update stuff
+        run: sudo apt-get -y update
 
-          - name: Install cclint
-            run: sudo pip install -U cclint
+      - name: Install cclint
+        run: sudo pip install -U cclint
 
-          - name: Run cclint
-            run: cclint --recursive --extensions=c,h,inc ./
+      - name: Run cclint
+        run: cclint --recursive --extensions=c,h,inc ./
