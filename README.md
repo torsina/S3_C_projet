@@ -4,6 +4,9 @@ Groupe 14 : Sagot Aelis, Vidal Mathéo, Raimbault Diane, Cutaia Evan, Godreuil T
 
 Github repo: https://github.com/torsina/S3_C_projet
 
+Program usage : ./main <path to YAML> <crossover prob> <mutation prob> <nb individuals> <nb generations max> <opt : --verbose>
+See help : ./main --help
+
 _Exigences_ :
 - Coder en anglais
 
@@ -120,7 +123,8 @@ double sqrt(double val) {
 1. ``git clone https://github.com/yaml/libyaml.git``
 2. ``./bootstrap``
 3. ``./configure ``
-4. ``cmake . ``
+4. ``cmake . `` (éventuellement -DCMAKE_INSTALL_PREFIX=$HOME/.local)
 5. ``make ``
 6. ``sudo make install``
+7. Vérifier si les fichiers sont bien installés (et peut être ajouter le répertoire d'installation au PATH).
  

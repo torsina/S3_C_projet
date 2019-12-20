@@ -28,7 +28,7 @@ static const char *const ERROR_RANGE_LONG =
     "[ERROR] Invalid integer range at position %zu : %s. Must be positive.\n";
 
 static const char *const ERROR_ZERO_LONG =
-    "[ERROR] Integer at position %zu must be strictly positive.\n";
+    "[ERROR] Integer at position %u must be strictly positive.\n";
 
 static const char *const ERROR_INVALID_SUDOKU =
     "[ERROR] The sudoku is invalid.\n";
